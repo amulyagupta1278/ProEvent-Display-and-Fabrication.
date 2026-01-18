@@ -1,19 +1,20 @@
-// Mock data for ProEvent Display & Fabrication (frontend-only placeholder)
+// Mock data for Eventxpertz (frontend-only placeholder)
 // Replace with backend integration later
 
 export const BRAND = {
-  name: "ProEvent Display & Fabrication",
+  name: "Eventxpertz",
   colors: {
-    primary: "#F47C1E", // Accent color (orange)
-    dark: "#121212",
-    darkAlt: "#1C1C1C",
+    primary: "#1FA6A8", // Accent color (teal)
+    hover: "#178F97",
+    dark: "#162E4A", // Navy for nav, headings
+    darkAlt: "#1F3D63", // Dark blue for body text
     light: "#FFFFFF",
     softGray: "#E0E0E0",
   },
 };
 
 export const HERO = {
-  headline: "ProEvent Display & Fabrication",
+  headline: "Eventxpertz",
   subheading:
     "Complete Stall Setup, Branding & Event Support Solutions Across India.",
   // Curated stock photo for fallback parallax
@@ -27,7 +28,7 @@ export const HERO = {
 export const OVERVIEW = {
   title: "Overview",
   text:
-    "ProEvent Display & Fabrication is a full-service exhibition and event support company providing complete stall setup, branding, and display solutions for trade fairs, expos, and corporate events across India.\nWe specialize in designing, fabricating, and managing customized exhibition spaces with end-to-end support — from structure to screens, lights to logistics.",
+    "Eventxpertz is a full-service exhibition and event support company providing complete stall setup, branding, and display solutions for trade fairs, expos, and corporate events across India.\nWe specialize in designing, fabricating, and managing customized exhibition spaces with end-to-end support — from structure to screens, lights to logistics.",
   image:
     "https://images.unsplash.com/photo-1557800636-894a64c1696f?q=80&w=1400&auto=format&fit=crop",
 };
@@ -128,9 +129,9 @@ export const TESTIMONIALS = [
 ];
 
 export const CONTACT = {
-  email: "proeventdisplay@gmail.com",
-  website: "www.proeventdisplay.com",
-  phones: ["7060007626", "9555442857", "9358767062"],
+  email: "eventxpertz@gmail.com",
+  website: "https://eventxpertz.in",
+  phones: ["+91 9358767062"],
 };
 
 export const FAQS = [

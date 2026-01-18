@@ -13,7 +13,7 @@ import { toast } from "sonner";
 
 // Simple link
 const NavLink = ({ href, children }) => (
-  <a href={href} className="text-sm font-medium text-white/90 hover:text-white transition-colors px-3 py-2">
+  <a href={href} className="text-sm font-medium text-white hover:text-white/80 transition-colors px-3 py-2">
     {children}
   </a>
 );
@@ -28,12 +28,12 @@ const HeaderNav = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-[background,backdrop-filter,border-color] duration-300 ${
-        scrolled ? "backdrop-blur-xl bg-black/50 border-b border-white/10" : "bg-transparent"
+        scrolled ? "backdrop-blur-xl bg-[#1F3D63]/95 border-b border-white/10" : "bg-[#1F3D63]"
       }`}
     >
       <div className="mx-auto max-w-7xl px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="h-9 w-9 rounded-md bg-[var(--brand)] shadow-inner" />
+          <img src="/images/logo.jpeg" alt="Eventxpertz logo" className="h-8 w-8 rounded-md object-contain" />
           <span className="text-white font-semibold tracking-wide">{BRAND.name}</span>
         </div>
         <nav className="hidden md:flex items-center">
@@ -46,7 +46,7 @@ const HeaderNav = () => {
         </nav>
         <div className="hidden md:block">
           <a href="#top">
-            <Button className="bg-[var(--brand)] hover:bg-[#e06f17] text-white rounded-md">Get a Quote</Button>
+            <Button className="bg-[var(--brand)] hover:bg-[var(--hover)] text-white rounded-md">Get a Quote</Button>
           </a>
         </div>
       </div>
@@ -109,7 +109,7 @@ const HeroTop = () => {
         body: new URLSearchParams(data).toString(),
       });
       setSubmitted(true);
-      toast.success("Thanks! We’ll get back within 24 hours.");
+      toast.success("Thanks! We'll get back within 24 hours.");
       formEl.reset();
     } catch (err) {
       console.error(err);
@@ -120,18 +120,18 @@ const HeroTop = () => {
   };
 
   return (
-    <section id="top" className="relative pt-28 pb-14 bg-gradient-to-b from-[#121212] to-[#1C1C1C] text-white">
+    <section id="top" className="relative pt-28 pb-14 bg-gradient-to-b from-[#1F3D63] to-[#1C3D5C] text-white">
       <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden>
-        <div className="absolute -inset-24 bg-[radial-gradient(700px_260px_at_20%_0%,rgba(244,124,30,0.18),transparent)]" />
+        <div className="absolute -inset-24 bg-[radial-gradient(500px_200px_at_20%_0%,rgba(31,166,168,0.15),transparent)]" />
       </div>
       <div className="mx-auto max-w-7xl px-6 grid lg:grid-cols-2 gap-10 items-center">
         <div className="order-2 lg:order-1">
           <VideoEmbed youtubeUrl={HERO.youtubeUrl} mp4Url={HERO.videoMp4} />
         </div>
         <div className="order-1 lg:order-2">
-          <div className="rounded-2xl md:backdrop-blur-2xl bg-white/5 border border-white/10 p-6 md:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.35)]">
+          <div className="rounded-2xl md:backdrop-blur-2xl bg-white/10 border border-white/20 p-6 md:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.25)]">
             <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Event Booths That Win Attention</h1>
-            <p className="mt-2 text-white/80">
+            <p className="mt-2 text-white/90">
               Design, fabrication, and on-ground support for expos and corporate events across India.
             </p>
 
@@ -149,33 +149,33 @@ const HeroTop = () => {
                 <input type="hidden" name="form-name" value="contact" />
                 <p className="hidden">
                   <label>
-                    Don’t fill this out if you're human: <input name="botField" />
+                    Don't fill this out if you're human: <input name="botField" />
                   </label>
                 </p>
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="name">
-                      Name<span className="text-red-500"> *</span>
+                      Name<span className="text-red-400"> *</span>
                     </Label>
                     <Input
                       id="name"
                       name="name"
                       placeholder="Your full name"
-                      className="mt-1 bg-white/5 border-white/20 text-white placeholder:text-white/50"
+                      className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
                       required
                     />
                   </div>
                   <div>
                     <Label htmlFor="email">
-                      Email<span className="text-red-500"> *</span>
+                      Email<span className="text-red-400"> *</span>
                     </Label>
                     <Input
                       id="email"
                       name="email"
                       type="email"
                       placeholder="name@example.com"
-                      className="mt-1 bg-white/5 border-white/20 text-white placeholder:text-white/50"
+                      className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
                       required
                     />
                   </div>
@@ -188,13 +188,13 @@ const HeroTop = () => {
                       id="company"
                       name="company"
                       placeholder="Company name"
-                      className="mt-1 bg-white/5 border-white/20 text-white placeholder:text-white/50"
+                      className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
                     />
                   </div>
                   <div>
                     <Label>Service</Label>
                     <Select value={service} onValueChange={setService}>
-                      <SelectTrigger className="mt-1 bg-white/5 border-white/20 text-white">
+                      <SelectTrigger className="mt-1 bg-white/10 border-white/20 text-white">
                         <SelectValue placeholder="Select service" />
                       </SelectTrigger>
                       <SelectContent>
@@ -217,21 +217,21 @@ const HeroTop = () => {
                     name="message"
                     rows={4}
                     placeholder="Booth size, city, dates, and requirements"
-                    className="mt-1 bg-white/5 border-white/20 text-white placeholder:text-white/50"
+                    className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
                   />
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <Button disabled={saving} className="bg-[var(--brand)] hover:bg-[#e06f17] text-white rounded-md px-6">
+                  <Button disabled={saving} className="bg-[var(--brand)] hover:bg-[var(--hover)] text-white rounded-md px-6">
                     {saving ? "Submitting..." : "Submit"}
                   </Button>
                 </div>
               </form>
             ) : (
-              <div className="mt-6 rounded-lg bg-white/10 border border-white/15 p-6">
-                <h3 className="text-xl font-semibold">Thanks! We’ll get back within 24 hours.</h3>
-                <p className="text-white/80 mt-2">
-                  Your details were received. We’ll follow up shortly.
+              <div className="mt-6 rounded-lg bg-white/10 border border-white/20 p-6">
+                <h3 className="text-xl font-semibold">Thanks! We'll get back within 24 hours.</h3>
+                <p className="text-white/90 mt-2">
+                  Your details were received. We'll follow up shortly.
                 </p>
               </div>
             )}
@@ -247,7 +247,7 @@ const CoreServices = () => {
   return (
     <section id="services" className="py-20 bg-white">
       <div className="mx-auto max-w-7xl px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#121212]">Our Core Services</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Our Core Services</h2>
         <p className="text-neutral-600 mt-2">Everything needed to deliver a premium booth—end to end.</p>
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {CORE_SERVICES.map((svc, idx) => {
@@ -257,11 +257,11 @@ const CoreServices = () => {
               <Card key={idx} className={`group hover:shadow-xl transition-all ${isLast ? 'lg:col-start-2' : ''}`}>
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
-                    <div className="h-11 w-11 rounded-lg bg-[#121212] text-white flex items-center justify-center ring-1 ring-black/10 group-hover:ring-[var(--brand)] transition-colors">
+                    <div className="h-11 w-11 rounded-lg bg-[#1F3D63] text-white flex items-center justify-center ring-1 ring-black/10 group-hover:ring-[var(--brand)] transition-colors">
                       <Icon className="h-5 w-5" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-lg text-[#121212]">{svc.title}</h3>
+                      <h3 className="font-semibold text-lg text-[#1F3D63]">{svc.title}</h3>
                       <ul className="mt-2 space-y-1 text-neutral-600 list-disc pl-5">
                         {svc.items.map((it, i) => (
                           <li key={i}>{it}</li>
@@ -280,7 +280,7 @@ const CoreServices = () => {
 };
 
 const WhyChooseUs = () => (
-  <section id="why" className="py-20 bg-[#0f0f10]">
+  <section id="why" className="py-20 bg-[#1F3D63] text-white">
     <div className="mx-auto max-w-7xl px-6">
       <h2 className="text-3xl md:text-4xl font-bold text-white">Why Choose Us</h2>
       <p className="text-white/70 mt-2">Premium exhibition booths with dependable execution.</p>
@@ -304,7 +304,7 @@ const Portfolio = () => {
   return (
     <section id="portfolio" className="py-20 bg-neutral-50">
       <div className="mx-auto max-w-7xl px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#121212]">Portfolio</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Portfolio</h2>
         <p className="text-neutral-600 mt-2">A snapshot of our recent work.</p>
         <div className="mt-10 grid grid-cols-2 md:grid-cols-3 gap-4">
           {GALLERY.map((img) => (
@@ -329,7 +329,7 @@ const Portfolio = () => {
           <DialogTrigger asChild>
             <span className="hidden" />
           </DialogTrigger>
-          <DialogContent className="max-w-4xl p-0 bg-black/90 border-white/10">
+          <DialogContent className="max-w-4xl p-0 bg-[#162E4A]/90 border-white/10">
             {active && <img src={active.url} alt={active.alt} className="w-full h-auto object-contain" />}
           </DialogContent>
         </Dialog>
@@ -339,7 +339,7 @@ const Portfolio = () => {
 };
 
 const Testimonials = () => (
-  <section id="testimonials" className="py-20 bg-[#0f0f10] text-white">
+  <section id="testimonials" className="py-20 bg-[#1F3D63] text-white">
     <div className="mx-auto max-w-7xl px-6">
       <h2 className="text-3xl md:text-4xl font-bold">What Clients Say</h2>
       <p className="text-white/70 mt-2">Trust built through consistent delivery.</p>
@@ -351,7 +351,7 @@ const Testimonials = () => (
                 <Card className="bg-white/5 border-white/10">
                   <CardContent className="p-6">
                     <Quote className="h-6 w-6 text-[var(--brand)]" />
-                    <p className="mt-3 text-white/90">“{t.quote}”</p>
+                    <p className="mt-3 text-white/90">"{t.quote}"</p>
                     <div className="mt-4 text-sm text-white/70">
                       {t.name} — {t.company}
                     </div>
@@ -367,50 +367,50 @@ const Testimonials = () => (
 );
 
 const Footer = () => (
-  <footer id="contact" className="bg-white">
+  <footer id="contact" className="bg-[#162E4A] text-white">
     <div className="mx-auto max-w-7xl px-6 py-12 grid md:grid-cols-3 gap-8">
       <div>
         <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-md bg-[var(--brand)]" />
-          <span className="font-semibold">{BRAND.name}</span>
+          <img src="/images/logo.jpeg" alt="Eventxpertz logo" className="h-8 w-8 rounded-md object-contain" />
+          <span className="font-semibold text-white">{BRAND.name}</span>
         </div>
-        <p className="mt-3 text-neutral-600 text-sm">Exhibition stalls, branding & event support across India.</p>
+        <p className="mt-3 text-white/70 text-sm">Exhibition stalls, branding & event support across India.</p>
       </div>
       <div>
-        <h5 className="font-semibold">Quick Links</h5>
-        <ul className="mt-3 space-y-2 text-sm text-neutral-700">
+        <h5 className="font-semibold text-white">Quick Links</h5>
+        <ul className="mt-3 space-y-2 text-sm text-white/70">
           <li>
-            <a className="hover:text-black" href="#services">
+            <a className="hover:text-white" href="#services">
               Services
             </a>
           </li>
           <li>
-            <a className="hover:text-black" href="#why">
+            <a className="hover:text-white" href="#why">
               Why Us
             </a>
           </li>
           <li>
-            <a className="hover:text-black" href="#portfolio">
+            <a className="hover:text-white" href="#portfolio">
               Portfolio
             </a>
           </li>
           <li>
-            <a className="hover:text-black" href="#testimonials">
+            <a className="hover:text-white" href="#testimonials">
               Testimonials
             </a>
           </li>
         </ul>
       </div>
       <div>
-        <h5 className="font-semibold">Contact</h5>
-        <ul className="mt-3 space-y-2 text-sm text-neutral-700">
+        <h5 className="font-semibold text-white">Contact</h5>
+        <ul className="mt-3 space-y-2 text-sm text-white/70">
           <li>Email: {CONTACT.email}</li>
           <li>Website: {CONTACT.website}</li>
           <li>Phone: {CONTACT.phones.join(" | ")}</li>
         </ul>
       </div>
     </div>
-    <div className="border-t border-neutral-200 py-4 text-center text-xs text-neutral-500">
+    <div className="border-t border-white/10 py-4 text-center text-xs text-white/50">
       © {new Date().getFullYear()} {BRAND.name}. All rights reserved.
     </div>
   </footer>
@@ -419,9 +419,10 @@ const Footer = () => (
 export default function LandingPage() {
   useEffect(() => {
     document.documentElement.style.setProperty("--brand", BRAND.colors.primary);
+    document.documentElement.style.setProperty("--hover", BRAND.colors.hover);
   }, []);
   return (
-    <main className="bg-[#121212] text-white">
+    <main className="bg-white text-[#162E4A]">
       <HeaderNav />
       <HeroTop />
       <CoreServices />
@@ -432,3 +433,4 @@ export default function LandingPage() {
     </main>
   );
 }
+
