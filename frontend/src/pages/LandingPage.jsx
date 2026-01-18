@@ -384,7 +384,7 @@ const Footer = () => (
           <img src="/images/logo.jpeg" alt="Eventxpertz logo" className="h-8 w-8 rounded-md object-contain" />
           <span className="font-semibold text-white">{BRAND.name}</span>
         </div>
-        <p className="mt-3 text-white/70 text-sm">Exhibition stalls, branding & event support across India.</p>
+        <p className="mt-3 text-white/70 text-sm">EventXpertz is an India-based event and exhibition management company delivering services across major cities.</p>
       </div>
       <div>
         <h5 className="font-semibold text-white">Quick Links</h5>
@@ -420,8 +420,6 @@ const Footer = () => (
         </ul>
       </div>
     </div>
-    <p className="text-sm text-white/70">EventXpertz is an India-based event and exhibition management company delivering services across major cities.</p>
-
     <div className="border-t border-white/10 py-4 text-center text-xs text-white/50">
       © {new Date().getFullYear()} {BRAND.name}. All rights reserved.
     </div>
