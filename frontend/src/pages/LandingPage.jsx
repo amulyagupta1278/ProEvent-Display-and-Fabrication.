@@ -17,6 +17,12 @@ const NavLink = ({ href, children }) => (
     {children}
   </a>
 );
+const handleWhatsAppOrder = () => {
+    const phone = "+919358767062";
+    const message = "Hello EventXpertz, I visited your website and would like to know more about your event services.";
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+  };
 
 const HeaderNav = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -25,6 +31,9 @@ const HeaderNav = () => {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-[background,backdrop-filter,border-color] duration-300 ${
@@ -45,9 +54,7 @@ const HeaderNav = () => {
           <NavLink href="#contact">Contact</NavLink>
         </nav>
         <div className="hidden md:block">
-          <a href="#top">
-            <Button className="bg-[var(--brand)] hover:bg-[var(--hover)] text-white rounded-md">Get a Quote</Button>
-          </a>
+          <Button onClick={() => handleWhatsAppOrder()} className="bg-[var(--brand)] hover:bg-[var(--hover)] text-white rounded-md">Get a Quote</Button>
         </div>
       </div>
     </header>
@@ -233,6 +240,8 @@ const HeroTop = () => {
                 <p className="text-white/90 mt-2">
                   Your details were received. We'll follow up shortly.
                 </p>
+                <Button onClick={handleWhatsAppOrder} className="mt-4 bg-[#25D366] hover:bg-[#1EBE5D] text-white rounded-md px-6">Chat on WhatsApp for Faster Response</Button>
+
               </div>
             )}
           </div>
