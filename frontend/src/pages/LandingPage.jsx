@@ -137,7 +137,8 @@ const HeroTop = () => {
         </div>
         <div className="order-1 lg:order-2">
           <div className="rounded-2xl md:backdrop-blur-2xl bg-white/10 border border-white/20 p-6 md:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.25)]">
-            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Event Booths That Win Attention</h1>
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">EventXpertz</h1>
+            <h2 className="mt-2 text-2xl md:text-3xl font-semibold">Exhibition & Event Management Company in India</h2>
             <p className="mt-2 text-white/90">
               Design, fabrication, and on-ground support for expos and corporate events across India.
             </p>
@@ -419,6 +420,8 @@ const Footer = () => (
         </ul>
       </div>
     </div>
+    <p className="text-sm text-white/70">EventXpertz is an India-based event and exhibition management company delivering services across major cities.</p>
+
     <div className="border-t border-white/10 py-4 text-center text-xs text-white/50">
       © {new Date().getFullYear()} {BRAND.name}. All rights reserved.
     </div>
