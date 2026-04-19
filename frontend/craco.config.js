@@ -34,7 +34,14 @@ const webpackConfig = {
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
-    configure: (webpackConfig) => {
+    configure: (webpackConfig, { env }) => {
+      // Disable source maps in production
+      if (env === 'production') {
+        webpackConfig.devtool = false;
+        webpackConfig.plugins = webpackConfig.plugins.filter(
+          p => p.constructor.name !== 'SourceMapDevToolPlugin'
+        );
+      }
 
       // Disable hot reload completely if environment variable is set
       if (config.disableHotReload) {

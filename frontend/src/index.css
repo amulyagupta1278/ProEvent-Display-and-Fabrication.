@@ -90,3 +90,22 @@ code {
   from { transform: scale(1); }
   to { transform: scale(1.06); }
 }
+
+/* Prevent layout shift for images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

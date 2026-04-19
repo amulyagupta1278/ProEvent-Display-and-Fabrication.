@@ -1,0 +1,25 @@
+const fs = require('fs');
+const path = require('path');
+const today = new Date().toISOString().split('T')[0];
+
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://eventxpertz.in/</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://eventxpertz.in/images/logo.jpeg</image:loc>
+      <image:title>EventXpertz — Exhibition and Event Management India</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://eventxpertz.in/og-image.jpg</image:loc>
+      <image:title>EventXpertz Services Overview</image:title>
+    </image:image>
+  </url>
+</urlset>`;
+
+fs.writeFileSync(path.join(__dirname, '../public/sitemap.xml'), sitemap);
+console.log(`✅ Sitemap generated with lastmod: ${today}`);

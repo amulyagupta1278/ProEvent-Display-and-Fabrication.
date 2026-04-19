@@ -170,6 +170,7 @@ const HeroTop = () => {
                       id="name"
                       name="name"
                       placeholder="Your full name"
+                      autoComplete="name"
                       className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
                       required
                     />
@@ -183,6 +184,7 @@ const HeroTop = () => {
                       name="email"
                       type="email"
                       placeholder="name@example.com"
+                      autoComplete="email"
                       className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
                       required
                     />
@@ -196,6 +198,7 @@ const HeroTop = () => {
                       id="company"
                       name="company"
                       placeholder="Company name"
+                      autoComplete="organization"
                       className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
                     />
                   </div>
@@ -259,6 +262,14 @@ const CoreServices = () => {
       <div className="mx-auto max-w-7xl px-6">
         <h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Our Core Services</h2>
         <p className="text-neutral-600 mt-2">Everything needed to deliver a premium booth—end to end.</p>
+        <p className="text-neutral-600 mt-4 max-w-2xl">
+          From Octonorm modular stalls to fully custom wooden builds, EventXpertz handles
+          every aspect of your exhibition presence — design, fabrication, branding,
+          furniture, AV equipment, manpower, and post-event dismantling. We operate
+          across all major Indian trade fair venues including India Expo Centre (Greater
+          Noida), Bombay Exhibition Centre, Bengaluru International Exhibition Centre,
+          Hitex Exhibition Centre (Hyderabad), and more.
+        </p>
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {CORE_SERVICES.map((svc, idx) => {
             const Icon = iconMap[svc.icon] || CheckCircle2;
@@ -294,6 +305,12 @@ const WhyChooseUs = () => (
     <div className="mx-auto max-w-7xl px-6">
       <h2 className="text-3xl md:text-4xl font-bold text-white">Why Choose Us</h2>
       <p className="text-white/70 mt-2">Premium exhibition booths with dependable execution.</p>
+      <p className="text-white/70 mt-4 max-w-2xl">
+        EventXpertz has delivered exhibition stalls and corporate event setups across
+        hundreds of events pan-India. Our team manages everything — from the first
+        design sketch to the last bolt on dismantling day — so you can focus entirely
+        on your business goals at the event.
+      </p>
       <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {WHY.map((w, i) => (
           <Card key={i} className="hover:shadow-xl transition-all bg-white/5 border-white/10">
@@ -324,6 +341,7 @@ const Portfolio = () => {
                 setActive(img);
                 setOpen(true);
               }}
+              aria-label={`View portfolio image: ${img.alt}`}
               className="group relative overflow-hidden rounded-xl focus:outline-none"
             >
               <img
@@ -354,7 +372,7 @@ const Testimonials = () => (
       <h2 className="text-3xl md:text-4xl font-bold">What Clients Say</h2>
       <p className="text-white/70 mt-2">Trust built through consistent delivery.</p>
       <div className="mt-8">
-        <Carousel>
+        <Carousel aria-label="Client testimonials carousel">
           <CarouselContent>
             {TESTIMONIALS.map((t, idx) => (
               <CarouselItem key={idx} className="md:basis-1/2 lg:basis-1/3">
@@ -384,7 +402,7 @@ const Footer = () => (
           <img src="/images/logo.jpeg" alt="Eventxpertz logo" className="h-8 w-8 rounded-md object-contain" />
           <span className="font-semibold text-white">{BRAND.name}</span>
         </div>
-        <p className="mt-3 text-white/70 text-sm">EventXpertz is an India-based event and exhibition management company delivering services across major cities.</p>
+        <p className="mt-3 text-white/70 text-sm">EventXpertz is an India-based exhibition and corporate event management company delivering custom stall fabrication, printing &amp; branding, LED display rental, furniture, hospitality manpower, and complete event logistics across Delhi NCR, Mumbai, Bengaluru, Hyderabad, Pune, Ahmedabad, Chennai, Kolkata, Jaipur, Noida, and Gurgaon. Contact us for a free quote.</p>
       </div>
       <div>
         <h5 className="font-semibold text-white">Quick Links</h5>
@@ -433,12 +451,35 @@ export default function LandingPage() {
   }, []);
   return (
     <main className="bg-white text-[#162E4A]">
+      <a
+        href="#top"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-[#1F3D63] focus:px-4 focus:py-2 focus:rounded focus:font-bold"
+      >
+        Skip to main content
+      </a>
       <HeaderNav />
       <HeroTop />
       <CoreServices />
       <WhyChooseUs />
       <Portfolio />
       <Testimonials />
+      <section className="py-10 bg-white" aria-label="About EventXpertz">
+        <div className="mx-auto max-w-7xl px-6">
+          <h2 className="text-2xl font-bold text-[#1F3D63]">About EventXpertz</h2>
+          <p className="mt-3 text-neutral-600 max-w-3xl">
+            EventXpertz is a full-service exhibition and corporate event management
+            company based in India. We specialise in designing and fabricating
+            customised exhibition stalls, managing trade fair participation,
+            providing LED display solutions, and delivering end-to-end corporate
+            event support. Our services cover booth design, Octonorm and wooden
+            stall fabrication, flex and vinyl printing, LED TV and wall rentals,
+            furniture and lighting setup, hostess and hospitality staff, and
+            complete logistics management. EventXpertz operates across all major
+            Indian cities and is the trusted partner for brands participating in
+            trade shows, expos, and corporate events across India.
+          </p>
+        </div>
+      </section>
       <Footer />
     </main>
   );
