@@ -15,22 +15,17 @@ export const BRAND = {
 
 export const HERO = {
   headline: "Eventxpertz",
-  subheading:
-    "Complete Stall Setup, Branding & Event Support Solutions Across India.",
-  // Curated stock photo for fallback parallax
-  image:
-    "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=1600&auto=format&fit=crop",
-  // Placeholder 60s-like sample video (can be replaced with YouTube or MP4 provided by user)
-  videoMp4: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
-  youtubeUrl: "", // e.g., https://www.youtube.com/embed/VIDEO_ID
+  subheading: "Complete Stall Setup, Branding & Event Support Solutions Across India.",
+  image: "/images/booth-design-1.png",
+  youtubeUrl: "https://www.youtube.com/embed/z1oiEwS1OF4",
+  videoMp4: "",
 };
 
 export const OVERVIEW = {
   title: "Overview",
   text:
     "Eventxpertz is a full-service exhibition and event support company providing complete stall setup, branding, and display solutions for trade fairs, expos, and corporate events across India.\nWe specialize in designing, fabricating, and managing customized exhibition spaces with end-to-end support — from structure to screens, lights to logistics.",
-  image:
-    "https://images.unsplash.com/photo-1557800636-894a64c1696f?q=80&w=1400&auto=format&fit=crop",
+  image: "/images/event-work-1.png",
 };
 
 export const SERVICES = [
@@ -108,24 +103,24 @@ export const CORE_SERVICES = [
 ];
 
 export const WHY = [
-  { title: "Design Excellence", text: "Purpose-built booths that reflect your brand with modular or custom builds." },
-  { title: "On-Time Delivery", text: "Tight, dependable timelines from fabrication to on-site assembly." },
-  { title: "End-to-End Support", text: "From structure to screens, lights to logistics — we handle everything." },
+  { title: "10+ Years of Exhibition Expertise", text: "From Pragati Maidan to Bombay Exhibition Centre — we know every major expo venue across India and deliver flawlessly every time." },
+  { title: "Single-Point Accountability", text: "One team manages design, fabrication, branding, AV, manpower, and logistics. No chasing multiple vendors." },
+  { title: "48-Hour Emergency Setup", text: "Last-minute booking? We mobilise within 48 hours for urgent stall setup without compromising quality." },
 ];
 
 export const GALLERY = [
-  "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1485217988980-11786ced9454?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1488998527040-85054a85150e?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop",
-].map((url, i) => ({ id: i + 1, url, alt: `ProEvent work ${i + 1}` }));
+  { id: 1, url: "/images/booth-design-1.png", alt: "EventXpertz custom exhibition stall design" },
+  { id: 2, url: "/images/booth-design-2.png", alt: "EventXpertz Octonorm stall fabrication" },
+  { id: 3, url: "/images/booth-design-3.png", alt: "EventXpertz branded exhibition booth" },
+  { id: 4, url: "/images/event-work-1.png", alt: "EventXpertz trade fair setup" },
+  { id: 5, url: "/images/event-work-2.png", alt: "EventXpertz on-site event execution" },
+  { id: 6, url: "/images/event-work-3.png", alt: "EventXpertz LED display and branding" },
+  { id: 7, url: "/images/event-work-4.png", alt: "EventXpertz complete stall with lighting" },
+];
 
 export const TESTIMONIALS = [
-  { name: "Aarav Mehta", company: "Nimbus Robotics", quote: "They turned our 6x6 space into a brand magnet. Smooth delivery and great attention to detail." },
-  { name: "Priya Sharma", company: "EvoMed", quote: "End-to-end support meant I didn’t worry about a thing. The LED wall setup was perfect." },
-  { name: "Karan Patel", company: "VistaTech Solutions", quote: "Professional, reliable, and fast. The booth looked premium and aligned with our guidelines." },
+  { name: "T-Fit Team", company: "T-Fit, Exhibition Stall Setup", quote: "EventXpertz handled our exhibition stall setup end-to-end. Clean execution, on time, and the final setup looked exactly as briefed." },
+  { name: "BAIF Team", company: "BAIF, Stall Design & Execution", quote: "From design to on-ground execution, EventXpertz delivered a professional stall that represented our organisation perfectly." },
 ];
 
 export const CONTACT = {
@@ -135,7 +130,8 @@ export const CONTACT = {
 };
 
 export const FAQS = [
-  { q: "Do you operate pan-India?", a: "Yes, we support trade fairs and corporate events across major Indian cities and expo venues." },
-  { q: "How early should we book?", a: "For best availability, 2–4 weeks in advance. We also handle urgent projects subject to resources." },
-  { q: "Can you manage end-to-end setup?", a: "Absolutely. From structure to screens, lights to logistics — we manage it all." },
+  { q: "Which cities do you operate in?", a: "Delhi NCR, Mumbai, Bengaluru, Hyderabad, Pune, Ahmedabad, Chennai, Kolkata, Jaipur, Noida, and Gurgaon — and any expo venue across India." },
+  { q: "What is the minimum booking lead time?", a: "2–3 weeks is ideal. For urgent setups we can mobilise within 48 hours subject to availability." },
+  { q: "Do you handle both Octonorm and custom wooden stalls?", a: "Yes. We fabricate both modular Octonorm stalls and fully custom wooden/PVC builds depending on your brief and budget." },
+  { q: "What is included in end-to-end management?", a: "Design, fabrication, branding print, AV/LED setup, furniture, manpower, on-site supervision, and post-show dismantling." },
 ];

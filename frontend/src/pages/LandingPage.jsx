@@ -68,7 +68,7 @@ const VideoEmbed = ({ youtubeUrl, mp4Url }) => {
         <iframe
           className="h-full w-full"
           src={youtubeUrl}
-          title="ProEvent Intro"
+          title="EventXpertz showcase"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerPolicy="strict-origin-when-cross-origin"
@@ -78,12 +78,12 @@ const VideoEmbed = ({ youtubeUrl, mp4Url }) => {
     );
   }
   return (
-    <video
-      className="aspect-video w-full overflow-hidden rounded-xl shadow-2xl ring-1 ring-black/10"
-      src={mp4Url}
-      controls
-      playsInline
-      poster={HERO.image}
+    <img
+      src={HERO.image}
+      alt="EventXpertz exhibition stall setup"
+      className="aspect-video w-full object-cover rounded-xl shadow-2xl ring-1 ring-black/10"
+      loading="eager"
+      fetchpriority="high"
     />
   );
 };
@@ -281,7 +281,7 @@ const CoreServices = () => {
                     <div className="h-11 w-11 rounded-lg bg-[#1F3D63] text-white flex items-center justify-center ring-1 ring-black/10 group-hover:ring-[var(--brand)] transition-colors">
                       <Icon className="h-5 w-5" />
                     </div>
-                    <div>
+                    <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-lg text-[#1F3D63]">{svc.title}</h3>
                       <ul className="mt-2 space-y-1 text-neutral-600 list-disc pl-5">
                         {svc.items.map((it, i) => (
@@ -333,32 +333,44 @@ const Portfolio = () => {
       <div className="mx-auto max-w-7xl px-6">
         <h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Portfolio</h2>
         <p className="text-neutral-600 mt-2">A snapshot of our recent work.</p>
-        <div className="mt-10 grid grid-cols-2 md:grid-cols-3 gap-4">
-          {GALLERY.map((img) => (
-            <button
-              key={img.id}
-              onClick={() => {
-                setActive(img);
-                setOpen(true);
-              }}
-              aria-label={`View portfolio image: ${img.alt}`}
-              className="group relative overflow-hidden rounded-xl focus:outline-none"
-            >
-              <img
-                src={img.url}
-                alt={img.alt}
-                className="h-44 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </button>
-          ))}
+        <div className="mt-10 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+          {GALLERY.map((img, index) => {
+            const isFeatured = index === 0;
+            const isLast = index === GALLERY.length - 1;
+            const isOrphan = isLast && (GALLERY.length - 1) % 3 === 0;
+            return (
+              <button
+                key={img.id}
+                onClick={() => { setActive(img); setOpen(true); }}
+                aria-label={`View portfolio image: ${img.alt}`}
+                className={`group relative overflow-hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1FA6A8] aspect-[4/3] ${
+                  isFeatured ? 'col-span-2 md:col-span-2 md:row-span-2 md:aspect-auto' : ''
+                } ${isOrphan ? 'md:col-start-2' : ''}`}
+              >
+                <img
+                  src={img.url}
+                  alt={img.alt}
+                  className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3 md:p-4">
+                  <p className="text-white text-xs md:text-sm font-medium leading-tight line-clamp-2">{img.alt}</p>
+                </div>
+              </button>
+            );
+          })}
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <span className="hidden" />
           </DialogTrigger>
-          <DialogContent className="max-w-4xl p-0 bg-[#162E4A]/90 border-white/10">
-            {active && <img src={active.url} alt={active.alt} className="w-full h-auto object-contain" />}
+          <DialogContent className="max-w-4xl p-0 bg-[#162E4A]/90 border-white/10 overflow-hidden rounded-xl">
+            {active && (
+              <img
+                src={active.url}
+                alt={active.alt}
+                className="w-full h-auto max-h-[80vh] object-contain"
+              />
+            )}
           </DialogContent>
         </Dialog>
       </div>
@@ -405,7 +417,7 @@ const Footer = () => (
         <p className="mt-3 text-white/70 text-sm">EventXpertz is an India-based exhibition and corporate event management company delivering custom stall fabrication, printing &amp; branding, LED display rental, furniture, hospitality manpower, and complete event logistics across Delhi NCR, Mumbai, Bengaluru, Hyderabad, Pune, Ahmedabad, Chennai, Kolkata, Jaipur, Noida, and Gurgaon. Contact us for a free quote.</p>
       </div>
       <div>
-        <h5 className="font-semibold text-white">Quick Links</h5>
+        <h3 className="font-semibold text-white">Quick Links</h3>
         <ul className="mt-3 space-y-2 text-sm text-white/70">
           <li>
             <a className="hover:text-white" href="#services">
@@ -430,7 +442,7 @@ const Footer = () => (
         </ul>
       </div>
       <div>
-        <h5 className="font-semibold text-white">Contact</h5>
+        <h3 className="font-semibold text-white">Contact</h3>
         <ul className="mt-3 space-y-2 text-sm text-white/70">
           <li>Email: {CONTACT.email}</li>
           <li>Website: {CONTACT.website}</li>
