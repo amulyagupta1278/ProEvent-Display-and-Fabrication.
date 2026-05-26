@@ -64,11 +64,13 @@ const HeaderNav = () => {
 const VideoEmbed = ({ youtubeUrl, mp4Url }) => {
   if (youtubeUrl) {
     return (
-      <div className="aspect-video w-full overflow-hidden rounded-xl shadow-2xl ring-1 ring-black/10">
+      <div className="relative w-full rounded-xl shadow-2xl ring-1 ring-black/10 overflow-hidden" style={{paddingBottom: "56.25%"}}>
         <iframe
-          className="h-full w-full"
-          src={youtubeUrl}
+          className="absolute inset-0 w-full h-full"
+          src={`${youtubeUrl}?rel=0&modestbranding=1&color=white`}
           title="EventXpertz showcase"
+          width="100%"
+          height="100%"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerPolicy="strict-origin-when-cross-origin"
