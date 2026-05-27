@@ -15,7 +15,7 @@ export const BRAND = {
 
 export const HERO = {
   headline: "Eventxpertz",
-  subheading: "Complete Stall Setup, Branding & Event Support Solutions Across India.",
+  subheading: "Custom Exhibition Stalls. On-Time. Pan-India.",
   image: "/images/booth-design-1.png",
   youtubeUrl: "https://www.youtube.com/embed/z1oiEwS1OF4",
   videoMp4: "",
@@ -103,9 +103,9 @@ export const CORE_SERVICES = [
 ];
 
 export const WHY = [
-  { title: "10+ Years of Exhibition Expertise", text: "From Pragati Maidan to Bombay Exhibition Centre — we know every major expo venue across India and deliver flawlessly every time." },
-  { title: "Single-Point Accountability", text: "One team manages design, fabrication, branding, AV, manpower, and logistics. No chasing multiple vendors." },
-  { title: "48-Hour Emergency Setup", text: "Last-minute booking? We mobilise within 48 hours for urgent stall setup without compromising quality." },
+  { title: "Every Major Venue. Delivered.", text: "Pragati Maidan, IEML Greater Noida, Bombay Exhibition Centre, BIEC Bengaluru, Hitex Hyderabad — we have executed stalls at all of them. No venue is new to us." },
+  { title: "One Team. Full Accountability.", text: "Design, fabrication, branding, LED/AV, manpower, and logistics — one team handles it all. No vendor juggling, no coordination gaps." },
+  { title: "48-Hour Emergency Setup", text: "Short notice? We mobilise within 48 hours for urgent stall setup. Same quality, faster execution." },
 ];
 
 export const GALLERY = [
@@ -119,8 +119,8 @@ export const GALLERY = [
 ];
 
 export const TESTIMONIALS = [
-  { name: "T-Fit Team", company: "T-Fit, Exhibition Stall Setup", quote: "EventXpertz handled our exhibition stall setup end-to-end. Clean execution, on time, and the final setup looked exactly as briefed." },
-  { name: "BAIF Team", company: "BAIF, Stall Design & Execution", quote: "From design to on-ground execution, EventXpertz delivered a professional stall that represented our organisation perfectly." },
+  { name: "T-Fit", company: "Exhibition Stall Setup", quote: "EventXpertz handled our stall end-to-end — design, fabrication, and on-site execution. Delivered on time with zero back-and-forth. Exactly what we needed." },
+  { name: "BAIF", company: "Stall Design & On-Ground Execution", quote: "Professional setup, clean finish, and a team that understood our brief the first time. Our stall stood out at the exhibition." },
 ];
 
 export const CONTACT = {
@@ -130,8 +130,9 @@ export const CONTACT = {
 };
 
 export const FAQS = [
-  { q: "Which cities do you operate in?", a: "Delhi NCR, Mumbai, Bengaluru, Hyderabad, Pune, Ahmedabad, Chennai, Kolkata, Jaipur, Noida, and Gurgaon — and any expo venue across India." },
-  { q: "What is the minimum booking lead time?", a: "2–3 weeks is ideal. For urgent setups we can mobilise within 48 hours subject to availability." },
-  { q: "Do you handle both Octonorm and custom wooden stalls?", a: "Yes. We fabricate both modular Octonorm stalls and fully custom wooden/PVC builds depending on your brief and budget." },
-  { q: "What is included in end-to-end management?", a: "Design, fabrication, branding print, AV/LED setup, furniture, manpower, on-site supervision, and post-show dismantling." },
+  { q: "Which cities and venues do you operate in?", a: "We operate pan-India — Delhi NCR (Pragati Maidan, IEML), Mumbai (Bombay Exhibition Centre), Bengaluru (BIEC), Hyderabad (Hitex), Pune, Ahmedabad, Chennai, Kolkata, Jaipur, Noida, and Gurgaon." },
+  { q: "What is the minimum booking lead time?", a: "2–3 weeks is ideal for a planned setup. For urgent requirements, we can mobilise within 48 hours subject to material availability." },
+  { q: "Do you build both Octonorm and custom wooden stalls?", a: "Yes. We fabricate modular Octonorm stalls and fully custom wooden or PVC builds. The choice depends on your budget, show duration, and brand guidelines." },
+  { q: "What does end-to-end management include?", a: "Design, fabrication, branding and print, AV and LED setup, furniture, manpower, on-site supervision during the show, and complete post-event dismantling." },
+  { q: "Do you provide a quotation before booking?", a: "Yes. Share your stall size, city, show dates, and requirements — we provide a detailed quotation within 24 hours. No commitment needed to get a quote." },
 ];

@@ -7,7 +7,7 @@ import { Textarea } from "../components/ui/textarea";
 import { Label } from "../components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, CheckCircle2 } from "lucide-react";
-import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT, CORE_SERVICES } from "../mock/mock";
+import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT, CORE_SERVICES, FAQS } from "../mock/mock";
 import { Carousel, CarouselContent, CarouselItem } from "../components/ui/carousel";
 import { toast } from "sonner";
 
@@ -139,10 +139,10 @@ const HeroTop = () => {
         </div>
         <div className="order-1 lg:order-2">
           <div className="rounded-2xl md:backdrop-blur-2xl bg-white/10 border border-white/20 p-6 md:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.25)]">
-            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">EventXpertz</h1>
-            <h2 className="mt-2 text-2xl md:text-3xl font-semibold">Exhibition & Event Management Company in India</h2>
-            <p className="mt-2 text-white/90">
-              Design, fabrication, and on-ground support for expos and corporate events across India.
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Exhibition & Event Management Company in India</h1>
+            <p className="mt-3 text-white/90 text-lg font-medium">Custom stalls. Professional branding. Pan-India delivery.</p>
+            <p className="mt-2 text-white/80 text-sm">
+              Trusted by T-Fit, BAIF, and brands across industries — from Pragati Maidan to BIEC.
             </p>
 
             {!submitted ? (
@@ -384,25 +384,19 @@ const Testimonials = () => (
   <section id="testimonials" className="py-20 bg-[#1F3D63] text-white">
     <div className="mx-auto max-w-7xl px-6">
       <h2 className="text-3xl md:text-4xl font-bold">What Clients Say</h2>
-      <p className="text-white/70 mt-2">Trust built through consistent delivery.</p>
-      <div className="mt-8">
-        <Carousel aria-label="Client testimonials carousel">
-          <CarouselContent>
-            {TESTIMONIALS.map((t, idx) => (
-              <CarouselItem key={idx} className="md:basis-1/2 lg:basis-1/3">
-                <Card className="bg-white/5 border-white/10">
-                  <CardContent className="p-6">
-                    <Quote className="h-6 w-6 text-[var(--brand)]" />
-                    <p className="mt-3 text-white/90">"{t.quote}"</p>
-                    <div className="mt-4 text-sm text-white/70">
-                      {t.name} — {t.company}
-                    </div>
-                  </CardContent>
-                </Card>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+      <p className="text-white/70 mt-2">Trusted by brands across industries — delivered consistently.</p>
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {TESTIMONIALS.map((t, idx) => (
+          <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-colors">
+            <div className="text-yellow-400 text-lg tracking-wide">★★★★★</div>
+            <Quote className="h-5 w-5 text-[var(--brand)] mt-3" />
+            <p className="mt-3 text-white/90 leading-relaxed">"{t.quote}"</p>
+            <div className="mt-5 border-t border-white/10 pt-4">
+              <p className="text-white font-semibold text-sm">{t.name}</p>
+              <p className="text-white/60 text-xs mt-0.5">{t.company}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   </section>
@@ -454,6 +448,8 @@ const Footer = () => (
     </div>
     <div className="border-t border-white/10 py-4 text-center text-xs text-white/50">
       © {new Date().getFullYear()} {BRAND.name}. All rights reserved.
+      {" · "}
+      <a href="mailto:eventxpertz@gmail.com" className="hover:text-white/80 underline">Privacy &amp; Contact</a>
     </div>
   </footer>
 );
@@ -477,21 +473,31 @@ export default function LandingPage() {
       <WhyChooseUs />
       <Portfolio />
       <Testimonials />
-      <section className="py-10 bg-white" aria-label="About EventXpertz">
-        <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-2xl font-bold text-[#1F3D63]">About EventXpertz</h2>
-          <p className="mt-3 text-neutral-600 max-w-3xl">
-            EventXpertz is a full-service exhibition and corporate event management
-            company based in India. We specialise in designing and fabricating
-            customised exhibition stalls, managing trade fair participation,
-            providing LED display solutions, and delivering end-to-end corporate
-            event support. Our services cover booth design, Octonorm and wooden
-            stall fabrication, flex and vinyl printing, LED TV and wall rentals,
-            furniture and lighting setup, hostess and hospitality staff, and
-            complete logistics management. EventXpertz operates across all major
-            Indian cities and is the trusted partner for brands participating in
-            trade shows, expos, and corporate events across India.
-          </p>
+      <section className="py-12 bg-white" aria-label="About EventXpertz">
+        <div className="mx-auto max-w-7xl px-6 grid md:grid-cols-2 gap-10 items-start">
+          <div>
+            <h2 className="text-2xl font-bold text-[#1F3D63]">About EventXpertz</h2>
+            <p className="mt-3 text-neutral-600">
+              EventXpertz is an India-based exhibition and corporate event management company. We design, fabricate, and execute customised exhibition stalls for trade fairs, expos, and corporate events.
+            </p>
+            <p className="mt-3 text-neutral-600">
+              Our work spans Octonorm and wooden stall builds, flex and vinyl printing, LED TV and wall rentals, furniture and lighting setup, hospitality manpower, and complete logistics — all under one roof.
+            </p>
+            <p className="mt-3 text-neutral-600">
+              We have executed stalls at Pragati Maidan (Delhi), IEML (Greater Noida), Bombay Exhibition Centre (Mumbai), BIEC (Bengaluru), and Hitex (Hyderabad). Clients include T-Fit and BAIF, among others.
+            </p>
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-[#1F3D63]">Frequently Asked Questions</h2>
+            <div className="mt-4 space-y-4">
+              {FAQS.map((faq, i) => (
+                <div key={i} className="border-b border-neutral-200 pb-4">
+                  <p className="font-semibold text-[#1F3D63]">{faq.q}</p>
+                  <p className="mt-1 text-neutral-600 text-sm leading-relaxed">{faq.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
       <Footer />
