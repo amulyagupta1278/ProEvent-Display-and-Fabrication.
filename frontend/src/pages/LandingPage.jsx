@@ -6,8 +6,8 @@ import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Label } from "../components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
-import { Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, CheckCircle2 } from "lucide-react";
-import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT, CORE_SERVICES, FAQS } from "../mock/mock";
+import { Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, CheckCircle2, Clock, Layers, Building2 } from "lucide-react";
+import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT, CORE_SERVICES, FAQS, FEATURE_BAR, STATS } from "../mock/mock";
 import { Carousel, CarouselContent, CarouselItem } from "../components/ui/carousel";
 import { toast } from "sonner";
 
@@ -302,27 +302,117 @@ const CoreServices = () => {
   );
 };
 
-const WhyChooseUs = () => (
-  <section id="why" className="py-20 bg-[#1F3D63] text-white">
-    <div className="mx-auto max-w-7xl px-6">
-      <h2 className="text-3xl md:text-4xl font-bold text-white">Why Choose Us</h2>
-      <p className="text-white/70 mt-2">Premium exhibition booths with dependable execution.</p>
-      <p className="text-white/70 mt-4 max-w-2xl">
-        EventXpertz has delivered exhibition stalls and corporate event setups across
-        hundreds of events pan-India. Our team manages everything — from the first
-        design sketch to the last bolt on dismantling day — so you can focus entirely
-        on your business goals at the event.
-      </p>
-      <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {WHY.map((w, i) => (
-          <Card key={i} className="hover:shadow-xl transition-all bg-white/5 border-white/10">
-            <CardContent className="p-6">
-              <h3 className="font-semibold text-lg text-white">{w.title}</h3>
-              <p className="text-white/80 mt-2">{w.text}</p>
-            </CardContent>
-          </Card>
-        ))}
+const FeatureBar = () => {
+  const iconMap = { Clock, Users, CheckCircle2 };
+  return (
+    <section className="bg-white border-b border-gray-200 py-14">
+      <div className="mx-auto max-w-5xl px-6 grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-gray-200">
+        {FEATURE_BAR.map((item, i) => {
+          const Icon = iconMap[item.icon] || CheckCircle2;
+          return (
+            <div key={i} className="flex flex-col items-center text-center px-8 py-8 sm:py-0">
+              <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: "#EDF8F8" }}>
+                <Icon className="h-7 w-7 text-[#1FA6A8]" />
+              </div>
+              <p className="mt-4 font-bold text-[#1F3D63] text-base leading-snug">{item.title}</p>
+              <p className="mt-2 text-gray-500 text-sm leading-relaxed">{item.text}</p>
+            </div>
+          );
+        })}
       </div>
+    </section>
+  );
+};
+
+const WhyChooseUs = () => {
+  const iconMap = { Layers, Clock, Users, Building2, CheckCircle2 };
+  return (
+    <section id="why" className="py-20 bg-[#F8FAFC]">
+      <div className="mx-auto max-w-5xl px-6">
+        <p className="text-center text-xs font-bold tracking-[0.15em] uppercase text-[#1FA6A8]">
+          Super-Specialists of the Exhibition Industry
+        </p>
+        <h2 className="mt-2 text-center text-3xl md:text-4xl font-extrabold text-[#1F3D63]">
+          5 Reasons People Choose EventXpertz
+        </h2>
+        <p className="mt-3 text-center text-gray-500 text-base">
+          From design to dismantling — here's why exhibitors trust us event after event.
+        </p>
+
+        {/* Stats strip */}
+        <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 border border-gray-200 rounded-xl bg-white overflow-hidden divide-x divide-y sm:divide-y-0 divide-gray-200">
+          {STATS.map((s, i) => (
+            <div key={i} className="flex flex-col items-center text-center py-6 px-4">
+              <span className="text-3xl font-extrabold text-[#1FA6A8]">{s.num}</span>
+              <span className="mt-1.5 text-xs font-semibold text-[#1F3D63] leading-snug whitespace-pre-line">{s.label}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* 5 cards — 3-col 6-unit grid, last 2 centred */}
+        <div className="mt-8 grid grid-cols-6 gap-5">
+          {WHY.map((w, i) => {
+            const Icon = iconMap[w.icon] || CheckCircle2;
+            const colStyle =
+              i === 3 ? { gridColumn: "2 / 4" } :
+              i === 4 ? { gridColumn: "4 / 6" } :
+              { gridColumn: "span 2" };
+            return (
+              <div
+                key={i}
+                style={colStyle}
+                className="bg-white rounded-xl p-7 border border-gray-200 hover:shadow-lg hover:border-[#1FA6A8] transition-all duration-200"
+              >
+                <span className="inline-block text-xs font-extrabold tracking-wider px-3 py-1 rounded-full mb-4 text-[#1FA6A8]" style={{ background: "#EDF8F8" }}>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div className="w-11 h-11 rounded-lg flex items-center justify-center mb-4" style={{ background: "#EDF8F8" }}>
+                  <Icon className="h-5 w-5 text-[#1FA6A8]" />
+                </div>
+                <h3 className="font-bold text-[#1F3D63] text-base mb-2">{w.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{w.text}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const CTABanner = () => (
+  <section className="py-20 px-6 text-center" style={{ background: "linear-gradient(135deg, #1FA6A8 0%, #1F3D63 100%)" }}>
+    <p className="text-xs font-bold tracking-[0.15em] uppercase mb-3" style={{ color: "rgba(255,255,255,0.6)" }}>
+      Exhibition Stall Partner — Pan India
+    </p>
+    <h2 className="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-3">
+      Ready to Start Your Project?
+    </h2>
+    <p className="text-base max-w-lg mx-auto mb-9" style={{ color: "rgba(255,255,255,0.75)" }}>
+      Our team is standing by to help you create an unforgettable exhibition experience. Response within 24 hours.
+    </p>
+    <div className="flex flex-wrap gap-4 justify-center">
+      <a
+        href="#top"
+        className="inline-flex items-center gap-2 bg-white font-bold px-9 py-4 rounded-full text-sm shadow-lg hover:-translate-y-0.5 transition-transform text-[#1FA6A8]"
+      >
+        Get Free Quote →
+      </a>
+      <a
+        href="https://wa.me/919358767062"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 font-semibold px-9 py-4 rounded-full text-sm text-white transition-colors"
+        style={{ border: "2px solid rgba(255,255,255,0.5)" }}
+        onMouseOver={e => e.currentTarget.style.borderColor = "#fff"}
+        onMouseOut={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)"}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.536 5.856L.057 23.882l6.187-1.622C7.85 23.389 9.887 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.959 0-3.799-.537-5.375-1.471l-.386-.229-3.995 1.047 1.066-3.888-.252-.401A9.942 9.942 0 0 1 2 12c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10z"/>
+        </svg>
+        Chat on WhatsApp
+      </a>
     </div>
   </section>
 );
@@ -469,6 +559,7 @@ export default function LandingPage() {
       </a>
       <HeaderNav />
       <HeroTop />
+      <FeatureBar />
       <CoreServices />
       <WhyChooseUs />
       <Portfolio />
@@ -500,6 +591,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+      <CTABanner />
       <Footer />
     </main>
   );

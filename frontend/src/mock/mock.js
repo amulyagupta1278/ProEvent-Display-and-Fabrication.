@@ -102,10 +102,25 @@ export const CORE_SERVICES = [
   },
 ];
 
+export const FEATURE_BAR = [
+  { icon: "Clock",        title: "On-Time Delivery. Always.",  text: "Your stall is ready before the show floor opens. We've never missed a handover deadline." },
+  { icon: "Users",        title: "Single Point of Contact",    text: "One coordinator manages design, fabrication, logistics, and on-site. No chasing vendors." },
+  { icon: "CheckCircle2", title: "Satisfaction Guaranteed",    text: "Doesn't match the brief? We fix it. Our work speaks at every expo we've executed." },
+];
+
+export const STATS = [
+  { num: "500+", label: "Exhibition Stalls\nDelivered" },
+  { num: "15+",  label: "Cities &\nVenues Covered" },
+  { num: "48h",  label: "Emergency\nSetup Time" },
+  { num: "100%", label: "On-Time\nHandover Record" },
+];
+
 export const WHY = [
-  { title: "Every Major Venue. Delivered.", text: "Pragati Maidan, IEML Greater Noida, Bombay Exhibition Centre, BIEC Bengaluru, Hitex Hyderabad — we have executed stalls at all of them. No venue is new to us." },
-  { title: "One Team. Full Accountability.", text: "Design, fabrication, branding, LED/AV, manpower, and logistics — one team handles it all. No vendor juggling, no coordination gaps." },
-  { title: "48-Hour Emergency Setup", text: "Short notice? We mobilise within 48 hours for urgent stall setup. Same quality, faster execution." },
+  { icon: "Layers",       title: "World-Class Creativity & Design",  text: "Custom stalls built to reflect your brand — not off-the-shelf templates. Every concept-to-execution by our in-house design team." },
+  { icon: "Clock",        title: "On-Time Delivery. Always.",         text: "We've never missed a show handover. Tight deadlines, last-minute changes — we absorb the pressure so you don't." },
+  { icon: "Users",        title: "One Team. Full Accountability.",    text: "Design, fabrication, branding, LED/AV, manpower, logistics — one team. No vendor juggling, no coordination gaps." },
+  { icon: "Building2",    title: "Every Major Venue. Delivered.",     text: "Pragati Maidan, IEML, Bombay Exhibition Centre, BIEC Bengaluru, Hitex Hyderabad — we know every venue floor plan." },
+  { icon: "CheckCircle2", title: "48-Hour Emergency Setup",           text: "Short notice? We mobilise within 48 hours. Same quality, faster execution — because exhibitions don't wait." },
 ];
 
 export const GALLERY = [
