@@ -41,8 +41,8 @@
     <meta name="twitter:image" content="https://eventxpertz.in/og-image.jpg" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
-    <link rel="alternate icon" href="/favicon.ico"/>
+    <link rel="icon" type="image/jpeg" href="/images/logo.jpeg"/>
+    <link rel="shortcut icon" type="image/jpeg" href="/images/logo.jpeg"/>
     <link rel="apple-touch-icon" href="/images/logo.jpeg"/>
 
     <!-- Canonical -->
@@ -51,7 +51,7 @@
     <!-- Resource hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" />
     <link rel="dns-prefetch" href="https://wa.me" />
     <link rel="dns-prefetch" href="https://www.youtube.com" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
@@ -93,10 +93,24 @@
           },
           "aggregateRating": {
             "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "3",
+            "ratingValue": "5",
+            "reviewCount": "2",
             "bestRating": "5"
           },
+          "review": [
+            {
+              "@type": "Review",
+              "author": { "@type": "Organization", "name": "T-Fit" },
+              "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+              "reviewBody": "EventXpertz handled our stall end-to-end — design, fabrication, and on-site execution. Delivered on time with zero back-and-forth. Exactly what we needed."
+            },
+            {
+              "@type": "Review",
+              "author": { "@type": "Organization", "name": "BAIF" },
+              "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+              "reviewBody": "Professional setup, clean finish, and a team that understood our brief the first time. Our stall stood out at the exhibition."
+            }
+          ],
           "areaServed": [
             "Delhi NCR", "Mumbai", "Bengaluru", "Hyderabad",
             "Pune", "Ahmedabad", "Chennai", "Kolkata",
@@ -156,13 +170,64 @@
     }
     </script>
 
-    <!-- Google Analytics 4 — REPLACE G-XXXXXXXXXX with your real Measurement ID -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <!-- FAQPage Schema — enables rich result accordions in SERP -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": "https://eventxpertz.in/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Which cities and venues do you operate in?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We operate pan-India — Delhi NCR (Pragati Maidan, IEML), Mumbai (Bombay Exhibition Centre), Bengaluru (BIEC), Hyderabad (Hitex), Pune, Ahmedabad, Chennai, Kolkata, Jaipur, Noida, and Gurgaon."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the minimum booking lead time?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "2–3 weeks is ideal for a planned setup. For urgent requirements, we can mobilise within 48 hours subject to material availability."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you build both Octonorm and custom wooden stalls?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We fabricate modular Octonorm stalls and fully custom wooden or PVC builds. The choice depends on your budget, show duration, and brand guidelines."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does end-to-end exhibition management include?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Design, fabrication, branding and print, AV and LED setup, furniture, manpower, on-site supervision during the show, and complete post-event dismantling."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you provide a quotation before booking?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Share your stall size, city, show dates, and requirements — we provide a detailed quotation within 24 hours. No commitment needed to get a quote."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Google Analytics 4 — REPLACE G-ZZ55Z6XCC4 with your real Measurement ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZ55Z6XCC4"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX');
+      gtag('config', 'G-ZZ55Z6XCC4');
     </script>
   </head>
 

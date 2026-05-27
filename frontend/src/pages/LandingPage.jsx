@@ -6,7 +6,7 @@ import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Label } from "../components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
-import { Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, CheckCircle2, Clock, Layers, Building2 } from "lucide-react";
+import { Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, CheckCircle2, Clock, Layers, Building2, ChevronDown } from "lucide-react";
 import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT, CORE_SERVICES, FAQS, FEATURE_BAR, STATS } from "../mock/mock";
 import { Carousel, CarouselContent, CarouselItem } from "../components/ui/carousel";
 import { toast } from "sonner";
@@ -62,20 +62,61 @@ const HeaderNav = () => {
 };
 
 const VideoEmbed = ({ youtubeUrl, mp4Url }) => {
+  const [playing, setPlaying] = useState(false);
+
   if (youtubeUrl) {
+    // Extract video ID from embed URL (e.g. https://www.youtube.com/embed/z1oiEwS1OF4)
+    const videoId = youtubeUrl.split("/embed/")[1]?.split("?")[0];
+    const thumbSrc = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+
     return (
-      <div className="relative w-full rounded-xl shadow-2xl ring-1 ring-black/10 overflow-hidden" style={{paddingBottom: "56.25%"}}>
-        <iframe
-          className="absolute inset-0 w-full h-full"
-          src={`${youtubeUrl}?rel=0&modestbranding=1&color=white`}
-          title="EventXpertz showcase"
-          width="100%"
-          height="100%"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
-        />
+      <div
+        className="relative w-full rounded-xl shadow-2xl ring-1 ring-black/10 overflow-hidden"
+        style={{ paddingBottom: "56.25%", background: "#000", cursor: playing ? "default" : "pointer" }}
+        onClick={() => !playing && setPlaying(true)}
+      >
+        {/* Thumbnail + play UI — hidden once playing */}
+        {!playing && (
+          <>
+            <img
+              src={thumbSrc}
+              alt="EventXpertz showreel thumbnail"
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{ filter: "brightness(0.75)", transition: "filter 0.3s" }}
+              onError={e => { e.target.src = "/images/booth-design-1.png"; }}
+              loading="eager"
+              fetchpriority="high"
+            />
+            {/* gradient overlay */}
+            <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(to top, rgba(22,46,74,0.55) 0%, transparent 50%)" }} />
+            {/* play button */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 pointer-events-none">
+              <div style={{ width: 76, height: 76, background: "#1FA6A8", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 0 8px rgba(31,166,168,0.25)" }}>
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" style={{ marginLeft: 3 }}>
+                  <polygon points="5 3 19 12 5 21 5 3" />
+                </svg>
+              </div>
+              <span style={{ color: "#fff", fontSize: "0.82rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}>Watch Our Showreel</span>
+            </div>
+            {/* footer badges */}
+            <div className="absolute bottom-3 left-0 right-0 flex items-center justify-between px-4 pointer-events-none">
+              <span style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.05em" }}>▶ Click to play</span>
+              <span style={{ background: "rgba(0,0,0,0.65)", color: "#fff", fontSize: "0.72rem", fontWeight: 700, padding: "3px 9px", borderRadius: 4 }}>2:14</span>
+            </div>
+          </>
+        )}
+        {/* iframe — injected on click so YT branding never shows on load */}
+        {playing && (
+          <iframe
+            className="absolute inset-0 w-full h-full"
+            src={`${youtubeUrl}?autoplay=1&rel=0&modestbranding=1&color=white`}
+            title="EventXpertz exhibition showreel"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        )}
       </div>
     );
   }
@@ -263,7 +304,7 @@ const CoreServices = () => {
     <section id="services" className="py-20 bg-white">
       <div className="mx-auto max-w-7xl px-6">
         <h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Our Core Services</h2>
-        <p className="text-neutral-600 mt-2">Everything needed to deliver a premium booth—end to end.</p>
+        <p className="text-base text-neutral-600 mt-2">Everything needed to deliver a premium booth — end to end.</p>
         <p className="text-neutral-600 mt-4 max-w-2xl">
           From Octonorm modular stalls to fully custom wooden builds, EventXpertz handles
           every aspect of your exhibition presence — design, fabrication, branding,
@@ -385,9 +426,9 @@ const CTABanner = () => (
     <p className="text-xs font-bold tracking-[0.15em] uppercase mb-3" style={{ color: "rgba(255,255,255,0.6)" }}>
       Exhibition Stall Partner — Pan India
     </p>
-    <h2 className="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-3">
+    <p className="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-3">
       Ready to Start Your Project?
-    </h2>
+    </p>
     <p className="text-base max-w-lg mx-auto mb-9" style={{ color: "rgba(255,255,255,0.75)" }}>
       Our team is standing by to help you create an unforgettable exhibition experience. Response within 24 hours.
     </p>
@@ -424,7 +465,7 @@ const Portfolio = () => {
     <section id="portfolio" className="py-20 bg-neutral-50">
       <div className="mx-auto max-w-7xl px-6">
         <h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Portfolio</h2>
-        <p className="text-neutral-600 mt-2">A snapshot of our recent work.</p>
+        <p className="text-base text-neutral-600 mt-2">A snapshot of our recent work.</p>
         <div className="mt-10 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
           {GALLERY.map((img, index) => {
             const isFeatured = index === 0;
@@ -474,7 +515,7 @@ const Testimonials = () => (
   <section id="testimonials" className="py-20 bg-[#1F3D63] text-white">
     <div className="mx-auto max-w-7xl px-6">
       <h2 className="text-3xl md:text-4xl font-bold">What Clients Say</h2>
-      <p className="text-white/70 mt-2">Trusted by brands across industries — delivered consistently.</p>
+      <p className="text-base text-white/70 mt-2">Trusted by brands across industries — delivered consistently.</p>
       <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
         {TESTIMONIALS.map((t, idx) => (
           <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-colors">
@@ -491,6 +532,27 @@ const Testimonials = () => (
     </div>
   </section>
 );
+
+const FaqItem = ({ q, a }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div>
+      <button
+        onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+        className="w-full flex items-center justify-between py-4 text-left gap-4 group"
+      >
+        <span className="font-semibold text-[#1F3D63] text-base group-hover:text-[#1FA6A8] transition-colors">{q}</span>
+        <ChevronDown
+          className={`h-4 w-4 text-[#1FA6A8] flex-shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      <div className={`overflow-hidden transition-all duration-200 ${open ? "max-h-48 pb-4" : "max-h-0"}`}>
+        <p className="text-neutral-600 text-sm leading-relaxed">{a}</p>
+      </div>
+    </div>
+  );
+};
 
 const Footer = () => (
   <footer id="contact" className="bg-[#162E4A] text-white">
@@ -533,6 +595,12 @@ const Footer = () => (
           <li>Email: {CONTACT.email}</li>
           <li>Website: {CONTACT.website}</li>
           <li>Phone: {CONTACT.phones.join(" | ")}</li>
+          <li className="pt-1">
+            <address className="not-italic text-white/60 text-xs leading-relaxed">
+              New Delhi, Delhi NCR, India – 110001<br />
+              Operating pan-India
+            </address>
+          </li>
         </ul>
       </div>
     </div>
@@ -559,15 +627,16 @@ export default function LandingPage() {
       </a>
       <HeaderNav />
       <HeroTop />
-      <FeatureBar />
       <CoreServices />
       <WhyChooseUs />
+      <FeatureBar />
+      <CTABanner />
       <Portfolio />
       <Testimonials />
       <section className="py-12 bg-white" aria-label="About EventXpertz">
         <div className="mx-auto max-w-7xl px-6 grid md:grid-cols-2 gap-10 items-start">
           <div>
-            <h2 className="text-2xl font-bold text-[#1F3D63]">About EventXpertz</h2>
+            <h2 className="text-3xl font-bold text-[#1F3D63]">About EventXpertz</h2>
             <p className="mt-3 text-neutral-600">
               EventXpertz is an India-based exhibition and corporate event management company. We design, fabricate, and execute customised exhibition stalls for trade fairs, expos, and corporate events.
             </p>
@@ -579,19 +648,15 @@ export default function LandingPage() {
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-[#1F3D63]">Frequently Asked Questions</h2>
-            <div className="mt-4 space-y-4">
+            <h2 className="text-3xl font-bold text-[#1F3D63]">Frequently Asked Questions</h2>
+            <div className="mt-4 divide-y divide-neutral-200 border-t border-neutral-200">
               {FAQS.map((faq, i) => (
-                <div key={i} className="border-b border-neutral-200 pb-4">
-                  <p className="font-semibold text-[#1F3D63]">{faq.q}</p>
-                  <p className="mt-1 text-neutral-600 text-sm leading-relaxed">{faq.a}</p>
-                </div>
+                <FaqItem key={i} q={faq.q} a={faq.a} />
               ))}
             </div>
           </div>
         </div>
       </section>
-      <CTABanner />
       <Footer />
     </main>
   );
