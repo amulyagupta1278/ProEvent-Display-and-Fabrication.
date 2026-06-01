@@ -121,6 +121,7 @@ export const WHY = [
   { icon: "Users",        title: "One Team. Full Accountability.",    text: "Design, fabrication, branding, LED/AV, manpower, logistics — one team. No vendor juggling, no coordination gaps." },
   { icon: "Building2",    title: "Every Major Venue. Delivered.",     text: "Pragati Maidan, IEML, Bombay Exhibition Centre, BIEC Bengaluru, Hitex Hyderabad — we know every venue floor plan." },
   { icon: "CheckCircle2", title: "48-Hour Emergency Setup",           text: "Short notice? We mobilise within 48 hours. Same quality, faster execution — because exhibitions don't wait." },
+  { icon: "Hammer",       title: "Official Vendor",                   text: "We are the official vendor at major exhibition venues across India — giving you faster approvals, smoother logistics, and on-ground authority others simply don't have." },
 ];
 
 export const GALLERY = [

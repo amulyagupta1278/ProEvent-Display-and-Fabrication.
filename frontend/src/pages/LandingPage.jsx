@@ -426,7 +426,7 @@ const FeatureBar = () => {
 };
 
 const WhyChooseUs = () => {
-  const iconMap = { Layers, Clock, Users, Building2, CheckCircle2 };
+  const iconMap = { Layers, Clock, Users, Building2, CheckCircle2, Hammer };
   return (
     <section id="why" className="py-20 bg-[#F8FAFC]">
       <div className="mx-auto max-w-5xl px-6">
