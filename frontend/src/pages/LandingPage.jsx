@@ -136,8 +136,9 @@ const HeroTop = () => {
   const [saving, setSaving] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [service, setService] = useState("Booth Design");
+  const [referenceFile, setReferenceFile] = useState(null);
 
-  // Netlify Forms submit (URL-encoded POST to "/")
+  // Netlify Forms submit — multipart/form-data so file uploads work
   const onSubmit = async (e) => {
     e.preventDefault();
     const formEl = e.currentTarget;
@@ -145,9 +146,16 @@ const HeroTop = () => {
     const data = new FormData(formEl);
     // ensure current Select value is included
     data.set("service", service);
+    if (referenceFile) data.set("reference-design", referenceFile);
 
     if (!data.get("name") || !data.get("email")) {
       toast.error("Please enter name and email");
+      return;
+    }
+
+    const phone = data.get("phone");
+    if (phone && !/^[+\d\s\-()]{7,15}$/.test(phone)) {
+      toast.error("Please enter a valid contact number");
       return;
     }
 
@@ -155,8 +163,7 @@ const HeroTop = () => {
     try {
       await fetch("/", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(data).toString(),
+        body: data,
       });
       setSubmitted(true);
       toast.success("Thanks! We'll get back within 24 hours.");
@@ -191,6 +198,7 @@ const HeroTop = () => {
                 ref={formRef}
                 name="contact"
                 method="POST"
+                encType="multipart/form-data"
                 data-netlify="true"
                 data-netlify-honeypot="botField"
                 onSubmit={onSubmit}
@@ -234,6 +242,18 @@ const HeroTop = () => {
                   </div>
                 </div>
 
+                <div>
+                  <Label htmlFor="phone">Contact Number</Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="+91 98765 43210"
+                    autoComplete="tel"
+                    className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                  />
+                </div>
+
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="company">Company</Label>
@@ -273,6 +293,46 @@ const HeroTop = () => {
                     placeholder="Booth size, city, dates, and requirements"
                     className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
                   />
+                </div>
+
+                <div>
+                  <Label htmlFor="reference-design">
+                    Reference Design{" "}
+                    <span className="text-white/50 font-normal text-xs">(optional — image or PDF)</span>
+                  </Label>
+                  <label
+                    htmlFor="reference-design"
+                    className="mt-1 flex flex-col items-center justify-center gap-2 w-full rounded-md border border-dashed border-white/30 bg-white/5 hover:bg-white/10 cursor-pointer px-4 py-5 text-center transition-colors"
+                  >
+                    {referenceFile ? (
+                      <span className="text-white/90 text-sm font-medium truncate max-w-full">{referenceFile.name}</span>
+                    ) : (
+                      <>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                        </svg>
+                        <span className="text-white/60 text-sm">Click to upload or drag &amp; drop</span>
+                        <span className="text-white/40 text-xs">PNG, JPG, PDF up to 10 MB</span>
+                      </>
+                    )}
+                    <input
+                      id="reference-design"
+                      name="reference-design"
+                      type="file"
+                      accept="image/*,.pdf"
+                      className="sr-only"
+                      onChange={(e) => setReferenceFile(e.target.files?.[0] ?? null)}
+                    />
+                  </label>
+                  {referenceFile && (
+                    <button
+                      type="button"
+                      onClick={() => { setReferenceFile(null); document.getElementById("reference-design").value = ""; }}
+                      className="mt-1 text-xs text-white/50 hover:text-white/80 underline"
+                    >
+                      Remove file
+                    </button>
+                  )}
                 </div>
 
                 <div className="flex items-center gap-3">
