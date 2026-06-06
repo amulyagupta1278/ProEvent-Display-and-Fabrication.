@@ -1134,13 +1134,16 @@ export default function LandingPage() {
           <div>
             <h2 className="text-3xl font-bold text-[#1F3D63]">About EventXpertz</h2>
             <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
-              EventXpertz is an India-based exhibition and event management company. We design, fabricate, and execute custom exhibition stalls for trade fairs, expos, and corporate events across the country.
+              EventXpertz is a Delhi-based, pan-India exhibition stall fabrication and event management company. Founded with a single focus — making exhibitors' lives easier — we design, build, brand, and deliver complete exhibition setups for trade fairs, industry expos, government pavilions, and corporate events across India.
             </p>
             <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
-              Our services cover Octonorm and wooden stall builds, flex and vinyl printing, LED TV and wall rentals, furniture and lighting, hospitality manpower, and complete logistics — all under one roof.
+              We offer end-to-end services under one roof: Octonorm and custom wooden stall fabrication, high-resolution flex and vinyl printing, LED TV and video wall rentals, furniture and lighting setup, trained hospitality manpower, and complete post-event dismantling and logistics. You brief us once — we handle everything else.
             </p>
             <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
-              We've executed stalls at Pragati Maidan (Delhi), IEML (Greater Noida), Bombay Exhibition Centre (Mumbai), BIEC (Bengaluru), and Hitex (Hyderabad) — serving brands like T-Fit, BAIF, and PharmaCon.
+              Our team has executed 500+ stalls across 15+ cities — Pragati Maidan (Delhi), IEML (Greater Noida), Bombay Exhibition Centre (Mumbai), BIEC (Bengaluru), Hitex (Hyderabad), and more. We are an official approved vendor at Bharat Tex, one of India's largest trade fairs, which gives our clients faster venue approvals and zero compliance surprises.
+            </p>
+            <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
+              Our promise is simple: your stall will be ready before the show floor opens — matching the approved 3D design exactly — or we fix it on-site at no charge. In 500+ deliveries, we've never had to. That's not a boast; it's our standard.
             </p>
           </div>
           </FadeIn>
