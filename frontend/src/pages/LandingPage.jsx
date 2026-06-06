@@ -309,6 +309,25 @@ const HeroTop = () => {
   const [submitted, setSubmitted] = useState(false);
   const [service, setService] = useState("Booth Design");
   const [referenceFile, setReferenceFile] = useState(null);
+  const [phoneError, setPhoneError] = useState("");
+
+  const handlePhoneInput = (e) => {
+    const raw = e.target.value;
+    // Allow only digits and a leading +
+    const cleaned = raw.replace(/[^\d+]/g, "").replace(/(?!^)\+/g, "");
+    e.target.value = cleaned;
+    if (cleaned.length === 0) { setPhoneError(""); return; }
+    // Validate: optional +91, then 10 digits starting with 6-9
+    const digits = cleaned.startsWith("+") ? cleaned.slice(1).replace(/\D/g, "") : cleaned.replace(/\D/g, "");
+    const mobile = digits.startsWith("91") && digits.length > 10 ? digits.slice(2) : digits;
+    if (!/^[6-9]/.test(mobile)) {
+      setPhoneError("Indian mobile numbers start with 6, 7, 8, or 9");
+    } else if (mobile.length > 10) {
+      setPhoneError("Enter a valid 10-digit mobile number");
+    } else {
+      setPhoneError("");
+    }
+  };
 
   // Netlify Forms submit — multipart/form-data so file uploads work
   const onSubmit = async (e) => {
@@ -325,13 +344,15 @@ const HeroTop = () => {
       return;
     }
 
-    const phone = data.get("phone");
+    const phone = (data.get("phone") || "").trim();
     if (!phone) {
       toast.error("Please enter your contact number");
       return;
     }
-    if (!/^[+\d\s\-()]{7,15}$/.test(phone)) {
-      toast.error("Please enter a valid contact number");
+    const digits = phone.startsWith("+") ? phone.slice(1).replace(/\D/g, "") : phone.replace(/\D/g, "");
+    const mobile = digits.startsWith("91") && digits.length > 10 ? digits.slice(2) : digits;
+    if (!/^[6-9]\d{9}$/.test(mobile)) {
+      toast.error("Enter a valid 10-digit Indian mobile number starting with 6–9");
       return;
     }
 
@@ -439,8 +460,11 @@ const HeroTop = () => {
                     placeholder="+91 98765 43210"
                     autoComplete="tel"
                     required
-                    className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                    inputMode="tel"
+                    onInput={handlePhoneInput}
+                    className={`mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60 ${phoneError ? "border-red-400 focus:border-red-400" : ""}`}
                   />
+                  {phoneError && <p className="mt-1 text-xs text-red-400">{phoneError}</p>}
                 </div>
 
                 <div className="grid sm:grid-cols-2 gap-4">
