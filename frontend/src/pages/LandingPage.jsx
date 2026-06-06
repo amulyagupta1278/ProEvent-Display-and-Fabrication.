@@ -10,8 +10,17 @@ import { Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, CheckCircle2, Cloc
 import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT, CORE_SERVICES, FAQS, FEATURE_BAR, STATS, HOW_IT_WORKS } from "../mock/mock";
 import { toast } from "sonner";
 
-/* Scroll-triggered fade-in + slide-up — reused on every section */
-const FadeIn = ({ children, className = "", delay = 0, as: Tag = "div" }) => {
+/* ---------- Scroll animation ---------- */
+const FADE_TRANSFORMS = {
+  up:    { hidden: "translateY(36px)",  visible: "translateY(0)" },
+  down:  { hidden: "translateY(-36px)", visible: "translateY(0)" },
+  left:  { hidden: "translateX(-44px)", visible: "translateX(0)" },
+  right: { hidden: "translateX(44px)",  visible: "translateX(0)" },
+  scale: { hidden: "scale(0.88)",       visible: "scale(1)" },
+  none:  { hidden: "none",              visible: "none" },
+};
+
+const FadeIn = ({ children, className = "", delay = 0, from = "up", as: Tag = "div" }) => {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -19,16 +28,48 @@ const FadeIn = ({ children, className = "", delay = 0, as: Tag = "div" }) => {
     if (!el) return;
     const obs = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) { setVisible(true); obs.disconnect(); }
-    }, { threshold: 0.08 });
+    }, { threshold: 0.07 });
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
+  const t = FADE_TRANSFORMS[from] || FADE_TRANSFORMS.up;
   return (
     <Tag ref={ref} className={className} style={{
       opacity: visible ? 1 : 0,
-      transform: visible ? "translateY(0)" : "translateY(28px)",
-      transition: `opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms`,
+      transform: visible ? t.visible : t.hidden,
+      transition: `opacity 0.65s cubic-bezier(.22,1,.36,1) ${delay}ms, transform 0.65s cubic-bezier(.22,1,.36,1) ${delay}ms`,
     }}>{children}</Tag>
+  );
+};
+
+/* ---------- 3-D tilt card ---------- */
+const TiltCard = ({ children, className = "", intensity = 10, style = {} }) => {
+  const ref = useRef(null);
+  const raf = useRef(null);
+  const onMouseMove = (e) => {
+    if (raf.current) cancelAnimationFrame(raf.current);
+    raf.current = requestAnimationFrame(() => {
+      const el = ref.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width  - 0.5;
+      const y = (e.clientY - r.top)  / r.height - 0.5;
+      el.style.transform = `perspective(900px) rotateY(${x * intensity}deg) rotateX(${-y * intensity}deg) translateZ(6px)`;
+      el.style.transition = "transform 0.1s ease";
+    });
+  };
+  const onMouseLeave = () => {
+    if (raf.current) cancelAnimationFrame(raf.current);
+    if (ref.current) {
+      ref.current.style.transform = "perspective(900px) rotateY(0deg) rotateX(0deg) translateZ(0)";
+      ref.current.style.transition = "transform 0.55s cubic-bezier(.22,1,.36,1)";
+    }
+  };
+  return (
+    <div ref={ref} className={className} style={{ willChange: "transform", ...style }}
+      onMouseMove={onMouseMove} onMouseLeave={onMouseLeave}>
+      {children}
+    </div>
   );
 };
 
@@ -254,10 +295,22 @@ const HeroTop = () => {
     }
   };
 
+  const parallaxRef = useRef(null);
+  useEffect(() => {
+    const onScroll = () => {
+      if (parallaxRef.current) {
+        parallaxRef.current.style.transform = `translateY(${window.scrollY * 0.22}px)`;
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <section id="top" className="relative pt-28 pb-14 bg-gradient-to-b from-[#1F3D63] to-[#1C3D5C] text-white">
-      <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden>
-        <div className="absolute -inset-24 bg-[radial-gradient(500px_200px_at_20%_0%,rgba(31,166,168,0.15),transparent)]" />
+    <section id="top" className="relative pt-28 pb-14 bg-gradient-to-b from-[#1F3D63] to-[#1C3D5C] text-white overflow-hidden">
+      <div ref={parallaxRef} className="absolute inset-0 -z-10 pointer-events-none" aria-hidden>
+        <div className="absolute -inset-24 bg-[radial-gradient(600px_300px_at_20%_0%,rgba(31,166,168,0.18),transparent)]" />
+        <div className="absolute top-1/2 right-0 w-96 h-96 rounded-full" style={{ background: "radial-gradient(circle, rgba(31,166,168,0.08) 0%, transparent 70%)", transform: "translate(30%, -50%)" }} />
       </div>
       <div className="mx-auto max-w-7xl px-6 grid lg:grid-cols-2 gap-10 items-center">
         <div className="order-2 lg:order-1">
@@ -456,8 +509,9 @@ const CoreServices = () => {
             const Icon = iconMap[svc.icon] || CheckCircle2;
             const isLast = idx === CORE_SERVICES.length - 1;
             return (
-              <FadeIn key={idx} delay={idx * 60} className={isLast ? "lg:col-start-2" : ""}>
-              <Card className="group hover:shadow-xl transition-all h-full">
+              <FadeIn key={idx} delay={idx * 60} from="up" className={isLast ? "lg:col-start-2" : ""}>
+              <TiltCard className="h-full" intensity={7}>
+              <Card className="group hover:shadow-xl transition-shadow h-full">
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
                     <div className="h-11 w-11 rounded-lg bg-[#1F3D63] text-white flex items-center justify-center ring-1 ring-black/10 group-hover:ring-[var(--brand)] transition-colors">
@@ -474,6 +528,7 @@ const CoreServices = () => {
                   </div>
                 </CardContent>
               </Card>
+              </TiltCard>
               </FadeIn>
             );
           })}
@@ -567,24 +622,23 @@ const WhyChooseUs = () => {
           ))}
         </div>
 
-        {/* 6 cards — clean 3+3 grid */}
+        {/* 6 cards — clean 3+3 grid with 3D tilt */}
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {WHY.map((w, i) => {
             const Icon = iconMap[w.icon] || CheckCircle2;
             return (
-              <div
-                key={i}
-                className="bg-white rounded-xl p-7 border border-gray-200 hover:shadow-lg hover:border-[#1FA6A8] transition-all duration-200"
-              >
-                <span className="inline-block text-xs font-extrabold tracking-wider px-3 py-1 rounded-full mb-4 text-[#1FA6A8]" style={{ background: "#EDF8F8" }}>
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div className="w-11 h-11 rounded-lg flex items-center justify-center mb-4" style={{ background: "#EDF8F8" }}>
-                  <Icon className="h-5 w-5 text-[#1FA6A8]" />
-                </div>
-                <h3 className="font-bold text-[#1F3D63] text-base mb-2">{w.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{w.text}</p>
-              </div>
+              <FadeIn key={i} delay={i * 70} from="scale">
+                <TiltCard className="bg-white rounded-xl p-7 border border-gray-200 shadow-sm hover:shadow-xl hover:border-[#1FA6A8] transition-shadow duration-300 h-full cursor-default">
+                  <span className="inline-block text-xs font-extrabold tracking-wider px-3 py-1 rounded-full mb-4 text-[#1FA6A8]" style={{ background: "#EDF8F8" }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="w-11 h-11 rounded-lg flex items-center justify-center mb-4" style={{ background: "#EDF8F8" }}>
+                    <Icon className="h-5 w-5 text-[#1FA6A8]" />
+                  </div>
+                  <h3 className="font-bold text-[#1F3D63] text-base mb-2">{w.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{w.text}</p>
+                </TiltCard>
+              </FadeIn>
             );
           })}
         </div>
@@ -608,9 +662,15 @@ const HowItWorks = () => (
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {HOW_IT_WORKS.map((step, i) => (
-            <div key={i} className="relative flex flex-col items-center text-center group">
-              {/* Step circle */}
-              <div className="relative z-10 flex items-center justify-center w-20 h-20 rounded-full border-2 border-[#1FA6A8] bg-white shadow-md group-hover:bg-[#1FA6A8] transition-colors duration-300">
+            <FadeIn key={i} delay={i * 100} from="up">
+            <div className="relative flex flex-col items-center text-center group">
+              {/* Step circle — 3D rotateY spin on hover */}
+              <div
+                className="relative z-10 flex items-center justify-center w-20 h-20 rounded-full border-2 border-[#1FA6A8] bg-white shadow-md group-hover:bg-[#1FA6A8]"
+                style={{ transition: "background 0.3s ease, transform 0.6s cubic-bezier(.22,1,.36,1)", perspective: "400px" }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "rotateY(360deg) scale(1.08)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "rotateY(0deg) scale(1)"; }}
+              >
                 <span className="text-xl font-extrabold text-[#1FA6A8] group-hover:text-white transition-colors duration-300">{step.step}</span>
               </div>
               {/* Tag badge */}
@@ -620,25 +680,27 @@ const HowItWorks = () => (
               <h3 className="mt-3 font-bold text-[#1F3D63] text-base leading-snug">{step.title}</h3>
               <p className="mt-2 text-gray-500 text-sm leading-relaxed">{step.desc}</p>
             </div>
+            </FadeIn>
           ))}
         </div>
       </div>
 
-      <div className="mt-14 text-center">
+      <FadeIn delay={200} className="mt-14 text-center">
         <a
           href="#top"
-          className="inline-flex items-center gap-2 bg-[#1FA6A8] hover:bg-[#178F97] text-white font-bold px-8 py-4 rounded-full text-sm shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+          className="inline-flex items-center gap-2 bg-[#1FA6A8] hover:bg-[#178F97] text-white font-bold px-8 py-4 rounded-full text-sm shadow-lg hover:-translate-y-1 transition-all duration-200"
         >
           Start Your Project →
         </a>
         <p className="mt-3 text-gray-400 text-xs">Free quote in 24 hours. No commitment required.</p>
-      </div>
+      </FadeIn>
     </div>
   </section>
 );
 
 const CTABanner = () => (
   <section className="py-20 px-6 text-center" style={{ background: "linear-gradient(135deg, #1FA6A8 0%, #1F3D63 100%)" }}>
+    <FadeIn from="scale">
     <p className="text-xs font-bold tracking-[0.15em] uppercase mb-3" style={{ color: "rgba(255,255,255,0.6)" }}>
       Exhibition Stall Partner — Pan India
     </p>
@@ -671,6 +733,7 @@ const CTABanner = () => (
         Chat on WhatsApp
       </a>
     </div>
+    </FadeIn>
   </section>
 );
 
@@ -741,8 +804,11 @@ const Testimonials = () => (
       <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {TESTIMONIALS.map((t, idx) => {
           const initials = t.name.split(" ").map(n => n[0]).join("").slice(0, 2);
+          const dir = idx % 3 === 0 ? "left" : idx % 3 === 2 ? "right" : "up";
           return (
-            <div key={idx} className="flex flex-col bg-white/5 border border-white/10 rounded-2xl p-7 hover:bg-white/10 hover:border-[#1FA6A8]/40 transition-all duration-200">
+            <FadeIn key={idx} delay={idx * 80} from={dir}>
+            <TiltCard intensity={6} className="h-full">
+            <div className="flex flex-col bg-white/5 border border-white/10 rounded-2xl p-7 hover:bg-white/10 hover:border-[#1FA6A8]/40 transition-all duration-200 h-full">
               <div className="flex items-center gap-1 text-yellow-400 text-sm tracking-wider">★★★★★</div>
               <Quote className="h-4 w-4 text-[#1FA6A8] mt-4 flex-shrink-0" />
               <p className="mt-3 text-white/85 leading-relaxed text-sm flex-1">"{t.quote}"</p>
@@ -757,6 +823,8 @@ const Testimonials = () => (
                 </div>
               </div>
             </div>
+            </TiltCard>
+            </FadeIn>
           );
         })}
       </div>
@@ -988,6 +1056,7 @@ export default function LandingPage() {
       <StickyMobileCTA />
       <section className="py-12 bg-white" aria-label="About EventXpertz">
         <div className="mx-auto max-w-7xl px-6 grid md:grid-cols-2 gap-10 items-start">
+          <FadeIn from="left">
           <div>
             <h2 className="text-3xl font-bold text-[#1F3D63]">About EventXpertz</h2>
             <p className="mt-3 text-neutral-600">
@@ -1000,6 +1069,8 @@ export default function LandingPage() {
               We have executed stalls at Pragati Maidan (Delhi), IEML (Greater Noida), Bombay Exhibition Centre (Mumbai), BIEC (Bengaluru), and Hitex (Hyderabad). Clients include T-Fit and BAIF, among others.
             </p>
           </div>
+          </FadeIn>
+          <FadeIn from="right">
           <div>
             <h2 className="text-3xl font-bold text-[#1F3D63]">Frequently Asked Questions</h2>
             <div className="mt-4 divide-y divide-neutral-200 border-t border-neutral-200">
@@ -1008,6 +1079,7 @@ export default function LandingPage() {
               ))}
             </div>
           </div>
+          </FadeIn>
         </div>
       </section>
       <Footer />
