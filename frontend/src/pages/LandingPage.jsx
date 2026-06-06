@@ -326,7 +326,11 @@ const HeroTop = () => {
     }
 
     const phone = data.get("phone");
-    if (phone && !/^[+\d\s\-()]{7,15}$/.test(phone)) {
+    if (!phone) {
+      toast.error("Please enter your contact number");
+      return;
+    }
+    if (!/^[+\d\s\-()]{7,15}$/.test(phone)) {
       toast.error("Please enter a valid contact number");
       return;
     }
@@ -427,13 +431,14 @@ const HeroTop = () => {
                 </div>
 
                 <div>
-                  <Label htmlFor="phone">Contact Number</Label>
+                  <Label htmlFor="phone">Contact Number<span className="text-red-400"> *</span></Label>
                   <Input
                     id="phone"
                     name="phone"
                     type="tel"
                     placeholder="+91 98765 43210"
                     autoComplete="tel"
+                    required
                     className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
                   />
                 </div>
