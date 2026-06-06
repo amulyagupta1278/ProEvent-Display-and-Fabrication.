@@ -116,38 +116,38 @@ export const STATS = [
 ];
 
 export const WHY = [
-  { icon: "Layers",       title: "World-Class Creativity & Design",  text: "Custom stalls built to reflect your brand — not off-the-shelf templates. Every concept-to-execution by our in-house design team." },
-  { icon: "Clock",        title: "On-Time Delivery. Always.",         text: "We've never missed a show handover. Tight deadlines, last-minute changes — we absorb the pressure so you don't." },
-  { icon: "Users",        title: "One Team. Full Accountability.",    text: "Design, fabrication, branding, LED/AV, manpower, logistics — one team. No vendor juggling, no coordination gaps." },
-  { icon: "Building2",    title: "Every Major Venue. Delivered.",     text: "Pragati Maidan, IEML, Bombay Exhibition Centre, BIEC Bengaluru, Hitex Hyderabad — we know every venue floor plan." },
-  { icon: "CheckCircle2", title: "48-Hour Emergency Setup",           text: "Short notice? We mobilise within 48 hours. Same quality, faster execution — because exhibitions don't wait." },
-  { icon: "Hammer",       title: "Official Vendor — Bharat Tex",      text: "We are the official vendor at Bharat Tex and other major exhibition venues across India — giving you faster approvals, smoother logistics, and on-ground authority others simply don't have." },
+  { icon: "Clock",        title: "On-Time. Guaranteed.",              text: "500+ stalls delivered. Zero missed handovers. If your stall isn't ready before the show floor opens, we fix it at no charge. We've never had to." },
+  { icon: "Users",        title: "One Team. Zero Coordination Gaps.", text: "Design, fabrication, branding, LED/AV, manpower, logistics — all from one team. No vendor juggling. No last-minute 'that's not our scope' surprises." },
+  { icon: "Layers",       title: "You See It Before We Build It.",    text: "Every project includes a free photorealistic 3D render. You approve the design before a single piece of material is cut. What you see is what you get." },
+  { icon: "Building2",    title: "We Know Every Venue Floor.",        text: "Pragati Maidan, IEML, Bombay Exhibition Centre, BIEC Bengaluru, Hitex Hyderabad — we've executed at every major Indian venue. No learning curve on your budget." },
+  { icon: "CheckCircle2", title: "48-Hour Emergency Mobilisation.",   text: "10 days' notice? We've handled it. Our emergency track delivers a fully branded stall in 48 hours — same build quality, faster clock." },
+  { icon: "Hammer",       title: "Official Vendor — Bharat Tex.",     text: "We are an approved, official vendor at Bharat Tex. Faster approvals, zero venue compliance surprises, and on-ground authority that third-party vendors simply don't have." },
 ];
 
 export const HOW_IT_WORKS = [
   {
     step: "01",
-    title: "Share Your Brief",
-    desc: "Tell us your stall size, venue, dates, and vision. We respond with a detailed proposal and ballpark quote within 24 hours — no commitment required.",
-    tag: "24h response",
+    title: "Brief Us",
+    desc: "Share your stall size, venue, show dates, and goals. We respond with a detailed proposal and ballpark quote within 24 hours — no commitment required.",
+    tag: "Response: 24h",
   },
   {
     step: "02",
-    title: "Design & 3D Approval",
-    desc: "Our in-house designers create photorealistic 3D renders of your stall. You review, request changes, and sign off — nothing goes into production without your go-ahead.",
-    tag: "Up to 3 revisions",
+    title: "See It in 3D",
+    desc: "Our in-house designers create a photorealistic 3D render of your stall — see every angle, material, and brand element before we build. Up to 3 revision rounds included. Nothing goes to fabrication without your sign-off.",
+    tag: "3 free revisions",
   },
   {
     step: "03",
-    title: "Fabricate & Brand",
-    desc: "Your stall is built in our workshop with precision — structure, branding prints, LED screens, furniture, and electricals — all quality-checked before it leaves our facility.",
-    tag: "Workshop QC",
+    title: "We Build & Brand",
+    desc: "Your stall is fabricated in our workshop with precision — structure, branding prints, LED screens, furniture, and electricals are all quality-checked and loaded before leaving our facility.",
+    tag: "QC before dispatch",
   },
   {
     step: "04",
-    title: "Install, Deliver & Support",
-    desc: "Our crew installs everything on-site before the show opens. We stay on-ground for support during the event and handle full dismantling and logistics at close.",
-    tag: "On-site crew",
+    title: "Installed. Supported. Guaranteed.",
+    desc: "Our crew installs everything on-site before the show opens. We stay on-ground throughout the event. Full dismantling at close. If anything doesn't match your approved design, we fix it on-site — at no charge.",
+    tag: "On-site guarantee",
   },
 ];
 
@@ -183,6 +183,17 @@ export const CONTACT = {
   ],
 };
 
+export const INDUSTRIES = [
+  { icon: "FlaskConical", name: "Pharmaceuticals & Healthcare", hook: "Compliance-ready stall builds for pharma expos, medical device shows, and healthcare summits." },
+  { icon: "Cpu",          name: "Technology & IT",              hook: "Sleek, modern booth designs that make tech brands stand out on any show floor." },
+  { icon: "ShoppingBag",  name: "FMCG & Retail",               hook: "High-footfall designs built for product sampling, demos, and brand immersion." },
+  { icon: "Car",          name: "Automotive & Engineering",     hook: "Heavy-load flooring, vehicle display platforms, and industrial-grade stall builds." },
+  { icon: "Sprout",       name: "Agriculture & Agri-Tech",      hook: "Designed for Krishi Darshan, Bharat Tex, and national agri exhibition circuits." },
+  { icon: "Building",     name: "Real Estate & Infrastructure", hook: "Large-format stalls, scale models, and immersive property showcase environments." },
+  { icon: "Landmark",     name: "Finance & Banking",            hook: "Premium, trust-signalling stall environments for financial services and fintech brands." },
+  { icon: "Shield",       name: "Government & PSU",             hook: "Experienced in ministry pavilions, PSU expo participation, and national events." },
+];
+
 export const FAQS = [
   { q: "Which cities and venues do you operate in?", a: "We operate pan-India — Delhi NCR (Pragati Maidan, IEML), Mumbai (Bombay Exhibition Centre), Bengaluru (BIEC), Hyderabad (Hitex), Pune, Ahmedabad, Chennai, Kolkata, Jaipur, Noida, and Gurgaon." },
   { q: "What is the minimum booking lead time?", a: "2–3 weeks is ideal for a planned setup. For urgent requirements, we can mobilise within 48 hours subject to material availability." },
@@ -194,4 +205,6 @@ export const FAQS = [
   { q: "How many design revisions are included?", a: "Up to 3 design revision rounds are included in the standard package. Additional revisions beyond that are charged nominally. We share 3D renders before fabrication begins so you're fully aligned before we build." },
   { q: "Are you GST-registered and insured?", a: "Yes. EventXpertz is a GST-registered entity and we carry full liability coverage for on-site operations. Proper tax invoices are issued for all projects." },
   { q: "What if I'm not satisfied with the final setup?", a: "We stand behind our work completely. If the delivered stall doesn't match the approved design, we rectify it at no additional cost — on-site, before the show opens. This has never been an issue, but the commitment stands." },
+  { q: "Do you handle venue NOC and permission paperwork?", a: "Yes. For venues where we are an approved vendor (including Bharat Tex), we manage the NOC and compliance submission on your behalf. For other venues, we provide documentation support and guide you through the approval process." },
+  { q: "Can you handle multiple stalls across different cities simultaneously?", a: "Yes. We have executed parallel stalls across Delhi, Mumbai, Bengaluru, and Hyderabad in the same week. Our pan-India logistics and vendor network lets us deploy multiple teams concurrently." },
 ];

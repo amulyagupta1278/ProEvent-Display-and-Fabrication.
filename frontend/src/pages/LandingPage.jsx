@@ -6,8 +6,8 @@ import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Label } from "../components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
-import { Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, CheckCircle2, Clock, Layers, Building2, ChevronDown } from "lucide-react";
-import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT, CORE_SERVICES, FAQS, FEATURE_BAR, STATS, HOW_IT_WORKS } from "../mock/mock";
+import { Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, CheckCircle2, Clock, Layers, Building2, ChevronDown, FlaskConical, Cpu, ShoppingBag, Car, Sprout, Building, Landmark, Shield } from "lucide-react";
+import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT, CORE_SERVICES, FAQS, FEATURE_BAR, STATS, HOW_IT_WORKS, INDUSTRIES } from "../mock/mock";
 import { toast } from "sonner";
 
 /* ---------- Scroll animation ---------- */
@@ -73,6 +73,59 @@ const TiltCard = ({ children, className = "", intensity = 10, style = {} }) => {
   );
 };
 
+const TRUST_ITEMS = [
+  { num: "500+",      label: "Exhibition\nStalls Built" },
+  { num: "15+",       label: "Cities &\nMajor Venues" },
+  { num: "Official",  label: "Vendor —\nBharat Tex" },
+  { num: "48h",       label: "Emergency\nSetup Record" },
+];
+
+const TrustBar = () => (
+  <div className="bg-[#162E4A] border-b border-white/10">
+    <div className="mx-auto max-w-5xl px-6 grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 divide-white/10">
+      {TRUST_ITEMS.map((item, i) => (
+        <div key={i} className="flex flex-col items-center justify-center text-center py-5 px-4 border-r border-white/10 last:border-r-0">
+          <span className="text-xl font-extrabold text-[#1FA6A8] leading-tight">{item.num}</span>
+          <span className="mt-1 text-xs font-semibold text-white/70 whitespace-pre-line leading-snug">{item.label}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+const IndustriesWeServe = () => {
+  const iconMap = { FlaskConical, Cpu, ShoppingBag, Car, Sprout, Building, Landmark, Shield };
+  return (
+    <section className="py-20 bg-[#F8FAFC]">
+      <div className="mx-auto max-w-7xl px-6">
+        <FadeIn>
+          <p className="text-xs font-bold tracking-[0.15em] uppercase text-[#1FA6A8]">Sector Expertise</p>
+          <h2 className="mt-2 text-3xl md:text-4xl font-extrabold text-[#1F3D63]">Industries We Serve</h2>
+          <p className="mt-3 text-gray-500 text-base max-w-2xl">
+            From pharma compliance stalls to government pavilions — we bring sector-specific knowledge to every build.
+          </p>
+        </FadeIn>
+        <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {INDUSTRIES.map((ind, i) => {
+            const Icon = iconMap[ind.icon] || Shield;
+            return (
+              <FadeIn key={i} delay={i * 50} from="up">
+                <TiltCard intensity={6} className="group bg-white rounded-xl border border-gray-200 p-5 hover:border-[#1FA6A8] hover:shadow-lg transition-all duration-200 cursor-default h-full">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3 group-hover:bg-[#1FA6A8] transition-colors duration-200" style={{ background: "#EDF8F8" }}>
+                    <Icon className="h-5 w-5 text-[#1FA6A8] group-hover:text-white transition-colors duration-200" />
+                  </div>
+                  <h3 className="font-bold text-[#1F3D63] text-sm leading-snug mb-1">{ind.name}</h3>
+                  <p className="text-gray-500 text-xs leading-relaxed">{ind.hook}</p>
+                </TiltCard>
+              </FadeIn>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const NAV_LINKS = [
   ["#top", "Home"], ["#services", "Services"], ["#why", "Why Us"],
   ["#portfolio", "Portfolio"], ["#testimonials", "Testimonials"], ["#contact", "Contact"],
@@ -116,7 +169,7 @@ const HeaderNav = () => {
             ))}
           </nav>
           <div className="hidden md:block">
-            <Button onClick={handleWhatsAppOrder} className="bg-[var(--brand)] hover:bg-[var(--hover)] text-white rounded-md">Get a Quote</Button>
+            <Button onClick={handleWhatsAppOrder} className="bg-[var(--brand)] hover:bg-[var(--hover)] text-white rounded-md">Get Free 3D Design</Button>
           </div>
 
           {/* Mobile hamburger */}
@@ -170,7 +223,7 @@ const HeaderNav = () => {
             <a href="#top" onClick={close}
               className="flex items-center justify-center w-full py-4 rounded-xl font-bold text-white text-base border-2 border-[#1FA6A8] text-[#1FA6A8]"
             >
-              Get Free Quote
+              Get Free 3D Design
             </a>
           </div>
           <p className="mt-auto pt-8 text-white/30 text-xs text-center">© {new Date().getFullYear()} {BRAND.name}</p>
@@ -256,6 +309,25 @@ const HeroTop = () => {
   const [submitted, setSubmitted] = useState(false);
   const [service, setService] = useState("Booth Design");
   const [referenceFile, setReferenceFile] = useState(null);
+  const [phoneError, setPhoneError] = useState("");
+
+  const handlePhoneInput = (e) => {
+    const raw = e.target.value;
+    // Allow only digits and a leading +
+    const cleaned = raw.replace(/[^\d+]/g, "").replace(/(?!^)\+/g, "");
+    e.target.value = cleaned;
+    if (cleaned.length === 0) { setPhoneError(""); return; }
+    // Validate: optional +91, then 10 digits starting with 6-9
+    const digits = cleaned.startsWith("+") ? cleaned.slice(1).replace(/\D/g, "") : cleaned.replace(/\D/g, "");
+    const mobile = digits.startsWith("91") && digits.length > 10 ? digits.slice(2) : digits;
+    if (!/^[6-9]/.test(mobile)) {
+      setPhoneError("Indian mobile numbers start with 6, 7, 8, or 9");
+    } else if (mobile.length > 10) {
+      setPhoneError("Enter a valid 10-digit mobile number");
+    } else {
+      setPhoneError("");
+    }
+  };
 
   // Netlify Forms submit — multipart/form-data so file uploads work
   const onSubmit = async (e) => {
@@ -272,9 +344,15 @@ const HeroTop = () => {
       return;
     }
 
-    const phone = data.get("phone");
-    if (phone && !/^[+\d\s\-()]{7,15}$/.test(phone)) {
-      toast.error("Please enter a valid contact number");
+    const phone = (data.get("phone") || "").trim();
+    if (!phone) {
+      toast.error("Please enter your contact number");
+      return;
+    }
+    const digits = phone.startsWith("+") ? phone.slice(1).replace(/\D/g, "") : phone.replace(/\D/g, "");
+    const mobile = digits.startsWith("91") && digits.length > 10 ? digits.slice(2) : digits;
+    if (!/^[6-9]\d{9}$/.test(mobile)) {
+      toast.error("Enter a valid 10-digit Indian mobile number starting with 6–9");
       return;
     }
 
@@ -318,8 +396,8 @@ const HeroTop = () => {
         </div>
         <div className="order-1 lg:order-2">
           <div className="rounded-2xl md:backdrop-blur-2xl bg-white/10 border border-white/20 p-6 md:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.25)]">
-            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight">Your Exhibition Stall, Built to Win Attention — Delivered On Time, Every Time.</h1>
-            <p className="mt-3 text-white/90 text-base font-medium">India's trusted exhibition partner for stall fabrication, branding, LED displays &amp; complete event execution across 15+ cities.</p>
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight">Your Exhibition Stall, Delivered On Time. Every Time. Or We Fix It Free.</h1>
+            <p className="mt-3 text-white/90 text-base font-medium">Design, fabrication, branding, LED screens, manpower, logistics — one team, pan-India. Free 3D design included with every project.</p>
             <p className="mt-2 text-white/70 text-sm">
               Trusted by T-Fit, BAIF, PharmaCon &amp; 500+ brands — Pragati Maidan to BIEC, we've never missed a handover.
             </p>
@@ -374,15 +452,19 @@ const HeroTop = () => {
                 </div>
 
                 <div>
-                  <Label htmlFor="phone">Contact Number</Label>
+                  <Label htmlFor="phone">Contact Number<span className="text-red-400"> *</span></Label>
                   <Input
                     id="phone"
                     name="phone"
                     type="tel"
                     placeholder="+91 98765 43210"
                     autoComplete="tel"
-                    className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                    required
+                    inputMode="tel"
+                    onInput={handlePhoneInput}
+                    className={`mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60 ${phoneError ? "border-red-400 focus:border-red-400" : ""}`}
                   />
+                  {phoneError && <p className="mt-1 text-xs text-red-400">{phoneError}</p>}
                 </div>
 
                 <div className="grid sm:grid-cols-2 gap-4">
@@ -495,14 +577,12 @@ const CoreServices = () => {
     <section id="services" className="py-20 bg-white">
       <div className="mx-auto max-w-7xl px-6">
         <FadeIn><h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Our Core Services</h2></FadeIn>
-        <FadeIn delay={80}><p className="text-base text-neutral-600 mt-2">Everything needed to deliver a premium booth — end to end.</p></FadeIn>
-        <FadeIn delay={120}><p className="text-neutral-600 mt-4 max-w-2xl">
-          From Octonorm modular stalls to fully custom wooden builds, EventXpertz handles
-          every aspect of your exhibition presence — design, fabrication, branding,
-          furniture, AV equipment, manpower, and post-event dismantling. We operate
-          across all major Indian trade fair venues including India Expo Centre (Greater
-          Noida), Bombay Exhibition Centre, Bengaluru International Exhibition Centre,
-          Hitex Exhibition Centre (Hyderabad), and more.
+        <FadeIn delay={80}><p className="text-base text-neutral-600 mt-2">Everything your exhibition presence needs — designed, built, and delivered end to end.</p></FadeIn>
+        <FadeIn delay={120}><p className="text-neutral-600 mt-4 max-w-2xl text-justify leading-relaxed">
+          From modular Octonorm stalls to fully custom wooden builds, EventXpertz handles
+          design, fabrication, branding, AV, manpower, and post-event dismantling — all
+          under one roof. We operate at every major Indian trade fair venue: Pragati Maidan,
+          IEML Greater Noida, Bombay Exhibition Centre, BIEC Bengaluru, and Hitex Hyderabad.
         </p></FadeIn>
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {CORE_SERVICES.map((svc, idx) => {
@@ -563,10 +643,13 @@ const FeatureBar = () => {
 const AnimatedStat = ({ num, label, animate }) => {
   const raw = parseInt(num);
   const suffix = num.replace(/[0-9]/g, "");
-  const [display, setDisplay] = useState(0);
+  const [display, setDisplay] = useState(isNaN(raw) ? 0 : raw);
+  const [fired, setFired] = useState(false);
   useEffect(() => {
-    if (!animate || isNaN(raw)) return;
-    const duration = 1400;
+    if (!animate || isNaN(raw) || fired) return;
+    setFired(true);
+    setDisplay(0);
+    const duration = 1600;
     const start = performance.now();
     const tick = (now) => {
       const elapsed = now - start;
@@ -577,7 +660,7 @@ const AnimatedStat = ({ num, label, animate }) => {
       else setDisplay(raw);
     };
     requestAnimationFrame(tick);
-  }, [animate, raw]);
+  }, [animate, raw, fired]);
   return (
     <div className="flex flex-col items-center text-center py-6 px-4">
       <span className="text-3xl font-extrabold text-[#1FA6A8]">
@@ -597,7 +680,7 @@ const WhyChooseUs = () => {
     if (!el) return;
     const obs = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) { setStatsVisible(true); obs.disconnect(); }
-    }, { threshold: 0.3 });
+    }, { threshold: 0.1 });
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
@@ -690,9 +773,9 @@ const HowItWorks = () => (
           href="#top"
           className="inline-flex items-center gap-2 bg-[#1FA6A8] hover:bg-[#178F97] text-white font-bold px-8 py-4 rounded-full text-sm shadow-lg hover:-translate-y-1 transition-all duration-200"
         >
-          Start Your Project →
+          Get Free 3D Design →
         </a>
-        <p className="mt-3 text-gray-400 text-xs">Free quote in 24 hours. No commitment required.</p>
+        <p className="mt-3 text-gray-400 text-xs">Free 3D render in 24 hours. No commitment required.</p>
       </FadeIn>
     </div>
   </section>
@@ -705,17 +788,17 @@ const CTABanner = () => (
       Exhibition Stall Partner — Pan India
     </p>
     <p className="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-3">
-      Ready to Start Your Project?
+      Ready to Win the Show Floor?
     </p>
     <p className="text-base max-w-lg mx-auto mb-9" style={{ color: "rgba(255,255,255,0.75)" }}>
-      Our team is standing by to help you create an unforgettable exhibition experience. Response within 24 hours.
+      Get a free photorealistic 3D design of your stall — see it before we build it. Delivered on time, guaranteed.
     </p>
     <div className="flex flex-wrap gap-4 justify-center">
       <a
         href="#top"
         className="inline-flex items-center gap-2 bg-white font-bold px-9 py-4 rounded-full text-sm shadow-lg hover:-translate-y-0.5 transition-transform text-[#1FA6A8]"
       >
-        Get Free Quote →
+        Get Free 3D Design →
       </a>
       <a
         href="https://wa.me/919358767062"
@@ -732,6 +815,18 @@ const CTABanner = () => (
         </svg>
         Chat on WhatsApp
       </a>
+    </div>
+    {/* Guarantee pills */}
+    <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+      {[
+        "✓ Free 3D Design Included",
+        "✓ On-Time Delivery or We Fix It Free",
+        "✓ Matches Approved Design — Guaranteed",
+      ].map((pill) => (
+        <span key={pill} className="text-xs font-semibold px-4 py-2 rounded-full" style={{ background: "rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.9)", border: "1px solid rgba(255,255,255,0.2)" }}>
+          {pill}
+        </span>
+      ))}
     </div>
     </FadeIn>
   </section>
@@ -908,7 +1003,7 @@ const StickyMobileCTA = () => {
           className="flex-1 text-center font-bold text-sm py-3 rounded-lg text-white"
           style={{ background: "#1FA6A8" }}
         >
-          Get Free Quote
+          Get Free 3D Design
         </a>
         <a
           href="https://wa.me/919358767062"
@@ -963,6 +1058,7 @@ const Footer = () => (
           <img src="/images/logo.jpeg" alt="Eventxpertz logo" className="h-8 w-8 rounded-md object-contain" />
           <span className="font-semibold text-white">{BRAND.name}</span>
         </div>
+        <p className="mt-1 text-[#1FA6A8] text-xs font-semibold tracking-wide">India's most reliable exhibition stall partner. 500+ stalls. 15+ cities. Zero missed handovers.</p>
         <p className="mt-3 text-white/70 text-sm">EventXpertz is an India-based exhibition and corporate event management company delivering custom stall fabrication, printing &amp; branding, LED display rental, furniture, hospitality manpower, and complete event logistics across Delhi NCR, Mumbai, Bengaluru, Hyderabad, Pune, Ahmedabad, Chennai, Kolkata, Jaipur, Noida, and Gurgaon. Contact us for a free quote.</p>
         <div className="mt-5 flex items-center gap-3">
           {CONTACT.social.map(({ label, href, icon }) => (
@@ -1044,7 +1140,9 @@ export default function LandingPage() {
       </a>
       <HeaderNav />
       <HeroTop />
+      <TrustBar />
       <CoreServices />
+      <IndustriesWeServe />
       <HowItWorks />
       <WhyChooseUs />
       <FeatureBar />
@@ -1059,14 +1157,17 @@ export default function LandingPage() {
           <FadeIn from="left">
           <div>
             <h2 className="text-3xl font-bold text-[#1F3D63]">About EventXpertz</h2>
-            <p className="mt-3 text-neutral-600">
-              EventXpertz is an India-based exhibition and corporate event management company. We design, fabricate, and execute customised exhibition stalls for trade fairs, expos, and corporate events.
+            <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
+              EventXpertz is a Delhi-based, pan-India exhibition stall fabrication and event management company. Founded with a single focus — making exhibitors' lives easier — we design, build, brand, and deliver complete exhibition setups for trade fairs, industry expos, government pavilions, and corporate events across India.
             </p>
-            <p className="mt-3 text-neutral-600">
-              Our work spans Octonorm and wooden stall builds, flex and vinyl printing, LED TV and wall rentals, furniture and lighting setup, hospitality manpower, and complete logistics — all under one roof.
+            <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
+              We offer end-to-end services under one roof: Octonorm and custom wooden stall fabrication, high-resolution flex and vinyl printing, LED TV and video wall rentals, furniture and lighting setup, trained hospitality manpower, and complete post-event dismantling and logistics. You brief us once — we handle everything else.
             </p>
-            <p className="mt-3 text-neutral-600">
-              We have executed stalls at Pragati Maidan (Delhi), IEML (Greater Noida), Bombay Exhibition Centre (Mumbai), BIEC (Bengaluru), and Hitex (Hyderabad). Clients include T-Fit and BAIF, among others.
+            <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
+              Our team has executed 500+ stalls across 15+ cities — Pragati Maidan (Delhi), IEML (Greater Noida), Bombay Exhibition Centre (Mumbai), BIEC (Bengaluru), Hitex (Hyderabad), and more. We are an official approved vendor at Bharat Tex, one of India's largest trade fairs, which gives our clients faster venue approvals and zero compliance surprises.
+            </p>
+            <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
+              Our promise is simple: your stall will be ready before the show floor opens — matching the approved 3D design exactly — or we fix it on-site at no charge. In 500+ deliveries, we've never had to. That's not a boast; it's our standard.
             </p>
           </div>
           </FadeIn>
