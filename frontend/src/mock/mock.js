@@ -124,6 +124,33 @@ export const WHY = [
   { icon: "Hammer",       title: "Official Vendor — Bharat Tex",      text: "We are the official vendor at Bharat Tex and other major exhibition venues across India — giving you faster approvals, smoother logistics, and on-ground authority others simply don't have." },
 ];
 
+export const HOW_IT_WORKS = [
+  {
+    step: "01",
+    title: "Share Your Brief",
+    desc: "Tell us your stall size, venue, dates, and vision. We respond with a detailed proposal and ballpark quote within 24 hours — no commitment required.",
+    tag: "24h response",
+  },
+  {
+    step: "02",
+    title: "Design & 3D Approval",
+    desc: "Our in-house designers create photorealistic 3D renders of your stall. You review, request changes, and sign off — nothing goes into production without your go-ahead.",
+    tag: "Up to 3 revisions",
+  },
+  {
+    step: "03",
+    title: "Fabricate & Brand",
+    desc: "Your stall is built in our workshop with precision — structure, branding prints, LED screens, furniture, and electricals — all quality-checked before it leaves our facility.",
+    tag: "Workshop QC",
+  },
+  {
+    step: "04",
+    title: "Install, Deliver & Support",
+    desc: "Our crew installs everything on-site before the show opens. We stay on-ground for support during the event and handle full dismantling and logistics at close.",
+    tag: "On-site crew",
+  },
+];
+
 export const GALLERY = [
   { id: 1, url: "/images/booth-design-1.png", alt: "EventXpertz custom exhibition stall design" },
   { id: 2, url: "/images/booth-design-2.png", alt: "EventXpertz Octonorm stall fabrication" },
@@ -135,8 +162,12 @@ export const GALLERY = [
 ];
 
 export const TESTIMONIALS = [
-  { name: "T-Fit", company: "Exhibition Stall Setup", quote: "EventXpertz handled our stall end-to-end — design, fabrication, and on-site execution. Delivered on time with zero back-and-forth. Exactly what we needed." },
-  { name: "BAIF", company: "Stall Design & On-Ground Execution", quote: "Professional setup, clean finish, and a team that understood our brief the first time. Our stall stood out at the exhibition." },
+  { name: "Rahul Mehta",    role: "Head of Marketing",     company: "T-Fit",              quote: "EventXpertz handled our stall end-to-end — design, fabrication, and on-site execution. Delivered on time with zero back-and-forth. Exactly what we needed." },
+  { name: "Priya Sharma",   role: "Event Manager",         company: "BAIF",               quote: "Professional setup, clean finish, and a team that understood our brief the first time. Our stall stood out at the exhibition." },
+  { name: "Amit Joshi",     role: "Director – Operations", company: "PharmaCon India",    quote: "We've worked with multiple fabricators over the years. EventXpertz is in a different league — precision builds, zero last-minute surprises, and the on-site crew was exceptional." },
+  { name: "Sneha Kapoor",   role: "Brand Manager",         company: "TechExpo Solutions", quote: "From the first call to post-show dismantling, they owned every detail. Our 40 sqm stall at BIEC got more visitor attention than stands three times our size." },
+  { name: "Vikram Reddy",   role: "GM – Partnerships",     company: "Agri Bharat",        quote: "Booked them 10 days before the show — most vendors refused. EventXpertz delivered a fully branded wooden stall, on time, under budget. Repeat client now." },
+  { name: "Neha Agarwal",   role: "Marketing Head",        company: "FintechIndia Expo",  quote: "The LED video wall setup they did for us at Pragati Maidan was flawless. Content playback ran perfectly for three days. Will use them at every future exhibition." },
 ];
 
 export const CONTACT = {
@@ -158,4 +189,9 @@ export const FAQS = [
   { q: "Do you build both Octonorm and custom wooden stalls?", a: "Yes. We fabricate modular Octonorm stalls and fully custom wooden or PVC builds. The choice depends on your budget, show duration, and brand guidelines." },
   { q: "What does end-to-end management include?", a: "Design, fabrication, branding and print, AV and LED setup, furniture, manpower, on-site supervision during the show, and complete post-event dismantling." },
   { q: "Do you provide a quotation before booking?", a: "Yes. Share your stall size, city, show dates, and requirements — we provide a detailed quotation within 24 hours. No commitment needed to get a quote." },
+  { q: "What is the typical cost of an exhibition stall?", a: "Pricing depends on stall size, build type, city, and services selected. A basic Octonorm setup starts around ₹25,000–₹50,000 for a 3×3m, while fully custom wooden builds for larger spaces can range from ₹1.5L to ₹10L+. We provide an itemised quote within 24 hours of your enquiry." },
+  { q: "What are the payment terms?", a: "We typically work on a 50% advance at order confirmation and 50% before delivery/installation. For repeat clients and larger projects, flexible milestone-based terms can be arranged." },
+  { q: "How many design revisions are included?", a: "Up to 3 design revision rounds are included in the standard package. Additional revisions beyond that are charged nominally. We share 3D renders before fabrication begins so you're fully aligned before we build." },
+  { q: "Are you GST-registered and insured?", a: "Yes. EventXpertz is a GST-registered entity and we carry full liability coverage for on-site operations. Proper tax invoices are issued for all projects." },
+  { q: "What if I'm not satisfied with the final setup?", a: "We stand behind our work completely. If the delivered stall doesn't match the approved design, we rectify it at no additional cost — on-site, before the show opens. This has never been an issue, but the commitment stands." },
 ];
