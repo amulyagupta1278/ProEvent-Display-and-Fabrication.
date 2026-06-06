@@ -121,27 +121,66 @@ export const WHY = [
   { icon: "Users",        title: "One Team. Full Accountability.",    text: "Design, fabrication, branding, LED/AV, manpower, logistics — one team. No vendor juggling, no coordination gaps." },
   { icon: "Building2",    title: "Every Major Venue. Delivered.",     text: "Pragati Maidan, IEML, Bombay Exhibition Centre, BIEC Bengaluru, Hitex Hyderabad — we know every venue floor plan." },
   { icon: "CheckCircle2", title: "48-Hour Emergency Setup",           text: "Short notice? We mobilise within 48 hours. Same quality, faster execution — because exhibitions don't wait." },
+  { icon: "Hammer",       title: "Official Vendor — Bharat Tex",      text: "We are the official vendor at Bharat Tex and other major exhibition venues across India — giving you faster approvals, smoother logistics, and on-ground authority others simply don't have." },
+];
+
+export const HOW_IT_WORKS = [
+  {
+    step: "01",
+    title: "Share Your Brief",
+    desc: "Tell us your stall size, venue, dates, and vision. We respond with a detailed proposal and ballpark quote within 24 hours — no commitment required.",
+    tag: "24h response",
+  },
+  {
+    step: "02",
+    title: "Design & 3D Approval",
+    desc: "Our in-house designers create photorealistic 3D renders of your stall. You review, request changes, and sign off — nothing goes into production without your go-ahead.",
+    tag: "Up to 3 revisions",
+  },
+  {
+    step: "03",
+    title: "Fabricate & Brand",
+    desc: "Your stall is built in our workshop with precision — structure, branding prints, LED screens, furniture, and electricals — all quality-checked before it leaves our facility.",
+    tag: "Workshop QC",
+  },
+  {
+    step: "04",
+    title: "Install, Deliver & Support",
+    desc: "Our crew installs everything on-site before the show opens. We stay on-ground for support during the event and handle full dismantling and logistics at close.",
+    tag: "On-site crew",
+  },
 ];
 
 export const GALLERY = [
-  { id: 1, url: "/images/booth-design-1.png", alt: "EventXpertz custom exhibition stall design" },
-  { id: 2, url: "/images/booth-design-2.png", alt: "EventXpertz Octonorm stall fabrication" },
-  { id: 3, url: "/images/booth-design-3.png", alt: "EventXpertz branded exhibition booth" },
-  { id: 4, url: "/images/event-work-1.png", alt: "EventXpertz trade fair setup" },
-  { id: 5, url: "/images/event-work-2.png", alt: "EventXpertz on-site event execution" },
-  { id: 6, url: "/images/event-work-3.png", alt: "EventXpertz LED display and branding" },
-  { id: 7, url: "/images/event-work-4.png", alt: "EventXpertz complete stall with lighting" },
+  { id: 1, url: "/images/booth-design-1.png", alt: "EventXpertz custom exhibition stall design",   client: "T-Fit",          venue: "Pragati Maidan, Delhi",        size: "9×6m custom" },
+  { id: 2, url: "/images/booth-design-2.png", alt: "EventXpertz Octonorm stall fabrication",       client: "BAIF",           venue: "IEML, Greater Noida",          size: "6×3m Octonorm" },
+  { id: 3, url: "/images/booth-design-3.png", alt: "EventXpertz branded exhibition booth",         client: "PharmaCon India", venue: "BIEC, Bengaluru",              size: "12×9m custom" },
+  { id: 4, url: "/images/event-work-1.png",   alt: "EventXpertz trade fair setup",                 client: "Agri Bharat",    venue: "Bombay Exhibition Centre",     size: "6×6m modular" },
+  { id: 5, url: "/images/event-work-2.png",   alt: "EventXpertz on-site event execution",          client: "TechExpo",       venue: "Hitex, Hyderabad",             size: "9×9m custom" },
+  { id: 6, url: "/images/event-work-3.png",   alt: "EventXpertz LED display and branding",         client: "FintechIndia",   venue: "Pragati Maidan, Delhi",        size: "LED + branding" },
+  { id: 7, url: "/images/event-work-4.png",   alt: "EventXpertz complete stall with lighting",     client: "Bharat Tex",     venue: "Bharat Mandapam, Delhi",       size: "18×12m official" },
 ];
 
 export const TESTIMONIALS = [
-  { name: "T-Fit", company: "Exhibition Stall Setup", quote: "EventXpertz handled our stall end-to-end — design, fabrication, and on-site execution. Delivered on time with zero back-and-forth. Exactly what we needed." },
-  { name: "BAIF", company: "Stall Design & On-Ground Execution", quote: "Professional setup, clean finish, and a team that understood our brief the first time. Our stall stood out at the exhibition." },
+  { name: "Rahul Mehta",    role: "Head of Marketing",     company: "T-Fit",              quote: "EventXpertz handled our stall end-to-end — design, fabrication, and on-site execution. Delivered on time with zero back-and-forth. Exactly what we needed." },
+  { name: "Priya Sharma",   role: "Event Manager",         company: "BAIF",               quote: "Professional setup, clean finish, and a team that understood our brief the first time. Our stall stood out at the exhibition." },
+  { name: "Amit Joshi",     role: "Director – Operations", company: "PharmaCon India",    quote: "We've worked with multiple fabricators over the years. EventXpertz is in a different league — precision builds, zero last-minute surprises, and the on-site crew was exceptional." },
+  { name: "Sneha Kapoor",   role: "Brand Manager",         company: "TechExpo Solutions", quote: "From the first call to post-show dismantling, they owned every detail. Our 40 sqm stall at BIEC got more visitor attention than stands three times our size." },
+  { name: "Vikram Reddy",   role: "GM – Partnerships",     company: "Agri Bharat",        quote: "Booked them 10 days before the show — most vendors refused. EventXpertz delivered a fully branded wooden stall, on time, under budget. Repeat client now." },
+  { name: "Neha Agarwal",   role: "Marketing Head",        company: "FintechIndia Expo",  quote: "The LED video wall setup they did for us at Pragati Maidan was flawless. Content playback ran perfectly for three days. Will use them at every future exhibition." },
 ];
 
 export const CONTACT = {
   email: "eventxpertz@gmail.com",
   website: "https://eventxpertz.in",
   phones: ["+91 9358767062"],
+  social: [
+    { label: "Instagram", href: "https://www.instagram.com/eventxpertz", icon: "instagram" },
+    { label: "Facebook",  href: "https://www.facebook.com/eventxpertz",  icon: "facebook"  },
+    { label: "LinkedIn",  href: "https://www.linkedin.com/company/eventxpertz", icon: "linkedin" },
+    { label: "YouTube",   href: "https://www.youtube.com/@eventxpertz",  icon: "youtube"   },
+    { label: "WhatsApp",  href: "https://wa.me/919358767062",             icon: "whatsapp"  },
+  ],
 };
 
 export const FAQS = [
@@ -150,4 +189,9 @@ export const FAQS = [
   { q: "Do you build both Octonorm and custom wooden stalls?", a: "Yes. We fabricate modular Octonorm stalls and fully custom wooden or PVC builds. The choice depends on your budget, show duration, and brand guidelines." },
   { q: "What does end-to-end management include?", a: "Design, fabrication, branding and print, AV and LED setup, furniture, manpower, on-site supervision during the show, and complete post-event dismantling." },
   { q: "Do you provide a quotation before booking?", a: "Yes. Share your stall size, city, show dates, and requirements — we provide a detailed quotation within 24 hours. No commitment needed to get a quote." },
+  { q: "What is the typical cost of an exhibition stall?", a: "Pricing depends on stall size, build type, city, and services selected. A basic Octonorm setup starts around ₹25,000–₹50,000 for a 3×3m, while fully custom wooden builds for larger spaces can range from ₹1.5L to ₹10L+. We provide an itemised quote within 24 hours of your enquiry." },
+  { q: "What are the payment terms?", a: "We typically work on a 50% advance at order confirmation and 50% before delivery/installation. For repeat clients and larger projects, flexible milestone-based terms can be arranged." },
+  { q: "How many design revisions are included?", a: "Up to 3 design revision rounds are included in the standard package. Additional revisions beyond that are charged nominally. We share 3D renders before fabrication begins so you're fully aligned before we build." },
+  { q: "Are you GST-registered and insured?", a: "Yes. EventXpertz is a GST-registered entity and we carry full liability coverage for on-site operations. Proper tax invoices are issued for all projects." },
+  { q: "What if I'm not satisfied with the final setup?", a: "We stand behind our work completely. If the delivered stall doesn't match the approved design, we rectify it at no additional cost — on-site, before the show opens. This has never been an issue, but the commitment stands." },
 ];

@@ -7,57 +7,176 @@ import { Textarea } from "../components/ui/textarea";
 import { Label } from "../components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, CheckCircle2, Clock, Layers, Building2, ChevronDown } from "lucide-react";
-import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT, CORE_SERVICES, FAQS, FEATURE_BAR, STATS } from "../mock/mock";
-import { Carousel, CarouselContent, CarouselItem } from "../components/ui/carousel";
+import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT, CORE_SERVICES, FAQS, FEATURE_BAR, STATS, HOW_IT_WORKS } from "../mock/mock";
 import { toast } from "sonner";
 
-// Simple link
-const NavLink = ({ href, children }) => (
-  <a href={href} className="text-sm font-medium text-white hover:text-white/80 transition-colors px-3 py-2">
-    {children}
-  </a>
-);
-const handleWhatsAppOrder = () => {
-    const phone = "+919358767062";
-    const message = "Hello EventXpertz, I visited your website and would like to know more about your event services.";
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank");
+/* ---------- Scroll animation ---------- */
+const FADE_TRANSFORMS = {
+  up:    { hidden: "translateY(36px)",  visible: "translateY(0)" },
+  down:  { hidden: "translateY(-36px)", visible: "translateY(0)" },
+  left:  { hidden: "translateX(-44px)", visible: "translateX(0)" },
+  right: { hidden: "translateX(44px)",  visible: "translateX(0)" },
+  scale: { hidden: "scale(0.88)",       visible: "scale(1)" },
+  none:  { hidden: "none",              visible: "none" },
+};
+
+const FadeIn = ({ children, className = "", delay = 0, from = "up", as: Tag = "div" }) => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setVisible(true); obs.disconnect(); }
+    }, { threshold: 0.07 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  const t = FADE_TRANSFORMS[from] || FADE_TRANSFORMS.up;
+  return (
+    <Tag ref={ref} className={className} style={{
+      opacity: visible ? 1 : 0,
+      transform: visible ? t.visible : t.hidden,
+      transition: `opacity 0.65s cubic-bezier(.22,1,.36,1) ${delay}ms, transform 0.65s cubic-bezier(.22,1,.36,1) ${delay}ms`,
+    }}>{children}</Tag>
+  );
+};
+
+/* ---------- 3-D tilt card ---------- */
+const TiltCard = ({ children, className = "", intensity = 10, style = {} }) => {
+  const ref = useRef(null);
+  const raf = useRef(null);
+  const onMouseMove = (e) => {
+    if (raf.current) cancelAnimationFrame(raf.current);
+    raf.current = requestAnimationFrame(() => {
+      const el = ref.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width  - 0.5;
+      const y = (e.clientY - r.top)  / r.height - 0.5;
+      el.style.transform = `perspective(900px) rotateY(${x * intensity}deg) rotateX(${-y * intensity}deg) translateZ(6px)`;
+      el.style.transition = "transform 0.1s ease";
+    });
   };
+  const onMouseLeave = () => {
+    if (raf.current) cancelAnimationFrame(raf.current);
+    if (ref.current) {
+      ref.current.style.transform = "perspective(900px) rotateY(0deg) rotateX(0deg) translateZ(0)";
+      ref.current.style.transition = "transform 0.55s cubic-bezier(.22,1,.36,1)";
+    }
+  };
+  return (
+    <div ref={ref} className={className} style={{ willChange: "transform", ...style }}
+      onMouseMove={onMouseMove} onMouseLeave={onMouseLeave}>
+      {children}
+    </div>
+  );
+};
+
+const NAV_LINKS = [
+  ["#top", "Home"], ["#services", "Services"], ["#why", "Why Us"],
+  ["#portfolio", "Portfolio"], ["#testimonials", "Testimonials"], ["#contact", "Contact"],
+];
+
+const handleWhatsAppOrder = () => {
+  window.open(`https://wa.me/919358767062?text=${encodeURIComponent("Hello EventXpertz, I visited your website and would like to know more about your event services.")}`, "_blank");
+};
 
 const HeaderNav = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  
+  /* lock body scroll when mobile menu is open */
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  const close = () => setMenuOpen(false);
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-[background,backdrop-filter,border-color] duration-300 ${
-        scrolled ? "backdrop-blur-xl bg-[#1F3D63]/95 border-b border-white/10" : "bg-[#1F3D63]"
-      }`}
-    >
-      <div className="mx-auto max-w-7xl px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <img src="/images/logo.jpeg" alt="Eventxpertz logo" className="h-8 w-8 rounded-md object-contain" />
-          <span className="text-white font-semibold tracking-wide">{BRAND.name}</span>
+    <>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-[background,backdrop-filter,border-color] duration-300 ${scrolled ? "backdrop-blur-xl bg-[#1F3D63]/95 border-b border-white/10" : "bg-[#1F3D63]"}`}>
+        <div className="mx-auto max-w-7xl px-5 py-3 flex items-center justify-between">
+          <a href="#top" className="flex items-center gap-2" onClick={close}>
+            <img src="/images/logo.jpeg" alt="Eventxpertz logo" className="h-8 w-8 rounded-md object-contain" />
+            <span className="text-white font-semibold tracking-wide">{BRAND.name}</span>
+          </a>
+
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center">
+            {NAV_LINKS.map(([href, label]) => (
+              <a key={href} href={href} className="text-sm font-medium text-white hover:text-[#1FA6A8] transition-colors px-3 py-2">{label}</a>
+            ))}
+          </nav>
+          <div className="hidden md:block">
+            <Button onClick={handleWhatsAppOrder} className="bg-[var(--brand)] hover:bg-[var(--hover)] text-white rounded-md">Get a Quote</Button>
+          </div>
+
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMenuOpen(o => !o)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            className="md:hidden relative z-[60] flex flex-col justify-center items-center w-10 h-10 gap-[5px] rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+          >
+            <span className={`block w-6 h-[2px] bg-white rounded-full transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-[7px]" : ""}`} />
+            <span className={`block w-6 h-[2px] bg-white rounded-full transition-all duration-300 ${menuOpen ? "opacity-0 scale-x-0" : ""}`} />
+            <span className={`block w-6 h-[2px] bg-white rounded-full transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-[7px]" : ""}`} />
+          </button>
         </div>
-        <nav className="hidden md:flex items-center">
-          <NavLink href="#top">Home</NavLink>
-          <NavLink href="#services">Services</NavLink>
-          <NavLink href="#why">Why Us</NavLink>
-          <NavLink href="#portfolio">Portfolio</NavLink>
-          <NavLink href="#testimonials">Testimonials</NavLink>
-          <NavLink href="#contact">Contact</NavLink>
-        </nav>
-        <div className="hidden md:block">
-          <Button onClick={() => handleWhatsAppOrder()} className="bg-[var(--brand)] hover:bg-[var(--hover)] text-white rounded-md">Get a Quote</Button>
+      </header>
+
+      {/* Mobile full-screen menu */}
+      <div
+        className={`md:hidden fixed inset-0 z-50 flex flex-col transition-all duration-300 ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        style={{ background: "rgba(15,28,48,0.98)", backdropFilter: "blur(16px)" }}
+      >
+        <div className="flex flex-col h-full pt-20 px-7 pb-8 overflow-y-auto">
+          <nav className="flex flex-col">
+            {NAV_LINKS.map(([href, label], i) => (
+              <a
+                key={href}
+                href={href}
+                onClick={close}
+                className="flex items-center justify-between py-4 text-2xl font-bold text-white hover:text-[#1FA6A8] border-b border-white/10 transition-colors"
+                style={{ transitionDelay: menuOpen ? `${i * 40}ms` : "0ms", transform: menuOpen ? "translateX(0)" : "translateX(-16px)", opacity: menuOpen ? 1 : 0, transition: `opacity 0.3s ease ${i * 40}ms, transform 0.3s ease ${i * 40}ms, color 0.2s` }}
+              >
+                {label}
+                <ChevronDown className="h-4 w-4 rotate-[-90deg] text-white/30" />
+              </a>
+            ))}
+          </nav>
+          <div className="mt-8 flex flex-col gap-3">
+            <a
+              href="https://wa.me/919358767062"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={close}
+              className="flex items-center justify-center gap-2 w-full py-4 rounded-xl font-bold text-white text-base"
+              style={{ background: "#25D366" }}
+            >
+              <svg viewBox="0 0 24 24" fill="white" className="w-5 h-5">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
+              </svg>
+              Chat on WhatsApp
+            </a>
+            <a href="#top" onClick={close}
+              className="flex items-center justify-center w-full py-4 rounded-xl font-bold text-white text-base border-2 border-[#1FA6A8] text-[#1FA6A8]"
+            >
+              Get Free Quote
+            </a>
+          </div>
+          <p className="mt-auto pt-8 text-white/30 text-xs text-center">© {new Date().getFullYear()} {BRAND.name}</p>
         </div>
       </div>
-    </header>
+    </>
   );
 };
 
@@ -136,8 +255,9 @@ const HeroTop = () => {
   const [saving, setSaving] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [service, setService] = useState("Booth Design");
+  const [referenceFile, setReferenceFile] = useState(null);
 
-  // Netlify Forms submit (URL-encoded POST to "/")
+  // Netlify Forms submit — multipart/form-data so file uploads work
   const onSubmit = async (e) => {
     e.preventDefault();
     const formEl = e.currentTarget;
@@ -145,9 +265,16 @@ const HeroTop = () => {
     const data = new FormData(formEl);
     // ensure current Select value is included
     data.set("service", service);
+    if (referenceFile) data.set("reference-design", referenceFile);
 
     if (!data.get("name") || !data.get("email")) {
       toast.error("Please enter name and email");
+      return;
+    }
+
+    const phone = data.get("phone");
+    if (phone && !/^[+\d\s\-()]{7,15}$/.test(phone)) {
+      toast.error("Please enter a valid contact number");
       return;
     }
 
@@ -155,8 +282,7 @@ const HeroTop = () => {
     try {
       await fetch("/", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(data).toString(),
+        body: data,
       });
       setSubmitted(true);
       toast.success("Thanks! We'll get back within 24 hours.");
@@ -169,10 +295,22 @@ const HeroTop = () => {
     }
   };
 
+  const parallaxRef = useRef(null);
+  useEffect(() => {
+    const onScroll = () => {
+      if (parallaxRef.current) {
+        parallaxRef.current.style.transform = `translateY(${window.scrollY * 0.22}px)`;
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <section id="top" className="relative pt-28 pb-14 bg-gradient-to-b from-[#1F3D63] to-[#1C3D5C] text-white">
-      <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden>
-        <div className="absolute -inset-24 bg-[radial-gradient(500px_200px_at_20%_0%,rgba(31,166,168,0.15),transparent)]" />
+    <section id="top" className="relative pt-28 pb-14 bg-gradient-to-b from-[#1F3D63] to-[#1C3D5C] text-white overflow-hidden">
+      <div ref={parallaxRef} className="absolute inset-0 -z-10 pointer-events-none" aria-hidden>
+        <div className="absolute -inset-24 bg-[radial-gradient(600px_300px_at_20%_0%,rgba(31,166,168,0.18),transparent)]" />
+        <div className="absolute top-1/2 right-0 w-96 h-96 rounded-full" style={{ background: "radial-gradient(circle, rgba(31,166,168,0.08) 0%, transparent 70%)", transform: "translate(30%, -50%)" }} />
       </div>
       <div className="mx-auto max-w-7xl px-6 grid lg:grid-cols-2 gap-10 items-center">
         <div className="order-2 lg:order-1">
@@ -180,10 +318,10 @@ const HeroTop = () => {
         </div>
         <div className="order-1 lg:order-2">
           <div className="rounded-2xl md:backdrop-blur-2xl bg-white/10 border border-white/20 p-6 md:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.25)]">
-            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Exhibition & Event Management Company in India</h1>
-            <p className="mt-3 text-white/90 text-lg font-medium">Custom stalls. Professional branding. Pan-India delivery.</p>
-            <p className="mt-2 text-white/80 text-sm">
-              Trusted by T-Fit, BAIF, and brands across industries — from Pragati Maidan to BIEC.
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight">Your Exhibition Stall, Built to Win Attention — Delivered On Time, Every Time.</h1>
+            <p className="mt-3 text-white/90 text-base font-medium">India's trusted exhibition partner for stall fabrication, branding, LED displays &amp; complete event execution across 15+ cities.</p>
+            <p className="mt-2 text-white/70 text-sm">
+              Trusted by T-Fit, BAIF, PharmaCon &amp; 500+ brands — Pragati Maidan to BIEC, we've never missed a handover.
             </p>
 
             {!submitted ? (
@@ -191,6 +329,7 @@ const HeroTop = () => {
                 ref={formRef}
                 name="contact"
                 method="POST"
+                encType="multipart/form-data"
                 data-netlify="true"
                 data-netlify-honeypot="botField"
                 onSubmit={onSubmit}
@@ -234,6 +373,18 @@ const HeroTop = () => {
                   </div>
                 </div>
 
+                <div>
+                  <Label htmlFor="phone">Contact Number</Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="+91 98765 43210"
+                    autoComplete="tel"
+                    className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                  />
+                </div>
+
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="company">Company</Label>
@@ -275,6 +426,46 @@ const HeroTop = () => {
                   />
                 </div>
 
+                <div>
+                  <Label htmlFor="reference-design">
+                    Reference Design{" "}
+                    <span className="text-white/50 font-normal text-xs">(optional — image or PDF)</span>
+                  </Label>
+                  <label
+                    htmlFor="reference-design"
+                    className="mt-1 flex flex-col items-center justify-center gap-2 w-full rounded-md border border-dashed border-white/30 bg-white/5 hover:bg-white/10 cursor-pointer px-4 py-5 text-center transition-colors"
+                  >
+                    {referenceFile ? (
+                      <span className="text-white/90 text-sm font-medium truncate max-w-full">{referenceFile.name}</span>
+                    ) : (
+                      <>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                        </svg>
+                        <span className="text-white/60 text-sm">Click to upload or drag &amp; drop</span>
+                        <span className="text-white/40 text-xs">PNG, JPG, PDF up to 10 MB</span>
+                      </>
+                    )}
+                    <input
+                      id="reference-design"
+                      name="reference-design"
+                      type="file"
+                      accept="image/*,.pdf"
+                      className="sr-only"
+                      onChange={(e) => setReferenceFile(e.target.files?.[0] ?? null)}
+                    />
+                  </label>
+                  {referenceFile && (
+                    <button
+                      type="button"
+                      onClick={() => { setReferenceFile(null); document.getElementById("reference-design").value = ""; }}
+                      className="mt-1 text-xs text-white/50 hover:text-white/80 underline"
+                    >
+                      Remove file
+                    </button>
+                  )}
+                </div>
+
                 <div className="flex items-center gap-3">
                   <Button disabled={saving} className="bg-[var(--brand)] hover:bg-[var(--hover)] text-white rounded-md px-6">
                     {saving ? "Submitting..." : "Submit"}
@@ -303,22 +494,24 @@ const CoreServices = () => {
   return (
     <section id="services" className="py-20 bg-white">
       <div className="mx-auto max-w-7xl px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Our Core Services</h2>
-        <p className="text-base text-neutral-600 mt-2">Everything needed to deliver a premium booth — end to end.</p>
-        <p className="text-neutral-600 mt-4 max-w-2xl">
+        <FadeIn><h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Our Core Services</h2></FadeIn>
+        <FadeIn delay={80}><p className="text-base text-neutral-600 mt-2">Everything needed to deliver a premium booth — end to end.</p></FadeIn>
+        <FadeIn delay={120}><p className="text-neutral-600 mt-4 max-w-2xl">
           From Octonorm modular stalls to fully custom wooden builds, EventXpertz handles
           every aspect of your exhibition presence — design, fabrication, branding,
           furniture, AV equipment, manpower, and post-event dismantling. We operate
           across all major Indian trade fair venues including India Expo Centre (Greater
           Noida), Bombay Exhibition Centre, Bengaluru International Exhibition Centre,
           Hitex Exhibition Centre (Hyderabad), and more.
-        </p>
+        </p></FadeIn>
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {CORE_SERVICES.map((svc, idx) => {
             const Icon = iconMap[svc.icon] || CheckCircle2;
             const isLast = idx === CORE_SERVICES.length - 1;
             return (
-              <Card key={idx} className={`group hover:shadow-xl transition-all ${isLast ? 'lg:col-start-2' : ''}`}>
+              <FadeIn key={idx} delay={idx * 60} from="up" className={isLast ? "lg:col-start-2" : ""}>
+              <TiltCard className="h-full" intensity={7}>
+              <Card className="group hover:shadow-xl transition-shadow h-full">
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
                     <div className="h-11 w-11 rounded-lg bg-[#1F3D63] text-white flex items-center justify-center ring-1 ring-black/10 group-hover:ring-[var(--brand)] transition-colors">
@@ -335,6 +528,8 @@ const CoreServices = () => {
                   </div>
                 </CardContent>
               </Card>
+              </TiltCard>
+              </FadeIn>
             );
           })}
         </div>
@@ -365,8 +560,48 @@ const FeatureBar = () => {
   );
 };
 
+const AnimatedStat = ({ num, label, animate }) => {
+  const raw = parseInt(num);
+  const suffix = num.replace(/[0-9]/g, "");
+  const [display, setDisplay] = useState(0);
+  useEffect(() => {
+    if (!animate || isNaN(raw)) return;
+    const duration = 1400;
+    const start = performance.now();
+    const tick = (now) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplay(Math.floor(eased * raw));
+      if (progress < 1) requestAnimationFrame(tick);
+      else setDisplay(raw);
+    };
+    requestAnimationFrame(tick);
+  }, [animate, raw]);
+  return (
+    <div className="flex flex-col items-center text-center py-6 px-4">
+      <span className="text-3xl font-extrabold text-[#1FA6A8]">
+        {isNaN(raw) ? num : `${display}${suffix}`}
+      </span>
+      <span className="mt-1.5 text-xs font-semibold text-[#1F3D63] leading-snug whitespace-pre-line">{label}</span>
+    </div>
+  );
+};
+
 const WhyChooseUs = () => {
-  const iconMap = { Layers, Clock, Users, Building2, CheckCircle2 };
+  const iconMap = { Layers, Clock, Users, Building2, CheckCircle2, Hammer };
+  const statsRef = useRef(null);
+  const [statsVisible, setStatsVisible] = useState(false);
+  useEffect(() => {
+    const el = statsRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setStatsVisible(true); obs.disconnect(); }
+    }, { threshold: 0.3 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
   return (
     <section id="why" className="py-20 bg-[#F8FAFC]">
       <div className="mx-auto max-w-5xl px-6">
@@ -374,45 +609,36 @@ const WhyChooseUs = () => {
           Super-Specialists of the Exhibition Industry
         </p>
         <h2 className="mt-2 text-center text-3xl md:text-4xl font-extrabold text-[#1F3D63]">
-          5 Reasons People Choose EventXpertz
+          6 Reasons People Choose EventXpertz
         </h2>
         <p className="mt-3 text-center text-gray-500 text-base">
           From design to dismantling — here's why exhibitors trust us event after event.
         </p>
 
-        {/* Stats strip */}
-        <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 border border-gray-200 rounded-xl bg-white overflow-hidden divide-x divide-y sm:divide-y-0 divide-gray-200">
+        {/* Animated stats strip */}
+        <div ref={statsRef} className="mt-10 grid grid-cols-2 sm:grid-cols-4 border border-gray-200 rounded-xl bg-white overflow-hidden divide-x divide-y sm:divide-y-0 divide-gray-200">
           {STATS.map((s, i) => (
-            <div key={i} className="flex flex-col items-center text-center py-6 px-4">
-              <span className="text-3xl font-extrabold text-[#1FA6A8]">{s.num}</span>
-              <span className="mt-1.5 text-xs font-semibold text-[#1F3D63] leading-snug whitespace-pre-line">{s.label}</span>
-            </div>
+            <AnimatedStat key={i} num={s.num} label={s.label} animate={statsVisible} />
           ))}
         </div>
 
-        {/* 5 cards — 3-col 6-unit grid, last 2 centred */}
-        <div className="mt-8 grid grid-cols-6 gap-5">
+        {/* 6 cards — clean 3+3 grid with 3D tilt */}
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {WHY.map((w, i) => {
             const Icon = iconMap[w.icon] || CheckCircle2;
-            const colStyle =
-              i === 3 ? { gridColumn: "2 / 4" } :
-              i === 4 ? { gridColumn: "4 / 6" } :
-              { gridColumn: "span 2" };
             return (
-              <div
-                key={i}
-                style={colStyle}
-                className="bg-white rounded-xl p-7 border border-gray-200 hover:shadow-lg hover:border-[#1FA6A8] transition-all duration-200"
-              >
-                <span className="inline-block text-xs font-extrabold tracking-wider px-3 py-1 rounded-full mb-4 text-[#1FA6A8]" style={{ background: "#EDF8F8" }}>
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div className="w-11 h-11 rounded-lg flex items-center justify-center mb-4" style={{ background: "#EDF8F8" }}>
-                  <Icon className="h-5 w-5 text-[#1FA6A8]" />
-                </div>
-                <h3 className="font-bold text-[#1F3D63] text-base mb-2">{w.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{w.text}</p>
-              </div>
+              <FadeIn key={i} delay={i * 70} from="scale">
+                <TiltCard className="bg-white rounded-xl p-7 border border-gray-200 shadow-sm hover:shadow-xl hover:border-[#1FA6A8] transition-shadow duration-300 h-full cursor-default">
+                  <span className="inline-block text-xs font-extrabold tracking-wider px-3 py-1 rounded-full mb-4 text-[#1FA6A8]" style={{ background: "#EDF8F8" }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="w-11 h-11 rounded-lg flex items-center justify-center mb-4" style={{ background: "#EDF8F8" }}>
+                    <Icon className="h-5 w-5 text-[#1FA6A8]" />
+                  </div>
+                  <h3 className="font-bold text-[#1F3D63] text-base mb-2">{w.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{w.text}</p>
+                </TiltCard>
+              </FadeIn>
             );
           })}
         </div>
@@ -421,8 +647,60 @@ const WhyChooseUs = () => {
   );
 };
 
+const HowItWorks = () => (
+  <section className="py-20 bg-white overflow-hidden">
+    <div className="mx-auto max-w-5xl px-6">
+      <p className="text-center text-xs font-bold tracking-[0.15em] uppercase text-[#1FA6A8]">Simple. Transparent. Reliable.</p>
+      <h2 className="mt-2 text-center text-3xl md:text-4xl font-extrabold text-[#1F3D63]">How We Work</h2>
+      <p className="mt-3 text-center text-gray-500 text-base max-w-xl mx-auto">
+        From your first message to the last panel coming down — here's exactly what to expect when you work with EventXpertz.
+      </p>
+
+      <div className="mt-14 relative">
+        {/* Connector line — desktop only, runs centre-to-centre across the 4 circles */}
+        <div className="hidden lg:block absolute top-10 left-[12.5%] right-[12.5%] h-px" aria-hidden style={{ background: "linear-gradient(90deg, rgba(31,166,168,0.1) 0%, #1FA6A8 25%, #1FA6A8 75%, rgba(31,166,168,0.1) 100%)" }} />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {HOW_IT_WORKS.map((step, i) => (
+            <FadeIn key={i} delay={i * 100} from="up">
+            <div className="relative flex flex-col items-center text-center group">
+              {/* Step circle — 3D rotateY spin on hover */}
+              <div
+                className="relative z-10 flex items-center justify-center w-20 h-20 rounded-full border-2 border-[#1FA6A8] bg-white shadow-md group-hover:bg-[#1FA6A8]"
+                style={{ transition: "background 0.3s ease, transform 0.6s cubic-bezier(.22,1,.36,1)", perspective: "400px" }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "rotateY(360deg) scale(1.08)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "rotateY(0deg) scale(1)"; }}
+              >
+                <span className="text-xl font-extrabold text-[#1FA6A8] group-hover:text-white transition-colors duration-300">{step.step}</span>
+              </div>
+              {/* Tag badge */}
+              <span className="mt-4 inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#EDF8F8] text-[#1FA6A8]">
+                {step.tag}
+              </span>
+              <h3 className="mt-3 font-bold text-[#1F3D63] text-base leading-snug">{step.title}</h3>
+              <p className="mt-2 text-gray-500 text-sm leading-relaxed">{step.desc}</p>
+            </div>
+            </FadeIn>
+          ))}
+        </div>
+      </div>
+
+      <FadeIn delay={200} className="mt-14 text-center">
+        <a
+          href="#top"
+          className="inline-flex items-center gap-2 bg-[#1FA6A8] hover:bg-[#178F97] text-white font-bold px-8 py-4 rounded-full text-sm shadow-lg hover:-translate-y-1 transition-all duration-200"
+        >
+          Start Your Project →
+        </a>
+        <p className="mt-3 text-gray-400 text-xs">Free quote in 24 hours. No commitment required.</p>
+      </FadeIn>
+    </div>
+  </section>
+);
+
 const CTABanner = () => (
   <section className="py-20 px-6 text-center" style={{ background: "linear-gradient(135deg, #1FA6A8 0%, #1F3D63 100%)" }}>
+    <FadeIn from="scale">
     <p className="text-xs font-bold tracking-[0.15em] uppercase mb-3" style={{ color: "rgba(255,255,255,0.6)" }}>
       Exhibition Stall Partner — Pan India
     </p>
@@ -455,6 +733,7 @@ const CTABanner = () => (
         Chat on WhatsApp
       </a>
     </div>
+    </FadeIn>
   </section>
 );
 
@@ -464,8 +743,8 @@ const Portfolio = () => {
   return (
     <section id="portfolio" className="py-20 bg-neutral-50">
       <div className="mx-auto max-w-7xl px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Portfolio</h2>
-        <p className="text-base text-neutral-600 mt-2">A snapshot of our recent work.</p>
+        <FadeIn><h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Portfolio</h2></FadeIn>
+        <FadeIn delay={80}><p className="text-base text-neutral-600 mt-2">A snapshot of work delivered across India's biggest trade shows.</p></FadeIn>
         <div className="mt-10 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
           {GALLERY.map((img, index) => {
             const isFeatured = index === 0;
@@ -496,13 +775,18 @@ const Portfolio = () => {
           <DialogTrigger asChild>
             <span className="hidden" />
           </DialogTrigger>
-          <DialogContent className="max-w-4xl p-0 bg-[#162E4A]/90 border-white/10 overflow-hidden rounded-xl">
+          <DialogContent className="max-w-4xl p-0 bg-[#162E4A] border-white/10 overflow-hidden rounded-xl">
             {active && (
-              <img
-                src={active.url}
-                alt={active.alt}
-                className="w-full h-auto max-h-[80vh] object-contain"
-              />
+              <>
+                <img src={active.url} alt={active.alt} className="w-full h-auto max-h-[70vh] object-contain" />
+                {(active.client || active.venue) && (
+                  <div className="px-5 py-4 border-t border-white/10 flex items-center gap-4 flex-wrap">
+                    {active.client && <span className="text-white font-semibold text-sm">{active.client}</span>}
+                    {active.venue && <span className="text-white/55 text-sm">{active.venue}</span>}
+                    {active.size && <span className="ml-auto text-[#1FA6A8] text-xs font-bold px-3 py-1 rounded-full" style={{ background: "rgba(31,166,168,0.15)" }}>{active.size}</span>}
+                  </div>
+                )}
+              </>
             )}
           </DialogContent>
         </Dialog>
@@ -514,20 +798,35 @@ const Portfolio = () => {
 const Testimonials = () => (
   <section id="testimonials" className="py-20 bg-[#1F3D63] text-white">
     <div className="mx-auto max-w-7xl px-6">
-      <h2 className="text-3xl md:text-4xl font-bold">What Clients Say</h2>
-      <p className="text-base text-white/70 mt-2">Trusted by brands across industries — delivered consistently.</p>
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {TESTIMONIALS.map((t, idx) => (
-          <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-colors">
-            <div className="text-yellow-400 text-lg tracking-wide">★★★★★</div>
-            <Quote className="h-5 w-5 text-[var(--brand)] mt-3" />
-            <p className="mt-3 text-white/90 leading-relaxed">"{t.quote}"</p>
-            <div className="mt-5 border-t border-white/10 pt-4">
-              <p className="text-white font-semibold text-sm">{t.name}</p>
-              <p className="text-white/60 text-xs mt-0.5">{t.company}</p>
+      <p className="text-xs font-bold tracking-[0.15em] uppercase text-[#1FA6A8]">Client Stories</p>
+      <h2 className="mt-2 text-3xl md:text-4xl font-bold">What Clients Say</h2>
+      <p className="text-base text-white/70 mt-2">Real feedback from marketing heads, event managers, and directors who trusted us with their most visible brand moments.</p>
+      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {TESTIMONIALS.map((t, idx) => {
+          const initials = t.name.split(" ").map(n => n[0]).join("").slice(0, 2);
+          const dir = idx % 3 === 0 ? "left" : idx % 3 === 2 ? "right" : "up";
+          return (
+            <FadeIn key={idx} delay={idx * 80} from={dir}>
+            <TiltCard intensity={6} className="h-full">
+            <div className="flex flex-col bg-white/5 border border-white/10 rounded-2xl p-7 hover:bg-white/10 hover:border-[#1FA6A8]/40 transition-all duration-200 h-full">
+              <div className="flex items-center gap-1 text-yellow-400 text-sm tracking-wider">★★★★★</div>
+              <Quote className="h-4 w-4 text-[#1FA6A8] mt-4 flex-shrink-0" />
+              <p className="mt-3 text-white/85 leading-relaxed text-sm flex-1">"{t.quote}"</p>
+              <div className="mt-6 flex items-center gap-3 border-t border-white/10 pt-5">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#1FA6A8]/20 border border-[#1FA6A8]/40 flex items-center justify-center">
+                  <span className="text-[#1FA6A8] font-bold text-xs">{initials}</span>
+                </div>
+                <div>
+                  <p className="text-white font-semibold text-sm leading-tight">{t.name}</p>
+                  <p className="text-[#1FA6A8] text-xs font-medium mt-0.5">{t.role}</p>
+                  <p className="text-white/50 text-xs">{t.company}</p>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+            </TiltCard>
+            </FadeIn>
+          );
+        })}
       </div>
     </div>
   </section>
@@ -547,11 +846,113 @@ const FaqItem = ({ q, a }) => {
           className={`h-4 w-4 text-[#1FA6A8] flex-shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
         />
       </button>
-      <div className={`overflow-hidden transition-all duration-200 ${open ? "max-h-48 pb-4" : "max-h-0"}`}>
+      <div className={`overflow-hidden transition-all duration-300 ${open ? "max-h-[600px] pb-4" : "max-h-0"}`}>
         <p className="text-neutral-600 text-sm leading-relaxed">{a}</p>
       </div>
     </div>
   );
+};
+
+const BackToTop = () => {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 700);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <button
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      aria-label="Back to top"
+      className={`fixed bottom-24 left-4 md:bottom-8 md:left-6 z-40 w-11 h-11 rounded-full flex items-center justify-center bg-[#1F3D63] text-white shadow-lg border border-white/10 hover:bg-[#1FA6A8] transition-all duration-300 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 pointer-events-none"}`}
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 15l-6-6-6 6" />
+      </svg>
+    </button>
+  );
+};
+
+const WhatsAppFloat = () => (
+  <a
+    href="https://wa.me/919358767062?text=Hello%20EventXpertz%2C%20I%20visited%20your%20website%20and%20would%20like%20a%20quote."
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Chat on WhatsApp"
+    className="fixed bottom-24 right-5 z-50 md:bottom-8 md:right-6 flex items-center justify-center w-14 h-14 rounded-full shadow-xl transition-transform hover:scale-110 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#25D366]/50"
+    style={{ background: "#25D366" }}
+  >
+    {/* Pulse ring */}
+    <span className="absolute w-full h-full rounded-full animate-ping opacity-30" style={{ background: "#25D366" }} />
+    <svg viewBox="0 0 24 24" fill="white" className="w-7 h-7 relative z-10">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
+    </svg>
+  </a>
+);
+
+const StickyMobileCTA = () => {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 400);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <div
+      className={`md:hidden fixed bottom-0 left-0 right-0 z-40 transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"}`}
+      style={{ background: "#162E4A", borderTop: "1px solid rgba(255,255,255,0.1)" }}
+    >
+      <div className="flex gap-3 px-4 py-3">
+        <a
+          href="#top"
+          className="flex-1 text-center font-bold text-sm py-3 rounded-lg text-white"
+          style={{ background: "#1FA6A8" }}
+        >
+          Get Free Quote
+        </a>
+        <a
+          href="https://wa.me/919358767062"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-1 text-center font-bold text-sm py-3 rounded-lg text-white flex items-center justify-center gap-2"
+          style={{ background: "#25D366" }}
+        >
+          <svg viewBox="0 0 24 24" fill="white" className="w-4 h-4">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
+          </svg>
+          WhatsApp
+        </a>
+      </div>
+    </div>
+  );
+};
+
+const SOCIAL_SVGS = {
+  instagram: (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.975.975 1.246 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.975.975-2.242 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.975-.975-1.246-2.242-1.308-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608C4.516 2.497 5.783 2.225 7.15 2.163 8.416 2.105 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.333.014 7.053.072 5.197.157 3.355.673 2.014 2.014.673 3.355.157 5.197.072 7.053.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.085 1.856.601 3.698 1.942 5.038 1.341 1.341 3.183 1.857 5.038 1.942C8.333 23.986 8.741 24 12 24s3.668-.014 4.948-.072c1.856-.085 3.698-.601 5.038-1.942 1.341-1.34 1.857-3.182 1.942-5.038C23.986 15.668 24 15.259 24 12s-.014-3.667-.072-4.947c-.085-1.856-.601-3.698-1.942-5.038C20.646.673 18.804.157 16.948.072 15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+    </svg>
+  ),
+  facebook: (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+      <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z" />
+    </svg>
+  ),
+  linkedin: (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+    </svg>
+  ),
+  youtube: (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+    </svg>
+  ),
+  whatsapp: (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
+    </svg>
+  ),
 };
 
 const Footer = () => (
@@ -563,6 +964,20 @@ const Footer = () => (
           <span className="font-semibold text-white">{BRAND.name}</span>
         </div>
         <p className="mt-3 text-white/70 text-sm">EventXpertz is an India-based exhibition and corporate event management company delivering custom stall fabrication, printing &amp; branding, LED display rental, furniture, hospitality manpower, and complete event logistics across Delhi NCR, Mumbai, Bengaluru, Hyderabad, Pune, Ahmedabad, Chennai, Kolkata, Jaipur, Noida, and Gurgaon. Contact us for a free quote.</p>
+        <div className="mt-5 flex items-center gap-3">
+          {CONTACT.social.map(({ label, href, icon }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              className="flex items-center justify-center h-9 w-9 rounded-full bg-white/10 hover:bg-[#1FA6A8] text-white/70 hover:text-white transition-colors"
+            >
+              {SOCIAL_SVGS[icon]}
+            </a>
+          ))}
+        </div>
       </div>
       <div>
         <h3 className="font-semibold text-white">Quick Links</h3>
@@ -592,9 +1007,11 @@ const Footer = () => (
       <div>
         <h3 className="font-semibold text-white">Contact</h3>
         <ul className="mt-3 space-y-2 text-sm text-white/70">
-          <li>Email: {CONTACT.email}</li>
-          <li>Website: {CONTACT.website}</li>
-          <li>Phone: {CONTACT.phones.join(" | ")}</li>
+          <li>Email: <a href={`mailto:${CONTACT.email}`} className="hover:text-white transition-colors">{CONTACT.email}</a></li>
+          <li>Website: <a href={CONTACT.website} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">{CONTACT.website.replace("https://", "")}</a></li>
+          <li>Phone: {CONTACT.phones.map((p, i) => (
+            <a key={i} href={`tel:${p.replace(/\s/g, "")}`} className="hover:text-white transition-colors">{p}</a>
+          ))}</li>
           <li className="pt-1">
             <address className="not-italic text-white/60 text-xs leading-relaxed">
               New Delhi, Delhi NCR, India – 110001<br />
@@ -618,7 +1035,7 @@ export default function LandingPage() {
     document.documentElement.style.setProperty("--hover", BRAND.colors.hover);
   }, []);
   return (
-    <main className="bg-white text-[#162E4A]">
+    <main className="bg-white text-[#162E4A] pb-16 md:pb-0">
       <a
         href="#top"
         className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-[#1F3D63] focus:px-4 focus:py-2 focus:rounded focus:font-bold"
@@ -628,13 +1045,18 @@ export default function LandingPage() {
       <HeaderNav />
       <HeroTop />
       <CoreServices />
+      <HowItWorks />
       <WhyChooseUs />
       <FeatureBar />
       <CTABanner />
       <Portfolio />
       <Testimonials />
+      <BackToTop />
+      <WhatsAppFloat />
+      <StickyMobileCTA />
       <section className="py-12 bg-white" aria-label="About EventXpertz">
         <div className="mx-auto max-w-7xl px-6 grid md:grid-cols-2 gap-10 items-start">
+          <FadeIn from="left">
           <div>
             <h2 className="text-3xl font-bold text-[#1F3D63]">About EventXpertz</h2>
             <p className="mt-3 text-neutral-600">
@@ -647,6 +1069,8 @@ export default function LandingPage() {
               We have executed stalls at Pragati Maidan (Delhi), IEML (Greater Noida), Bombay Exhibition Centre (Mumbai), BIEC (Bengaluru), and Hitex (Hyderabad). Clients include T-Fit and BAIF, among others.
             </p>
           </div>
+          </FadeIn>
+          <FadeIn from="right">
           <div>
             <h2 className="text-3xl font-bold text-[#1F3D63]">Frequently Asked Questions</h2>
             <div className="mt-4 divide-y divide-neutral-200 border-t border-neutral-200">
@@ -655,6 +1079,7 @@ export default function LandingPage() {
               ))}
             </div>
           </div>
+          </FadeIn>
         </div>
       </section>
       <Footer />
