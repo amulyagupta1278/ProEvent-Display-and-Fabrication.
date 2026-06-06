@@ -548,14 +548,12 @@ const CoreServices = () => {
     <section id="services" className="py-20 bg-white">
       <div className="mx-auto max-w-7xl px-6">
         <FadeIn><h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Our Core Services</h2></FadeIn>
-        <FadeIn delay={80}><p className="text-base text-neutral-600 mt-2">Everything needed to deliver a premium booth — end to end.</p></FadeIn>
-        <FadeIn delay={120}><p className="text-neutral-600 mt-4 max-w-2xl">
-          From Octonorm modular stalls to fully custom wooden builds, EventXpertz handles
-          every aspect of your exhibition presence — design, fabrication, branding,
-          furniture, AV equipment, manpower, and post-event dismantling. We operate
-          across all major Indian trade fair venues including India Expo Centre (Greater
-          Noida), Bombay Exhibition Centre, Bengaluru International Exhibition Centre,
-          Hitex Exhibition Centre (Hyderabad), and more.
+        <FadeIn delay={80}><p className="text-base text-neutral-600 mt-2">Everything your exhibition presence needs — designed, built, and delivered end to end.</p></FadeIn>
+        <FadeIn delay={120}><p className="text-neutral-600 mt-4 max-w-2xl text-justify leading-relaxed">
+          From modular Octonorm stalls to fully custom wooden builds, EventXpertz handles
+          design, fabrication, branding, AV, manpower, and post-event dismantling — all
+          under one roof. We operate at every major Indian trade fair venue: Pragati Maidan,
+          IEML Greater Noida, Bombay Exhibition Centre, BIEC Bengaluru, and Hitex Hyderabad.
         </p></FadeIn>
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {CORE_SERVICES.map((svc, idx) => {
@@ -1130,14 +1128,14 @@ export default function LandingPage() {
           <FadeIn from="left">
           <div>
             <h2 className="text-3xl font-bold text-[#1F3D63]">About EventXpertz</h2>
-            <p className="mt-3 text-neutral-600">
-              EventXpertz is an India-based exhibition and corporate event management company. We design, fabricate, and execute customised exhibition stalls for trade fairs, expos, and corporate events.
+            <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
+              EventXpertz is an India-based exhibition and event management company. We design, fabricate, and execute custom exhibition stalls for trade fairs, expos, and corporate events across the country.
             </p>
-            <p className="mt-3 text-neutral-600">
-              Our work spans Octonorm and wooden stall builds, flex and vinyl printing, LED TV and wall rentals, furniture and lighting setup, hospitality manpower, and complete logistics — all under one roof.
+            <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
+              Our services cover Octonorm and wooden stall builds, flex and vinyl printing, LED TV and wall rentals, furniture and lighting, hospitality manpower, and complete logistics — all under one roof.
             </p>
-            <p className="mt-3 text-neutral-600">
-              We have executed stalls at Pragati Maidan (Delhi), IEML (Greater Noida), Bombay Exhibition Centre (Mumbai), BIEC (Bengaluru), and Hitex (Hyderabad). Clients include T-Fit and BAIF, among others.
+            <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
+              We've executed stalls at Pragati Maidan (Delhi), IEML (Greater Noida), Bombay Exhibition Centre (Mumbai), BIEC (Bengaluru), and Hitex (Hyderabad) — serving brands like T-Fit, BAIF, and PharmaCon.
             </p>
           </div>
           </FadeIn>
