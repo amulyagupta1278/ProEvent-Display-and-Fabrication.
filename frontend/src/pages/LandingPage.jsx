@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { Dialog, DialogContent, DialogTrigger } from "../components/ui/dialog";
@@ -8,56 +8,134 @@ import { Label } from "../components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, CheckCircle2, Clock, Layers, Building2, ChevronDown } from "lucide-react";
 import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT, CORE_SERVICES, FAQS, FEATURE_BAR, STATS, HOW_IT_WORKS } from "../mock/mock";
-import { Carousel, CarouselContent, CarouselItem } from "../components/ui/carousel";
 import { toast } from "sonner";
 
-// Simple link
-const NavLink = ({ href, children }) => (
-  <a href={href} className="text-sm font-medium text-white hover:text-white/80 transition-colors px-3 py-2">
-    {children}
-  </a>
-);
+/* Scroll-triggered fade-in + slide-up — reused on every section */
+const FadeIn = ({ children, className = "", delay = 0, as: Tag = "div" }) => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setVisible(true); obs.disconnect(); }
+    }, { threshold: 0.08 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return (
+    <Tag ref={ref} className={className} style={{
+      opacity: visible ? 1 : 0,
+      transform: visible ? "translateY(0)" : "translateY(28px)",
+      transition: `opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms`,
+    }}>{children}</Tag>
+  );
+};
+
+const NAV_LINKS = [
+  ["#top", "Home"], ["#services", "Services"], ["#why", "Why Us"],
+  ["#portfolio", "Portfolio"], ["#testimonials", "Testimonials"], ["#contact", "Contact"],
+];
+
 const handleWhatsAppOrder = () => {
-    const phone = "+919358767062";
-    const message = "Hello EventXpertz, I visited your website and would like to know more about your event services.";
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank");
-  };
+  window.open(`https://wa.me/919358767062?text=${encodeURIComponent("Hello EventXpertz, I visited your website and would like to know more about your event services.")}`, "_blank");
+};
 
 const HeaderNav = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  
+  /* lock body scroll when mobile menu is open */
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  const close = () => setMenuOpen(false);
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-[background,backdrop-filter,border-color] duration-300 ${
-        scrolled ? "backdrop-blur-xl bg-[#1F3D63]/95 border-b border-white/10" : "bg-[#1F3D63]"
-      }`}
-    >
-      <div className="mx-auto max-w-7xl px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <img src="/images/logo.jpeg" alt="Eventxpertz logo" className="h-8 w-8 rounded-md object-contain" />
-          <span className="text-white font-semibold tracking-wide">{BRAND.name}</span>
+    <>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-[background,backdrop-filter,border-color] duration-300 ${scrolled ? "backdrop-blur-xl bg-[#1F3D63]/95 border-b border-white/10" : "bg-[#1F3D63]"}`}>
+        <div className="mx-auto max-w-7xl px-5 py-3 flex items-center justify-between">
+          <a href="#top" className="flex items-center gap-2" onClick={close}>
+            <img src="/images/logo.jpeg" alt="Eventxpertz logo" className="h-8 w-8 rounded-md object-contain" />
+            <span className="text-white font-semibold tracking-wide">{BRAND.name}</span>
+          </a>
+
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center">
+            {NAV_LINKS.map(([href, label]) => (
+              <a key={href} href={href} className="text-sm font-medium text-white hover:text-[#1FA6A8] transition-colors px-3 py-2">{label}</a>
+            ))}
+          </nav>
+          <div className="hidden md:block">
+            <Button onClick={handleWhatsAppOrder} className="bg-[var(--brand)] hover:bg-[var(--hover)] text-white rounded-md">Get a Quote</Button>
+          </div>
+
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMenuOpen(o => !o)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            className="md:hidden relative z-[60] flex flex-col justify-center items-center w-10 h-10 gap-[5px] rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+          >
+            <span className={`block w-6 h-[2px] bg-white rounded-full transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-[7px]" : ""}`} />
+            <span className={`block w-6 h-[2px] bg-white rounded-full transition-all duration-300 ${menuOpen ? "opacity-0 scale-x-0" : ""}`} />
+            <span className={`block w-6 h-[2px] bg-white rounded-full transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-[7px]" : ""}`} />
+          </button>
         </div>
-        <nav className="hidden md:flex items-center">
-          <NavLink href="#top">Home</NavLink>
-          <NavLink href="#services">Services</NavLink>
-          <NavLink href="#why">Why Us</NavLink>
-          <NavLink href="#portfolio">Portfolio</NavLink>
-          <NavLink href="#testimonials">Testimonials</NavLink>
-          <NavLink href="#contact">Contact</NavLink>
-        </nav>
-        <div className="hidden md:block">
-          <Button onClick={() => handleWhatsAppOrder()} className="bg-[var(--brand)] hover:bg-[var(--hover)] text-white rounded-md">Get a Quote</Button>
+      </header>
+
+      {/* Mobile full-screen menu */}
+      <div
+        className={`md:hidden fixed inset-0 z-50 flex flex-col transition-all duration-300 ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        style={{ background: "rgba(15,28,48,0.98)", backdropFilter: "blur(16px)" }}
+      >
+        <div className="flex flex-col h-full pt-20 px-7 pb-8 overflow-y-auto">
+          <nav className="flex flex-col">
+            {NAV_LINKS.map(([href, label], i) => (
+              <a
+                key={href}
+                href={href}
+                onClick={close}
+                className="flex items-center justify-between py-4 text-2xl font-bold text-white hover:text-[#1FA6A8] border-b border-white/10 transition-colors"
+                style={{ transitionDelay: menuOpen ? `${i * 40}ms` : "0ms", transform: menuOpen ? "translateX(0)" : "translateX(-16px)", opacity: menuOpen ? 1 : 0, transition: `opacity 0.3s ease ${i * 40}ms, transform 0.3s ease ${i * 40}ms, color 0.2s` }}
+              >
+                {label}
+                <ChevronDown className="h-4 w-4 rotate-[-90deg] text-white/30" />
+              </a>
+            ))}
+          </nav>
+          <div className="mt-8 flex flex-col gap-3">
+            <a
+              href="https://wa.me/919358767062"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={close}
+              className="flex items-center justify-center gap-2 w-full py-4 rounded-xl font-bold text-white text-base"
+              style={{ background: "#25D366" }}
+            >
+              <svg viewBox="0 0 24 24" fill="white" className="w-5 h-5">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
+              </svg>
+              Chat on WhatsApp
+            </a>
+            <a href="#top" onClick={close}
+              className="flex items-center justify-center w-full py-4 rounded-xl font-bold text-white text-base border-2 border-[#1FA6A8] text-[#1FA6A8]"
+            >
+              Get Free Quote
+            </a>
+          </div>
+          <p className="mt-auto pt-8 text-white/30 text-xs text-center">© {new Date().getFullYear()} {BRAND.name}</p>
         </div>
       </div>
-    </header>
+    </>
   );
 };
 
@@ -187,10 +265,10 @@ const HeroTop = () => {
         </div>
         <div className="order-1 lg:order-2">
           <div className="rounded-2xl md:backdrop-blur-2xl bg-white/10 border border-white/20 p-6 md:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.25)]">
-            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Exhibition & Event Management Company in India</h1>
-            <p className="mt-3 text-white/90 text-lg font-medium">Custom stalls. Professional branding. Pan-India delivery.</p>
-            <p className="mt-2 text-white/80 text-sm">
-              Trusted by T-Fit, BAIF, and brands across industries — from Pragati Maidan to BIEC.
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight">Your Exhibition Stall, Built to Win Attention — Delivered On Time, Every Time.</h1>
+            <p className="mt-3 text-white/90 text-base font-medium">India's trusted exhibition partner for stall fabrication, branding, LED displays &amp; complete event execution across 15+ cities.</p>
+            <p className="mt-2 text-white/70 text-sm">
+              Trusted by T-Fit, BAIF, PharmaCon &amp; 500+ brands — Pragati Maidan to BIEC, we've never missed a handover.
             </p>
 
             {!submitted ? (
@@ -363,22 +441,23 @@ const CoreServices = () => {
   return (
     <section id="services" className="py-20 bg-white">
       <div className="mx-auto max-w-7xl px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Our Core Services</h2>
-        <p className="text-base text-neutral-600 mt-2">Everything needed to deliver a premium booth — end to end.</p>
-        <p className="text-neutral-600 mt-4 max-w-2xl">
+        <FadeIn><h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Our Core Services</h2></FadeIn>
+        <FadeIn delay={80}><p className="text-base text-neutral-600 mt-2">Everything needed to deliver a premium booth — end to end.</p></FadeIn>
+        <FadeIn delay={120}><p className="text-neutral-600 mt-4 max-w-2xl">
           From Octonorm modular stalls to fully custom wooden builds, EventXpertz handles
           every aspect of your exhibition presence — design, fabrication, branding,
           furniture, AV equipment, manpower, and post-event dismantling. We operate
           across all major Indian trade fair venues including India Expo Centre (Greater
           Noida), Bombay Exhibition Centre, Bengaluru International Exhibition Centre,
           Hitex Exhibition Centre (Hyderabad), and more.
-        </p>
+        </p></FadeIn>
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {CORE_SERVICES.map((svc, idx) => {
             const Icon = iconMap[svc.icon] || CheckCircle2;
             const isLast = idx === CORE_SERVICES.length - 1;
             return (
-              <Card key={idx} className={`group hover:shadow-xl transition-all ${isLast ? 'lg:col-start-2' : ''}`}>
+              <FadeIn key={idx} delay={idx * 60} className={isLast ? "lg:col-start-2" : ""}>
+              <Card className="group hover:shadow-xl transition-all h-full">
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
                     <div className="h-11 w-11 rounded-lg bg-[#1F3D63] text-white flex items-center justify-center ring-1 ring-black/10 group-hover:ring-[var(--brand)] transition-colors">
@@ -395,6 +474,7 @@ const CoreServices = () => {
                   </div>
                 </CardContent>
               </Card>
+              </FadeIn>
             );
           })}
         </div>
@@ -523,8 +603,8 @@ const HowItWorks = () => (
       </p>
 
       <div className="mt-14 relative">
-        {/* Connector line — desktop only */}
-        <div className="hidden lg:block absolute top-10 left-[calc(12.5%+1.5rem)] right-[calc(12.5%+1.5rem)] h-0.5 bg-gradient-to-r from-[#1FA6A8]/20 via-[#1FA6A8] to-[#1FA6A8]/20" aria-hidden />
+        {/* Connector line — desktop only, runs centre-to-centre across the 4 circles */}
+        <div className="hidden lg:block absolute top-10 left-[12.5%] right-[12.5%] h-px" aria-hidden style={{ background: "linear-gradient(90deg, rgba(31,166,168,0.1) 0%, #1FA6A8 25%, #1FA6A8 75%, rgba(31,166,168,0.1) 100%)" }} />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {HOW_IT_WORKS.map((step, i) => (
@@ -600,8 +680,8 @@ const Portfolio = () => {
   return (
     <section id="portfolio" className="py-20 bg-neutral-50">
       <div className="mx-auto max-w-7xl px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Portfolio</h2>
-        <p className="text-base text-neutral-600 mt-2">A snapshot of our recent work.</p>
+        <FadeIn><h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Portfolio</h2></FadeIn>
+        <FadeIn delay={80}><p className="text-base text-neutral-600 mt-2">A snapshot of work delivered across India's biggest trade shows.</p></FadeIn>
         <div className="mt-10 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
           {GALLERY.map((img, index) => {
             const isFeatured = index === 0;
@@ -632,13 +712,18 @@ const Portfolio = () => {
           <DialogTrigger asChild>
             <span className="hidden" />
           </DialogTrigger>
-          <DialogContent className="max-w-4xl p-0 bg-[#162E4A]/90 border-white/10 overflow-hidden rounded-xl">
+          <DialogContent className="max-w-4xl p-0 bg-[#162E4A] border-white/10 overflow-hidden rounded-xl">
             {active && (
-              <img
-                src={active.url}
-                alt={active.alt}
-                className="w-full h-auto max-h-[80vh] object-contain"
-              />
+              <>
+                <img src={active.url} alt={active.alt} className="w-full h-auto max-h-[70vh] object-contain" />
+                {(active.client || active.venue) && (
+                  <div className="px-5 py-4 border-t border-white/10 flex items-center gap-4 flex-wrap">
+                    {active.client && <span className="text-white font-semibold text-sm">{active.client}</span>}
+                    {active.venue && <span className="text-white/55 text-sm">{active.venue}</span>}
+                    {active.size && <span className="ml-auto text-[#1FA6A8] text-xs font-bold px-3 py-1 rounded-full" style={{ background: "rgba(31,166,168,0.15)" }}>{active.size}</span>}
+                  </div>
+                )}
+              </>
             )}
           </DialogContent>
         </Dialog>
@@ -693,10 +778,30 @@ const FaqItem = ({ q, a }) => {
           className={`h-4 w-4 text-[#1FA6A8] flex-shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
         />
       </button>
-      <div className={`overflow-hidden transition-all duration-200 ${open ? "max-h-48 pb-4" : "max-h-0"}`}>
+      <div className={`overflow-hidden transition-all duration-300 ${open ? "max-h-[600px] pb-4" : "max-h-0"}`}>
         <p className="text-neutral-600 text-sm leading-relaxed">{a}</p>
       </div>
     </div>
+  );
+};
+
+const BackToTop = () => {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 700);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <button
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      aria-label="Back to top"
+      className={`fixed bottom-24 left-4 md:bottom-8 md:left-6 z-40 w-11 h-11 rounded-full flex items-center justify-center bg-[#1F3D63] text-white shadow-lg border border-white/10 hover:bg-[#1FA6A8] transition-all duration-300 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 pointer-events-none"}`}
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 15l-6-6-6 6" />
+      </svg>
+    </button>
   );
 };
 
@@ -834,9 +939,11 @@ const Footer = () => (
       <div>
         <h3 className="font-semibold text-white">Contact</h3>
         <ul className="mt-3 space-y-2 text-sm text-white/70">
-          <li>Email: {CONTACT.email}</li>
-          <li>Website: {CONTACT.website}</li>
-          <li>Phone: {CONTACT.phones.join(" | ")}</li>
+          <li>Email: <a href={`mailto:${CONTACT.email}`} className="hover:text-white transition-colors">{CONTACT.email}</a></li>
+          <li>Website: <a href={CONTACT.website} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">{CONTACT.website.replace("https://", "")}</a></li>
+          <li>Phone: {CONTACT.phones.map((p, i) => (
+            <a key={i} href={`tel:${p.replace(/\s/g, "")}`} className="hover:text-white transition-colors">{p}</a>
+          ))}</li>
           <li className="pt-1">
             <address className="not-italic text-white/60 text-xs leading-relaxed">
               New Delhi, Delhi NCR, India – 110001<br />
@@ -860,7 +967,7 @@ export default function LandingPage() {
     document.documentElement.style.setProperty("--hover", BRAND.colors.hover);
   }, []);
   return (
-    <main className="bg-white text-[#162E4A]">
+    <main className="bg-white text-[#162E4A] pb-16 md:pb-0">
       <a
         href="#top"
         className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-[#1F3D63] focus:px-4 focus:py-2 focus:rounded focus:font-bold"
@@ -876,6 +983,7 @@ export default function LandingPage() {
       <CTABanner />
       <Portfolio />
       <Testimonials />
+      <BackToTop />
       <WhatsAppFloat />
       <StickyMobileCTA />
       <section className="py-12 bg-white" aria-label="About EventXpertz">

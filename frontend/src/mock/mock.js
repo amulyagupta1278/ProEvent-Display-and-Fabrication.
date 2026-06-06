@@ -152,13 +152,13 @@ export const HOW_IT_WORKS = [
 ];
 
 export const GALLERY = [
-  { id: 1, url: "/images/booth-design-1.png", alt: "EventXpertz custom exhibition stall design" },
-  { id: 2, url: "/images/booth-design-2.png", alt: "EventXpertz Octonorm stall fabrication" },
-  { id: 3, url: "/images/booth-design-3.png", alt: "EventXpertz branded exhibition booth" },
-  { id: 4, url: "/images/event-work-1.png", alt: "EventXpertz trade fair setup" },
-  { id: 5, url: "/images/event-work-2.png", alt: "EventXpertz on-site event execution" },
-  { id: 6, url: "/images/event-work-3.png", alt: "EventXpertz LED display and branding" },
-  { id: 7, url: "/images/event-work-4.png", alt: "EventXpertz complete stall with lighting" },
+  { id: 1, url: "/images/booth-design-1.png", alt: "EventXpertz custom exhibition stall design",   client: "T-Fit",          venue: "Pragati Maidan, Delhi",        size: "9×6m custom" },
+  { id: 2, url: "/images/booth-design-2.png", alt: "EventXpertz Octonorm stall fabrication",       client: "BAIF",           venue: "IEML, Greater Noida",          size: "6×3m Octonorm" },
+  { id: 3, url: "/images/booth-design-3.png", alt: "EventXpertz branded exhibition booth",         client: "PharmaCon India", venue: "BIEC, Bengaluru",              size: "12×9m custom" },
+  { id: 4, url: "/images/event-work-1.png",   alt: "EventXpertz trade fair setup",                 client: "Agri Bharat",    venue: "Bombay Exhibition Centre",     size: "6×6m modular" },
+  { id: 5, url: "/images/event-work-2.png",   alt: "EventXpertz on-site event execution",          client: "TechExpo",       venue: "Hitex, Hyderabad",             size: "9×9m custom" },
+  { id: 6, url: "/images/event-work-3.png",   alt: "EventXpertz LED display and branding",         client: "FintechIndia",   venue: "Pragati Maidan, Delhi",        size: "LED + branding" },
+  { id: 7, url: "/images/event-work-4.png",   alt: "EventXpertz complete stall with lighting",     client: "Bharat Tex",     venue: "Bharat Mandapam, Delhi",       size: "18×12m official" },
 ];
 
 export const TESTIMONIALS = [
