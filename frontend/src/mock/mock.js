@@ -194,6 +194,20 @@ export const INDUSTRIES = [
   { icon: "Shield",       name: "Government & PSU",             hook: "Experienced in ministry pavilions, PSU expo participation, and national events." },
 ];
 
+export const OFFICIAL_EVENTS = [
+  { id: 1,  name: "India International Hospitality Expo", short: "IH Expo",   url: "https://www.ihexpo.com/",                industry: "Hospitality",   color: "#E8763A" },
+  { id: 2,  name: "IFEX India",                           short: "IFEX India", url: "http://www.ifexindia.com/",               industry: "Food & Bev",    color: "#D4527F" },
+  { id: 3,  name: "Process Engineering Expo",             short: "PE Expo",    url: "https://processengineeringexpo.com/",     industry: "Engineering",   color: "#4B7BE5" },
+  { id: 4,  name: "Bharat Sustainability Expo",           short: "BSE",        url: "https://bharatsustainabilityexpo.com/",   industry: "Sustainability",color: "#27AE60" },
+  { id: 5,  name: "Bharat Packaging Expo",                short: "BPE",        url: "https://bharatpackagingexpo.com/",        industry: "Packaging",     color: "#8E44AD" },
+  { id: 6,  name: "India Manufacturing Show",             short: "IMS",        url: "https://indiamanufacturingshow.com/",     industry: "Manufacturing", color: "#2980B9" },
+  { id: 7,  name: "Garment Technology Expo",              short: "GTE",        url: "https://garmenttechnologyexpo.com/",      industry: "Textile",       color: "#E67E22" },
+  { id: 8,  name: "UP International Trade Show",          short: "UP ITS",     url: "https://upinternationaltradeshow.com/",   industry: "Trade",         color: "#16A085" },
+  { id: 9,  name: "Money Alpha 360",                      short: "MA360",      url: "https://www.moneyalpha360.com/",          industry: "Finance",       color: "#2C3E50" },
+  { id: 10, name: "Bharat Shiksha Expo",                  short: "BSE Edu",    url: "https://bharatshikshaexpo.com/",          industry: "Education",     color: "#C0392B" },
+  { id: 11, name: "Wellfest India",                       short: "Wellfest",   url: "https://wellfestindia.com/",              industry: "Wellness",      color: "#1ABC9C" },
+];
+
 export const FAQS = [
   { q: "Which cities and venues do you operate in?", a: "We operate pan-India — Delhi NCR (Pragati Maidan, IEML), Mumbai (Bombay Exhibition Centre), Bengaluru (BIEC), Hyderabad (Hitex), Pune, Ahmedabad, Chennai, Kolkata, Jaipur, Noida, and Gurgaon." },
   { q: "What is the minimum booking lead time?", a: "2–3 weeks is ideal for a planned setup. For urgent requirements, we can mobilise within 48 hours subject to material availability." },
