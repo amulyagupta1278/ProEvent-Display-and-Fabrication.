@@ -175,10 +175,10 @@ export const CONTACT = {
   website: "https://eventxpertz.in",
   phones: ["+91 9358767062"],
   social: [
-    { label: "Instagram", href: "https://www.instagram.com/eventxpertz", icon: "instagram" },
+    { label: "Instagram", href: "https://instagram.com/eventxpertz.llp", icon: "instagram" },
     { label: "Facebook",  href: "https://www.facebook.com/eventxpertz",  icon: "facebook"  },
-    { label: "LinkedIn",  href: "https://www.linkedin.com/company/eventxpertz", icon: "linkedin" },
-    { label: "YouTube",   href: "https://www.youtube.com/@eventxpertz",  icon: "youtube"   },
+    { label: "LinkedIn",  href: "https://www.linkedin.com/in/eventxpertz-india", icon: "linkedin" },
+    { label: "YouTube",   href: "https://www.youtube.com/@Eventxpertz",  icon: "youtube"   },
     { label: "WhatsApp",  href: "https://wa.me/919358767062",             icon: "whatsapp"  },
   ],
 };
