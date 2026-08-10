@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { Dialog, DialogContent, DialogTrigger } from "../components/ui/dialog";
@@ -7,10 +7,10 @@ import { Textarea } from "../components/ui/textarea";
 import { Label } from "../components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, CheckCircle2, Clock, Layers, Building2, ChevronDown, FlaskConical, Cpu, ShoppingBag, Car, Sprout, Building, Landmark, Shield } from "lucide-react";
-import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT, CORE_SERVICES, FAQS, FEATURE_BAR, STATS, HOW_IT_WORKS, INDUSTRIES } from "../mock/mock";
+import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT, CORE_SERVICES, FAQS, FEATURE_BAR, STATS, HOW_IT_WORKS, INDUSTRIES, OFFICIAL_EVENTS } from "../mock/mock";
 import { toast } from "sonner";
 
-/* ---------- Scroll animation ---------- */
+/* ─────────────────────── Scroll animation ─────────────────────── */
 const FADE_TRANSFORMS = {
   up:    { hidden: "translateY(36px)",  visible: "translateY(0)" },
   down:  { hidden: "translateY(-36px)", visible: "translateY(0)" },
@@ -42,7 +42,7 @@ const FadeIn = ({ children, className = "", delay = 0, from = "up", as: Tag = "d
   );
 };
 
-/* ---------- 3-D tilt card ---------- */
+/* ─────────────────────── 3-D tilt card ─────────────────────── */
 const TiltCard = ({ children, className = "", intensity = 10, style = {} }) => {
   const ref = useRef(null);
   const raf = useRef(null);
@@ -73,6 +73,7 @@ const TiltCard = ({ children, className = "", intensity = 10, style = {} }) => {
   );
 };
 
+/* ─────────────────────── TrustBar ─────────────────────── */
 const TRUST_ITEMS = [
   { num: "500+",      label: "Exhibition\nStalls Built" },
   { num: "15+",       label: "Cities &\nMajor Venues" },
@@ -93,6 +94,522 @@ const TrustBar = () => (
   </div>
 );
 
+/* ─────────────────────── Official Partners Carousel ─────────────────────── */
+const EventCard = ({ event }) => (
+  <a
+    href={event.url}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="group flex-shrink-0 w-52 rounded-2xl border border-gray-200 bg-white hover:border-[#1FA6A8] hover:shadow-xl transition-all duration-300 overflow-hidden"
+    style={{ willChange: "transform" }}
+  >
+    {/* Color accent bar */}
+    <div className="h-1.5 w-full" style={{ background: event.color }} />
+    <div className="p-5">
+      {/* Monogram badge */}
+      <div
+        className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-extrabold text-lg shadow-sm mb-4 select-none"
+        style={{ background: event.color }}
+      >
+        {event.short.slice(0, 2).toUpperCase()}
+      </div>
+      <h3 className="font-bold text-[#1F3D63] text-sm leading-snug line-clamp-2 group-hover:text-[#1FA6A8] transition-colors">
+        {event.name}
+      </h3>
+      <p className="mt-1.5 text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+        {event.industry}
+      </p>
+      <span className="mt-3 inline-block text-[10px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full text-white" style={{ background: "#162E4A" }}>
+        Official Vendor
+      </span>
+    </div>
+  </a>
+);
+
+const OfficialPartnersCarousel = () => {
+  const row1 = OFFICIAL_EVENTS.slice(0, 6);
+  const row2 = OFFICIAL_EVENTS.slice(5);
+
+  return (
+    <section className="py-16 bg-[#F8FAFC] overflow-hidden">
+      <div className="mx-auto max-w-7xl px-6 mb-10">
+        <FadeIn>
+          <p className="text-xs font-bold tracking-[0.15em] uppercase text-[#1FA6A8]">Official Partnerships</p>
+          <h2 className="mt-2 text-3xl md:text-4xl font-extrabold text-[#1F3D63]">
+            Official Vendor at India's Top Expos
+          </h2>
+          <p className="mt-3 text-gray-500 text-base max-w-2xl">
+            Approved, on-ground vendor at 11+ major national exhibitions — faster venue clearances and zero compliance surprises for your stall.
+          </p>
+        </FadeIn>
+      </div>
+
+      {/* Row 1 — scrolls left */}
+      <div
+        className="relative overflow-hidden"
+        style={{ maskImage: "linear-gradient(90deg,transparent,black 8%,black 92%,transparent)" }}
+      >
+        <div
+          className="flex gap-5 w-max"
+          style={{ animation: "marquee-left 32s linear infinite" }}
+          onMouseEnter={e => e.currentTarget.style.animationPlayState = "paused"}
+          onMouseLeave={e => e.currentTarget.style.animationPlayState = "running"}
+        >
+          {[...row1, ...row1].map((ev, i) => <EventCard key={i} event={ev} />)}
+        </div>
+      </div>
+
+      {/* Row 2 — scrolls right */}
+      <div
+        className="mt-5 relative overflow-hidden"
+        style={{ maskImage: "linear-gradient(90deg,transparent,black 8%,black 92%,transparent)" }}
+      >
+        <div
+          className="flex gap-5 w-max"
+          style={{ animation: "marquee-right 32s linear infinite" }}
+          onMouseEnter={e => e.currentTarget.style.animationPlayState = "paused"}
+          onMouseLeave={e => e.currentTarget.style.animationPlayState = "running"}
+        >
+          {[...row2, ...row2].map((ev, i) => <EventCard key={i} event={ev} />)}
+        </div>
+      </div>
+
+      <FadeIn delay={100} className="mt-10 text-center">
+        <p className="text-gray-400 text-sm">
+          Official vendor status means faster approvals, on-ground authority, and zero venue compliance surprises.
+        </p>
+      </FadeIn>
+    </section>
+  );
+};
+
+/* ─────────────────────── Shared Contact Form ─────────────────────── */
+const SERVICE_OPTIONS = ["Booth Design", "Full Build + Logistics", "Equipment Rental", "Hybrid Events"];
+
+const ContactForm = ({ onSuccess, formName = "contact" }) => {
+  const formRef = useRef(null);
+  const [saving, setSaving] = useState(false);
+  const [service, setService] = useState("Booth Design");
+  const [referenceFile, setReferenceFile] = useState(null);
+  const [phoneError, setPhoneError] = useState("");
+
+  const handlePhoneInput = (e) => {
+    const raw = e.target.value;
+    const cleaned = raw.replace(/[^\d+]/g, "").replace(/(?!^)\+/g, "");
+    e.target.value = cleaned;
+    if (!cleaned.length) { setPhoneError(""); return; }
+    const digits = cleaned.startsWith("+") ? cleaned.slice(1).replace(/\D/g, "") : cleaned.replace(/\D/g, "");
+    const mobile = digits.startsWith("91") && digits.length > 10 ? digits.slice(2) : digits;
+    if (!/^[6-9]/.test(mobile)) {
+      setPhoneError("Indian mobile numbers start with 6, 7, 8, or 9");
+    } else if (mobile.length > 10) {
+      setPhoneError("Enter a valid 10-digit mobile number");
+    } else {
+      setPhoneError("");
+    }
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const formEl = e.currentTarget;
+    const data = new FormData(formEl);
+    data.set("service", service);
+    if (referenceFile) data.set("reference-design", referenceFile);
+
+    if (!data.get("name") || !data.get("email")) {
+      toast.error("Please enter name and email"); return;
+    }
+    const phone = (data.get("phone") || "").trim();
+    if (!phone) { toast.error("Please enter your contact number"); return; }
+    const digits = phone.startsWith("+") ? phone.slice(1).replace(/\D/g, "") : phone.replace(/\D/g, "");
+    const mobile = digits.startsWith("91") && digits.length > 10 ? digits.slice(2) : digits;
+    if (!/^[6-9]\d{9}$/.test(mobile)) {
+      toast.error("Enter a valid 10-digit Indian mobile number starting with 6–9"); return;
+    }
+
+    setSaving(true);
+    try {
+      await fetch("/", { method: "POST", body: data });
+      toast.success("Thanks! We'll get back within 24 hours.");
+      formEl.reset();
+      setReferenceFile(null);
+      onSuccess?.();
+    } catch (err) {
+      console.error(err);
+      toast.error("Submit failed. Please try again.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <form
+      ref={formRef}
+      name={formName}
+      method="POST"
+      encType="multipart/form-data"
+      data-netlify="true"
+      data-netlify-honeypot="botField"
+      onSubmit={onSubmit}
+      className="grid grid-cols-1 gap-4"
+    >
+      <input type="hidden" name="form-name" value={formName} />
+      <p className="hidden"><label>Don't fill this out: <input name="botField" /></label></p>
+
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor={`${formName}-name`}>Name<span className="text-red-400"> *</span></Label>
+          <Input id={`${formName}-name`} name="name" placeholder="Your full name" autoComplete="name"
+            className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60" required />
+        </div>
+        <div>
+          <Label htmlFor={`${formName}-email`}>Email<span className="text-red-400"> *</span></Label>
+          <Input id={`${formName}-email`} name="email" type="email" placeholder="name@example.com" autoComplete="email"
+            className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60" required />
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor={`${formName}-phone`}>Contact Number<span className="text-red-400"> *</span></Label>
+        <Input id={`${formName}-phone`} name="phone" type="tel" placeholder="+91 98765 43210" autoComplete="tel"
+          inputMode="tel" required onInput={handlePhoneInput}
+          className={`mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60 ${phoneError ? "border-red-400" : ""}`} />
+        {phoneError && <p className="mt-1 text-xs text-red-400">{phoneError}</p>}
+      </div>
+
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor={`${formName}-company`}>Company</Label>
+          <Input id={`${formName}-company`} name="company" placeholder="Company name" autoComplete="organization"
+            className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60" />
+        </div>
+        <div>
+          <Label>Service</Label>
+          <Select value={service} onValueChange={setService}>
+            <SelectTrigger className="mt-1 bg-white/10 border-white/20 text-white">
+              <SelectValue placeholder="Select service" />
+            </SelectTrigger>
+            <SelectContent>
+              {SERVICE_OPTIONS.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+            </SelectContent>
+          </Select>
+          <input type="hidden" name="service" value={service} />
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor={`${formName}-message`}>Message</Label>
+        <Textarea id={`${formName}-message`} name="message" rows={3}
+          placeholder="Booth size, city, dates, and requirements"
+          className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60" />
+      </div>
+
+      <div>
+        <Label htmlFor={`${formName}-file`}>
+          Reference Design{" "}
+          <span className="text-white/50 font-normal text-xs">(optional — image or PDF)</span>
+        </Label>
+        <label htmlFor={`${formName}-file`}
+          className="mt-1 flex flex-col items-center justify-center gap-2 w-full rounded-md border border-dashed border-white/30 bg-white/5 hover:bg-white/10 cursor-pointer px-4 py-4 text-center transition-colors">
+          {referenceFile ? (
+            <span className="text-white/90 text-sm font-medium truncate max-w-full">{referenceFile.name}</span>
+          ) : (
+            <>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+              </svg>
+              <span className="text-white/60 text-sm">Click to upload or drag &amp; drop</span>
+              <span className="text-white/40 text-xs">PNG, JPG, PDF up to 10 MB</span>
+            </>
+          )}
+          <input id={`${formName}-file`} name="reference-design" type="file" accept="image/*,.pdf"
+            className="sr-only" onChange={e => setReferenceFile(e.target.files?.[0] ?? null)} />
+        </label>
+        {referenceFile && (
+          <button type="button" onClick={() => { setReferenceFile(null); document.getElementById(`${formName}-file`).value = ""; }}
+            className="mt-1 text-xs text-white/50 hover:text-white/80 underline">
+            Remove file
+          </button>
+        )}
+      </div>
+
+      <Button disabled={saving} className="bg-[var(--brand)] hover:bg-[var(--hover)] text-white rounded-md w-full py-3 text-base font-bold">
+        {saving ? "Submitting…" : "Get Free 3D Design →"}
+      </Button>
+    </form>
+  );
+};
+
+/* ─────────────────────── Single-Trigger Modal ─────────────────────── */
+const SingleTriggerModal = ({ onFormSubmit, onDismiss }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const triggered = useRef(false);
+
+  const trigger = useCallback(() => {
+    if (triggered.current || sessionStorage.getItem("formShownThisSession")) return;
+    triggered.current = true;
+    sessionStorage.setItem("formShownThisSession", "1");
+    setIsOpen(true);
+  }, []);
+
+  // Exit intent
+  useEffect(() => {
+    const onLeave = (e) => { if (e.clientY <= 0) trigger(); };
+    document.addEventListener("mouseleave", onLeave);
+    return () => document.removeEventListener("mouseleave", onLeave);
+  }, [trigger]);
+
+  // Portfolio engagement (3+ views)
+  useEffect(() => {
+    const views = new Set();
+    const onView = (e) => {
+      views.add(e.detail?.id);
+      if (views.size >= 3) trigger();
+    };
+    window.addEventListener("portfolioItemViewed", onView);
+    return () => window.removeEventListener("portfolioItemViewed", onView);
+  }, [trigger]);
+
+  // 60s + meaningful scroll
+  useEffect(() => {
+    let scrolled = false;
+    const onScroll = () => { if (window.scrollY > 400) scrolled = true; };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    const timer = setTimeout(() => { if (scrolled) trigger(); }, 60000);
+    return () => { window.removeEventListener("scroll", onScroll); clearTimeout(timer); };
+  }, [trigger]);
+
+  const handleDismiss = () => {
+    setIsOpen(false);
+    onDismiss?.();
+  };
+
+  const handleSuccess = () => {
+    setSubmitted(true);
+    onFormSubmit?.();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+      style={{ background: "rgba(0,0,0,0.65)", backdropFilter: "blur(6px)" }}
+    >
+      {/* Click outside to dismiss */}
+      <div className="absolute inset-0" onClick={handleDismiss} />
+
+      <div
+        className="relative bg-[#1F3D63] rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto border border-white/15"
+        style={{ animation: "modal-in 0.35s cubic-bezier(.22,1,.36,1) forwards" }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-start justify-between p-6 pb-0">
+          <div>
+            <span className="inline-block text-[10px] font-extrabold tracking-[0.15em] uppercase text-[#1FA6A8] mb-1">Free — No Commitment</span>
+            <h2 className="text-2xl font-extrabold text-white leading-tight">Get Your Free 3D Design</h2>
+            <p className="text-white/65 text-sm mt-1">See your stall before we build it. 24-hour turnaround.</p>
+          </div>
+          <button onClick={handleDismiss} className="text-white/40 hover:text-white ml-4 mt-1 p-1 rounded-lg transition-colors flex-shrink-0" aria-label="Close">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="p-6 pt-5">
+          {!submitted ? (
+            <ContactForm onSuccess={handleSuccess} formName="contact-modal" />
+          ) : (
+            <div className="text-center py-8">
+              <div className="w-16 h-16 rounded-full bg-[#1FA6A8]/20 border border-[#1FA6A8]/40 flex items-center justify-center mx-auto mb-4">
+                <CheckCircle2 className="h-8 w-8 text-[#1FA6A8]" />
+              </div>
+              <h3 className="text-xl font-bold text-white">We've got your brief!</h3>
+              <p className="text-white/70 text-sm mt-2 mb-6">Your designer will send the 3D render within 24 hours.</p>
+              <a
+                href="https://wa.me/919358767062?text=Hi%20EventXpertz%21%20I%20submitted%20a%20design%20request%20and%20wanted%20to%20follow%20up."
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsOpen(false)}
+                className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold px-6 py-3 rounded-xl text-sm transition-colors"
+              >
+                <svg viewBox="0 0 24 24" fill="white" className="w-4 h-4">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
+                </svg>
+                Chat for faster updates
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ─────────────────────── Recovery Banner ─────────────────────── */
+const RecoveryBanner = ({ formDismissed }) => {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (!formDismissed || sessionStorage.getItem("recoveryBannerShown")) return;
+    const timer = setTimeout(() => {
+      sessionStorage.setItem("recoveryBannerShown", "1");
+      setVisible(true);
+    }, 180000); // 3 minutes
+    return () => clearTimeout(timer);
+  }, [formDismissed]);
+
+  if (!visible) return null;
+
+  return (
+    <div
+      className="fixed bottom-20 left-4 right-4 md:left-auto md:right-24 md:max-w-sm z-40"
+      style={{ animation: "slide-up 0.4s cubic-bezier(.22,1,.36,1) forwards" }}
+    >
+      <div className="bg-[#162E4A] border border-white/20 rounded-xl p-4 shadow-2xl flex items-center gap-3">
+        <span className="text-xl flex-shrink-0">💬</span>
+        <div className="flex-1 min-w-0">
+          <p className="text-white text-sm font-semibold leading-snug">Still deciding? Let's chat</p>
+          <p className="text-white/55 text-xs mt-0.5">Ask about pricing, timelines, or designs</p>
+        </div>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <a
+            href="https://wa.me/919358767062?text=Hi%21%20I%20was%20checking%20out%20EventXpertz%20and%20had%20some%20questions."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#25D366] text-white text-xs font-bold px-3 py-2 rounded-lg"
+          >
+            Chat →
+          </a>
+          <button onClick={() => setVisible(false)} className="text-white/35 hover:text-white p-1" aria-label="Dismiss">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ─────────────────────── Contextual WhatsApp Widget ─────────────────────── */
+const WA_SVG = (
+  <svg viewBox="0 0 24 24" fill="white" className="w-7 h-7 relative z-10">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
+  </svg>
+);
+
+const WhatsAppWidget = ({ formStatus }) => {
+  // phase: idle → typing → message
+  const [phase, setPhase] = useState("idle");
+  const [bubbleDismissed, setBubbleDismissed] = useState(false);
+  const triggered = useRef(false);
+
+  const message = formStatus === "submitted"
+    ? "Your designer is reviewing your brief! 🎨 Want updates?"
+    : formStatus === "dismissed"
+    ? "Still thinking? No pressure — happy to answer questions."
+    : "Hey 👋 Questions about your exhibition stall?";
+
+  const prefilledMsg = formStatus === "submitted"
+    ? "Hi EventXpertz! I submitted a design request and wanted to follow up."
+    : formStatus === "dismissed"
+    ? "Hi EventXpertz! I was checking out your website and had some questions about exhibition stalls."
+    : "Hi EventXpertz! I visited your website and would like to know more about your services.";
+
+  const badge = formStatus === "submitted" ? "✓" : formStatus === "dismissed" ? "?" : "1";
+  const waUrl = `https://wa.me/919358767062?text=${encodeURIComponent(prefilledMsg)}`;
+
+  useEffect(() => {
+    if (triggered.current || sessionStorage.getItem("waWidgetShown")) return;
+    // Trigger delay varies by form status
+    const delay = formStatus === "submitted" ? 4000 : formStatus === "dismissed" ? 8000 : 35000;
+    const timer = setTimeout(() => {
+      if (sessionStorage.getItem("waWidgetShown")) return;
+      triggered.current = true;
+      sessionStorage.setItem("waWidgetShown", "1");
+      setPhase("typing");
+      setTimeout(() => setPhase("message"), 1800);
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [formStatus]);
+
+  return (
+    <div className="fixed bottom-24 right-5 z-50 md:bottom-8 md:right-6 flex flex-col items-end gap-3">
+      {/* Chat bubble */}
+      {(phase === "typing" || phase === "message") && !bubbleDismissed && (
+        <div
+          className="bg-white rounded-2xl rounded-br-sm shadow-2xl border border-gray-100 p-4 w-56 relative"
+          style={{ animation: "message-in 0.4s cubic-bezier(.22,1,.36,1) forwards" }}
+        >
+          <button
+            onClick={() => setBubbleDismissed(true)}
+            className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-gray-400 hover:bg-gray-500 text-white flex items-center justify-center text-[11px] font-bold transition-colors"
+            aria-label="Close"
+          >
+            ×
+          </button>
+
+          {phase === "typing" ? (
+            <div className="flex items-center gap-1.5 py-1 px-1">
+              {[0, 1, 2].map(i => (
+                <span
+                  key={i}
+                  className="w-2 h-2 rounded-full bg-gray-400"
+                  style={{ animation: `typing-dot 1.2s ease-in-out infinite`, animationDelay: `${i * 0.2}s` }}
+                />
+              ))}
+            </div>
+          ) : (
+            <>
+              <p className="text-sm text-gray-700 leading-relaxed">{message}</p>
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setBubbleDismissed(true)}
+                className="mt-3 flex items-center justify-center gap-1.5 bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs font-bold px-3 py-2 rounded-xl w-full transition-colors"
+              >
+                <svg viewBox="0 0 24 24" fill="white" className="w-3.5 h-3.5">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
+                </svg>
+                Chat Now →
+              </a>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* Main button */}
+      <a
+        href={waUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp"
+        className="relative flex items-center justify-center w-14 h-14 rounded-full shadow-xl transition-transform hover:scale-110 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#25D366]/50"
+        style={{ background: "#25D366" }}
+      >
+        {phase === "message" && !bubbleDismissed && (
+          <>
+            <span
+              className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center font-extrabold"
+              style={{ animation: "badge-pulse 2s ease-in-out infinite" }}
+            >
+              {badge}
+            </span>
+            <span className="absolute w-full h-full rounded-full opacity-30" style={{ background: "#25D366", animation: "ping 1.5s cubic-bezier(0,0,0.2,1) infinite" }} />
+          </>
+        )}
+        {WA_SVG}
+      </a>
+    </div>
+  );
+};
+
+/* ─────────────────────── Industries ─────────────────────── */
 const IndustriesWeServe = () => {
   const iconMap = { FlaskConical, Cpu, ShoppingBag, Car, Sprout, Building, Landmark, Shield };
   return (
@@ -126,6 +643,7 @@ const IndustriesWeServe = () => {
   );
 };
 
+/* ─────────────────────── Nav ─────────────────────── */
 const NAV_LINKS = [
   ["#top", "Home"], ["#services", "Services"], ["#why", "Why Us"],
   ["#portfolio", "Portfolio"], ["#testimonials", "Testimonials"], ["#contact", "Contact"],
@@ -145,7 +663,6 @@ const HeaderNav = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* lock body scroll when mobile menu is open */
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -162,7 +679,6 @@ const HeaderNav = () => {
             <span className="text-white font-semibold tracking-wide">{BRAND.name}</span>
           </a>
 
-          {/* Desktop nav */}
           <nav className="hidden md:flex items-center">
             {NAV_LINKS.map(([href, label]) => (
               <a key={href} href={href} className="text-sm font-medium text-white hover:text-[#1FA6A8] transition-colors px-3 py-2">{label}</a>
@@ -172,7 +688,6 @@ const HeaderNav = () => {
             <Button onClick={handleWhatsAppOrder} className="bg-[var(--brand)] hover:bg-[var(--hover)] text-white rounded-md">Get Free 3D Design</Button>
           </div>
 
-          {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen(o => !o)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -186,7 +701,6 @@ const HeaderNav = () => {
         </div>
       </header>
 
-      {/* Mobile full-screen menu */}
       <div
         className={`md:hidden fixed inset-0 z-50 flex flex-col transition-all duration-300 ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
         style={{ background: "rgba(15,28,48,0.98)", backdropFilter: "blur(16px)" }}
@@ -207,22 +721,16 @@ const HeaderNav = () => {
             ))}
           </nav>
           <div className="mt-8 flex flex-col gap-3">
-            <a
-              href="https://wa.me/919358767062"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={close}
+            <a href="https://wa.me/919358767062" target="_blank" rel="noopener noreferrer" onClick={close}
               className="flex items-center justify-center gap-2 w-full py-4 rounded-xl font-bold text-white text-base"
-              style={{ background: "#25D366" }}
-            >
+              style={{ background: "#25D366" }}>
               <svg viewBox="0 0 24 24" fill="white" className="w-5 h-5">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
               </svg>
               Chat on WhatsApp
             </a>
             <a href="#top" onClick={close}
-              className="flex items-center justify-center w-full py-4 rounded-xl font-bold text-white text-base border-2 border-[#1FA6A8] text-[#1FA6A8]"
-            >
+              className="flex items-center justify-center w-full py-4 rounded-xl font-bold text-[#1FA6A8] text-base border-2 border-[#1FA6A8]">
               Get Free 3D Design
             </a>
           </div>
@@ -233,152 +741,59 @@ const HeaderNav = () => {
   );
 };
 
-const VideoEmbed = ({ youtubeUrl, mp4Url }) => {
+/* ─────────────────────── Video embed ─────────────────────── */
+const VideoEmbed = ({ youtubeUrl }) => {
   const [playing, setPlaying] = useState(false);
-
-  if (youtubeUrl) {
-    // Extract video ID from embed URL (e.g. https://www.youtube.com/embed/z1oiEwS1OF4)
-    const videoId = youtubeUrl.split("/embed/")[1]?.split("?")[0];
-    const thumbSrc = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-
-    return (
-      <div
-        className="relative w-full rounded-xl shadow-2xl ring-1 ring-black/10 overflow-hidden"
-        style={{ paddingBottom: "56.25%", background: "#000", cursor: playing ? "default" : "pointer" }}
-        onClick={() => !playing && setPlaying(true)}
-      >
-        {/* Thumbnail + play UI — hidden once playing */}
-        {!playing && (
-          <>
-            <img
-              src={thumbSrc}
-              alt="EventXpertz showreel thumbnail"
-              className="absolute inset-0 w-full h-full object-cover"
-              style={{ filter: "brightness(0.75)", transition: "filter 0.3s" }}
-              onError={e => { e.target.src = "/images/booth-design-1.png"; }}
-              loading="eager"
-              fetchpriority="high"
-            />
-            {/* gradient overlay */}
-            <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(to top, rgba(22,46,74,0.55) 0%, transparent 50%)" }} />
-            {/* play button */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 pointer-events-none">
-              <div style={{ width: 76, height: 76, background: "#1FA6A8", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 0 8px rgba(31,166,168,0.25)" }}>
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" style={{ marginLeft: 3 }}>
-                  <polygon points="5 3 19 12 5 21 5 3" />
-                </svg>
-              </div>
-              <span style={{ color: "#fff", fontSize: "0.82rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}>Watch Our Showreel</span>
-            </div>
-            {/* footer badges */}
-            <div className="absolute bottom-3 left-0 right-0 flex items-center justify-between px-4 pointer-events-none">
-              <span style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.05em" }}>▶ Click to play</span>
-              <span style={{ background: "rgba(0,0,0,0.65)", color: "#fff", fontSize: "0.72rem", fontWeight: 700, padding: "3px 9px", borderRadius: 4 }}>2:14</span>
-            </div>
-          </>
-        )}
-        {/* iframe — injected on click so YT branding never shows on load */}
-        {playing && (
-          <iframe
-            className="absolute inset-0 w-full h-full"
-            src={`${youtubeUrl}?autoplay=1&rel=0&modestbranding=1&color=white`}
-            title="EventXpertz exhibition showreel"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen
-          />
-        )}
-      </div>
-    );
-  }
+  if (!youtubeUrl) return (
+    <img src={HERO.image} alt="EventXpertz exhibition stall setup"
+      className="aspect-video w-full object-cover rounded-xl shadow-2xl ring-1 ring-black/10" loading="eager" />
+  );
+  const videoId = youtubeUrl.split("/embed/")[1]?.split("?")[0];
+  const thumbSrc = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
   return (
-    <img
-      src={HERO.image}
-      alt="EventXpertz exhibition stall setup"
-      className="aspect-video w-full object-cover rounded-xl shadow-2xl ring-1 ring-black/10"
-      loading="eager"
-      fetchpriority="high"
-    />
+    <div
+      className="relative w-full rounded-xl shadow-2xl ring-1 ring-black/10 overflow-hidden"
+      style={{ paddingBottom: "56.25%", background: "#000", cursor: playing ? "default" : "pointer" }}
+      onClick={() => !playing && setPlaying(true)}
+    >
+      {!playing && (
+        <>
+          <img src={thumbSrc} alt="EventXpertz showreel thumbnail"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ filter: "brightness(0.75)" }}
+            onError={e => { e.target.src = "/images/booth-design-1.png"; }}
+            loading="eager" />
+          <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(to top, rgba(22,46,74,0.55) 0%, transparent 50%)" }} />
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 pointer-events-none">
+            <div style={{ width: 76, height: 76, background: "#1FA6A8", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 0 8px rgba(31,166,168,0.25)" }}>
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" style={{ marginLeft: 3 }}><polygon points="5 3 19 12 5 21 5 3" /></svg>
+            </div>
+            <span style={{ color: "#fff", fontSize: "0.82rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}>Watch Our Showreel</span>
+          </div>
+          <div className="absolute bottom-3 left-0 right-0 flex items-center justify-between px-4 pointer-events-none">
+            <span style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.7rem", fontWeight: 600 }}>▶ Click to play</span>
+            <span style={{ background: "rgba(0,0,0,0.65)", color: "#fff", fontSize: "0.72rem", fontWeight: 700, padding: "3px 9px", borderRadius: 4 }}>2:14</span>
+          </div>
+        </>
+      )}
+      {playing && (
+        <iframe className="absolute inset-0 w-full h-full"
+          src={`${youtubeUrl}?autoplay=1&rel=0&modestbranding=1&color=white`}
+          title="EventXpertz exhibition showreel" frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen />
+      )}
+    </div>
   );
 };
 
-const HeroTop = () => {
-  const formRef = useRef(null);
-  const [saving, setSaving] = useState(false);
+/* ─────────────────────── Hero ─────────────────────── */
+const HeroTop = ({ onFormSuccess }) => {
   const [submitted, setSubmitted] = useState(false);
-  const [service, setService] = useState("Booth Design");
-  const [referenceFile, setReferenceFile] = useState(null);
-  const [phoneError, setPhoneError] = useState("");
-
-  const handlePhoneInput = (e) => {
-    const raw = e.target.value;
-    // Allow only digits and a leading +
-    const cleaned = raw.replace(/[^\d+]/g, "").replace(/(?!^)\+/g, "");
-    e.target.value = cleaned;
-    if (cleaned.length === 0) { setPhoneError(""); return; }
-    // Validate: optional +91, then 10 digits starting with 6-9
-    const digits = cleaned.startsWith("+") ? cleaned.slice(1).replace(/\D/g, "") : cleaned.replace(/\D/g, "");
-    const mobile = digits.startsWith("91") && digits.length > 10 ? digits.slice(2) : digits;
-    if (!/^[6-9]/.test(mobile)) {
-      setPhoneError("Indian mobile numbers start with 6, 7, 8, or 9");
-    } else if (mobile.length > 10) {
-      setPhoneError("Enter a valid 10-digit mobile number");
-    } else {
-      setPhoneError("");
-    }
-  };
-
-  // Netlify Forms submit — multipart/form-data so file uploads work
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    const formEl = e.currentTarget;
-
-    const data = new FormData(formEl);
-    // ensure current Select value is included
-    data.set("service", service);
-    if (referenceFile) data.set("reference-design", referenceFile);
-
-    if (!data.get("name") || !data.get("email")) {
-      toast.error("Please enter name and email");
-      return;
-    }
-
-    const phone = (data.get("phone") || "").trim();
-    if (!phone) {
-      toast.error("Please enter your contact number");
-      return;
-    }
-    const digits = phone.startsWith("+") ? phone.slice(1).replace(/\D/g, "") : phone.replace(/\D/g, "");
-    const mobile = digits.startsWith("91") && digits.length > 10 ? digits.slice(2) : digits;
-    if (!/^[6-9]\d{9}$/.test(mobile)) {
-      toast.error("Enter a valid 10-digit Indian mobile number starting with 6–9");
-      return;
-    }
-
-    setSaving(true);
-    try {
-      await fetch("/", {
-        method: "POST",
-        body: data,
-      });
-      setSubmitted(true);
-      toast.success("Thanks! We'll get back within 24 hours.");
-      formEl.reset();
-    } catch (err) {
-      console.error(err);
-      toast.error("Submit failed. Please try again.");
-    } finally {
-      setSaving(false);
-    }
-  };
-
   const parallaxRef = useRef(null);
   useEffect(() => {
     const onScroll = () => {
-      if (parallaxRef.current) {
-        parallaxRef.current.style.transform = `translateY(${window.scrollY * 0.22}px)`;
-      }
+      if (parallaxRef.current) parallaxRef.current.style.transform = `translateY(${window.scrollY * 0.22}px)`;
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -392,178 +807,35 @@ const HeroTop = () => {
       </div>
       <div className="mx-auto max-w-7xl px-6 grid lg:grid-cols-2 gap-10 items-center">
         <div className="order-2 lg:order-1">
-          <VideoEmbed youtubeUrl={HERO.youtubeUrl} mp4Url={HERO.videoMp4} />
+          <VideoEmbed youtubeUrl={HERO.youtubeUrl} />
         </div>
         <div className="order-1 lg:order-2">
           <div className="rounded-2xl md:backdrop-blur-2xl bg-white/10 border border-white/20 p-6 md:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.25)]">
-            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight">Your Exhibition Stall, Delivered On Time. Every Time. Or We Fix It Free.</h1>
-            <p className="mt-3 text-white/90 text-base font-medium">Design, fabrication, branding, LED screens, manpower, logistics — one team, pan-India. Free 3D design included with every project.</p>
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight">
+              Your Exhibition Stall, Delivered On Time. Every Time. Or We Fix It Free.
+            </h1>
+            <p className="mt-3 text-white/90 text-base font-medium">
+              Design, fabrication, branding, LED screens, manpower, logistics — one team, pan-India. Free 3D design included with every project.
+            </p>
             <p className="mt-2 text-white/70 text-sm">
               Trusted by T-Fit, BAIF, PharmaCon &amp; 500+ brands — Pragati Maidan to BIEC, we've never missed a handover.
             </p>
-
-            {!submitted ? (
-              <form
-                ref={formRef}
-                name="contact"
-                method="POST"
-                encType="multipart/form-data"
-                data-netlify="true"
-                data-netlify-honeypot="botField"
-                onSubmit={onSubmit}
-                className="mt-6 grid grid-cols-1 gap-4"
-              >
-                {/* Netlify detection fields */}
-                <input type="hidden" name="form-name" value="contact" />
-                <p className="hidden">
-                  <label>
-                    Don't fill this out if you're human: <input name="botField" />
-                  </label>
-                </p>
-
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="name">
-                      Name<span className="text-red-400"> *</span>
-                    </Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      placeholder="Your full name"
-                      autoComplete="name"
-                      className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="email">
-                      Email<span className="text-red-400"> *</span>
-                    </Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="name@example.com"
-                      autoComplete="email"
-                      className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="phone">Contact Number<span className="text-red-400"> *</span></Label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    placeholder="+91 98765 43210"
-                    autoComplete="tel"
-                    required
-                    inputMode="tel"
-                    onInput={handlePhoneInput}
-                    className={`mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60 ${phoneError ? "border-red-400 focus:border-red-400" : ""}`}
-                  />
-                  {phoneError && <p className="mt-1 text-xs text-red-400">{phoneError}</p>}
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="company">Company</Label>
-                    <Input
-                      id="company"
-                      name="company"
-                      placeholder="Company name"
-                      autoComplete="organization"
-                      className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
-                    />
-                  </div>
-                  <div>
-                    <Label>Service</Label>
-                    <Select value={service} onValueChange={setService}>
-                      <SelectTrigger className="mt-1 bg-white/10 border-white/20 text-white">
-                        <SelectValue placeholder="Select service" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {["Booth Design", "Full Build + Logistics", "Equipment Rental", "Hybrid Events"].map((s) => (
-                          <SelectItem key={s} value={s}>
-                            {s}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {/* include service for Netlify scan even if JS fails */}
-                    <input type="hidden" name="service" value={service} />
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="message">Message</Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    placeholder="Booth size, city, dates, and requirements"
-                    className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="reference-design">
-                    Reference Design{" "}
-                    <span className="text-white/50 font-normal text-xs">(optional — image or PDF)</span>
-                  </Label>
-                  <label
-                    htmlFor="reference-design"
-                    className="mt-1 flex flex-col items-center justify-center gap-2 w-full rounded-md border border-dashed border-white/30 bg-white/5 hover:bg-white/10 cursor-pointer px-4 py-5 text-center transition-colors"
-                  >
-                    {referenceFile ? (
-                      <span className="text-white/90 text-sm font-medium truncate max-w-full">{referenceFile.name}</span>
-                    ) : (
-                      <>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-                        </svg>
-                        <span className="text-white/60 text-sm">Click to upload or drag &amp; drop</span>
-                        <span className="text-white/40 text-xs">PNG, JPG, PDF up to 10 MB</span>
-                      </>
-                    )}
-                    <input
-                      id="reference-design"
-                      name="reference-design"
-                      type="file"
-                      accept="image/*,.pdf"
-                      className="sr-only"
-                      onChange={(e) => setReferenceFile(e.target.files?.[0] ?? null)}
-                    />
-                  </label>
-                  {referenceFile && (
-                    <button
-                      type="button"
-                      onClick={() => { setReferenceFile(null); document.getElementById("reference-design").value = ""; }}
-                      className="mt-1 text-xs text-white/50 hover:text-white/80 underline"
-                    >
-                      Remove file
-                    </button>
-                  )}
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <Button disabled={saving} className="bg-[var(--brand)] hover:bg-[var(--hover)] text-white rounded-md px-6">
-                    {saving ? "Submitting..." : "Submit"}
+            <div className="mt-6">
+              {!submitted ? (
+                <ContactForm
+                  onSuccess={() => { setSubmitted(true); onFormSuccess?.(); }}
+                  formName="contact"
+                />
+              ) : (
+                <div className="rounded-lg bg-white/10 border border-white/20 p-6">
+                  <h3 className="text-xl font-semibold">Thanks! We'll get back within 24 hours.</h3>
+                  <p className="text-white/90 mt-2">Your details were received. We'll follow up shortly.</p>
+                  <Button onClick={handleWhatsAppOrder} className="mt-4 bg-[#25D366] hover:bg-[#1EBE5D] text-white rounded-md px-6">
+                    Chat on WhatsApp for Faster Response
                   </Button>
                 </div>
-              </form>
-            ) : (
-              <div className="mt-6 rounded-lg bg-white/10 border border-white/20 p-6">
-                <h3 className="text-xl font-semibold">Thanks! We'll get back within 24 hours.</h3>
-                <p className="text-white/90 mt-2">
-                  Your details were received. We'll follow up shortly.
-                </p>
-                <Button onClick={handleWhatsAppOrder} className="mt-4 bg-[#25D366] hover:bg-[#1EBE5D] text-white rounded-md px-6">Chat on WhatsApp for Faster Response</Button>
-
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -571,6 +843,7 @@ const HeroTop = () => {
   );
 };
 
+/* ─────────────────────── Core Services ─────────────────────── */
 const CoreServices = () => {
   const iconMap = { Hammer, Printer, Monitor, Lamp, Users, Truck, CheckCircle2 };
   return (
@@ -590,25 +863,23 @@ const CoreServices = () => {
             const isLast = idx === CORE_SERVICES.length - 1;
             return (
               <FadeIn key={idx} delay={idx * 60} from="up" className={isLast ? "lg:col-start-2" : ""}>
-              <TiltCard className="h-full" intensity={7}>
-              <Card className="group hover:shadow-xl transition-shadow h-full">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="h-11 w-11 rounded-lg bg-[#1F3D63] text-white flex items-center justify-center ring-1 ring-black/10 group-hover:ring-[var(--brand)] transition-colors">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-lg text-[#1F3D63]">{svc.title}</h3>
-                      <ul className="mt-2 space-y-1 text-neutral-600 list-disc pl-5">
-                        {svc.items.map((it, i) => (
-                          <li key={i}>{it}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              </TiltCard>
+                <TiltCard className="h-full" intensity={7}>
+                  <Card className="group hover:shadow-xl transition-shadow h-full">
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="h-11 w-11 rounded-lg bg-[#1F3D63] text-white flex items-center justify-center ring-1 ring-black/10 group-hover:ring-[var(--brand)] transition-colors">
+                          <Icon className="h-5 w-5" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-lg text-[#1F3D63]">{svc.title}</h3>
+                          <ul className="mt-2 space-y-1 text-neutral-600 list-disc pl-5">
+                            {svc.items.map((it, i) => <li key={i}>{it}</li>)}
+                          </ul>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TiltCard>
               </FadeIn>
             );
           })}
@@ -618,6 +889,7 @@ const CoreServices = () => {
   );
 };
 
+/* ─────────────────────── Feature Bar ─────────────────────── */
 const FeatureBar = () => {
   const iconMap = { Clock, Users, CheckCircle2 };
   return (
@@ -640,6 +912,7 @@ const FeatureBar = () => {
   );
 };
 
+/* ─────────────────────── Animated stat ─────────────────────── */
 const AnimatedStat = ({ num, label, animate }) => {
   const raw = parseInt(num);
   const suffix = num.replace(/[0-9]/g, "");
@@ -671,6 +944,7 @@ const AnimatedStat = ({ num, label, animate }) => {
   );
 };
 
+/* ─────────────────────── Why Choose Us ─────────────────────── */
 const WhyChooseUs = () => {
   const iconMap = { Layers, Clock, Users, Building2, CheckCircle2, Hammer };
   const statsRef = useRef(null);
@@ -697,15 +971,11 @@ const WhyChooseUs = () => {
         <p className="mt-3 text-center text-gray-500 text-base">
           From design to dismantling — here's why exhibitors trust us event after event.
         </p>
-
-        {/* Animated stats strip */}
         <div ref={statsRef} className="mt-10 grid grid-cols-2 sm:grid-cols-4 border border-gray-200 rounded-xl bg-white overflow-hidden divide-x divide-y sm:divide-y-0 divide-gray-200">
           {STATS.map((s, i) => (
             <AnimatedStat key={i} num={s.num} label={s.label} animate={statsVisible} />
           ))}
         </div>
-
-        {/* 6 cards — clean 3+3 grid with 3D tilt */}
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {WHY.map((w, i) => {
             const Icon = iconMap[w.icon] || CheckCircle2;
@@ -730,6 +1000,7 @@ const WhyChooseUs = () => {
   );
 };
 
+/* ─────────────────────── How It Works ─────────────────────── */
 const HowItWorks = () => (
   <section className="py-20 bg-white overflow-hidden">
     <div className="mx-auto max-w-5xl px-6">
@@ -738,41 +1009,30 @@ const HowItWorks = () => (
       <p className="mt-3 text-center text-gray-500 text-base max-w-xl mx-auto">
         From your first message to the last panel coming down — here's exactly what to expect when you work with EventXpertz.
       </p>
-
       <div className="mt-14 relative">
-        {/* Connector line — desktop only, runs centre-to-centre across the 4 circles */}
         <div className="hidden lg:block absolute top-10 left-[12.5%] right-[12.5%] h-px" aria-hidden style={{ background: "linear-gradient(90deg, rgba(31,166,168,0.1) 0%, #1FA6A8 25%, #1FA6A8 75%, rgba(31,166,168,0.1) 100%)" }} />
-
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {HOW_IT_WORKS.map((step, i) => (
             <FadeIn key={i} delay={i * 100} from="up">
-            <div className="relative flex flex-col items-center text-center group">
-              {/* Step circle — 3D rotateY spin on hover */}
-              <div
-                className="relative z-10 flex items-center justify-center w-20 h-20 rounded-full border-2 border-[#1FA6A8] bg-white shadow-md group-hover:bg-[#1FA6A8]"
-                style={{ transition: "background 0.3s ease, transform 0.6s cubic-bezier(.22,1,.36,1)", perspective: "400px" }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "rotateY(360deg) scale(1.08)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "rotateY(0deg) scale(1)"; }}
-              >
-                <span className="text-xl font-extrabold text-[#1FA6A8] group-hover:text-white transition-colors duration-300">{step.step}</span>
+              <div className="relative flex flex-col items-center text-center group">
+                <div
+                  className="relative z-10 flex items-center justify-center w-20 h-20 rounded-full border-2 border-[#1FA6A8] bg-white shadow-md group-hover:bg-[#1FA6A8]"
+                  style={{ transition: "background 0.3s ease, transform 0.6s cubic-bezier(.22,1,.36,1)", perspective: "400px" }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = "rotateY(360deg) scale(1.08)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = "rotateY(0deg) scale(1)"; }}
+                >
+                  <span className="text-xl font-extrabold text-[#1FA6A8] group-hover:text-white transition-colors duration-300">{step.step}</span>
+                </div>
+                <span className="mt-4 inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#EDF8F8] text-[#1FA6A8]">{step.tag}</span>
+                <h3 className="mt-3 font-bold text-[#1F3D63] text-base leading-snug">{step.title}</h3>
+                <p className="mt-2 text-gray-500 text-sm leading-relaxed">{step.desc}</p>
               </div>
-              {/* Tag badge */}
-              <span className="mt-4 inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#EDF8F8] text-[#1FA6A8]">
-                {step.tag}
-              </span>
-              <h3 className="mt-3 font-bold text-[#1F3D63] text-base leading-snug">{step.title}</h3>
-              <p className="mt-2 text-gray-500 text-sm leading-relaxed">{step.desc}</p>
-            </div>
             </FadeIn>
           ))}
         </div>
       </div>
-
       <FadeIn delay={200} className="mt-14 text-center">
-        <a
-          href="#top"
-          className="inline-flex items-center gap-2 bg-[#1FA6A8] hover:bg-[#178F97] text-white font-bold px-8 py-4 rounded-full text-sm shadow-lg hover:-translate-y-1 transition-all duration-200"
-        >
+        <a href="#top" className="inline-flex items-center gap-2 bg-[#1FA6A8] hover:bg-[#178F97] text-white font-bold px-8 py-4 rounded-full text-sm shadow-lg hover:-translate-y-1 transition-all duration-200">
           Get Free 3D Design →
         </a>
         <p className="mt-3 text-gray-400 text-xs">Free 3D render in 24 hours. No commitment required.</p>
@@ -781,57 +1041,46 @@ const HowItWorks = () => (
   </section>
 );
 
+/* ─────────────────────── CTA Banner ─────────────────────── */
 const CTABanner = () => (
   <section className="py-20 px-6 text-center" style={{ background: "linear-gradient(135deg, #1FA6A8 0%, #1F3D63 100%)" }}>
     <FadeIn from="scale">
-    <p className="text-xs font-bold tracking-[0.15em] uppercase mb-3" style={{ color: "rgba(255,255,255,0.6)" }}>
-      Exhibition Stall Partner — Pan India
-    </p>
-    <p className="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-3">
-      Ready to Win the Show Floor?
-    </p>
-    <p className="text-base max-w-lg mx-auto mb-9" style={{ color: "rgba(255,255,255,0.75)" }}>
-      Get a free photorealistic 3D design of your stall — see it before we build it. Delivered on time, guaranteed.
-    </p>
-    <div className="flex flex-wrap gap-4 justify-center">
-      <a
-        href="#top"
-        className="inline-flex items-center gap-2 bg-white font-bold px-9 py-4 rounded-full text-sm shadow-lg hover:-translate-y-0.5 transition-transform text-[#1FA6A8]"
-      >
-        Get Free 3D Design →
-      </a>
-      <a
-        href="https://wa.me/919358767062"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 font-semibold px-9 py-4 rounded-full text-sm text-white transition-colors"
-        style={{ border: "2px solid rgba(255,255,255,0.5)" }}
-        onMouseOver={e => e.currentTarget.style.borderColor = "#fff"}
-        onMouseOut={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)"}
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.536 5.856L.057 23.882l6.187-1.622C7.85 23.389 9.887 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.959 0-3.799-.537-5.375-1.471l-.386-.229-3.995 1.047 1.066-3.888-.252-.401A9.942 9.942 0 0 1 2 12c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10z"/>
-        </svg>
-        Chat on WhatsApp
-      </a>
-    </div>
-    {/* Guarantee pills */}
-    <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-      {[
-        "✓ Free 3D Design Included",
-        "✓ On-Time Delivery or We Fix It Free",
-        "✓ Matches Approved Design — Guaranteed",
-      ].map((pill) => (
-        <span key={pill} className="text-xs font-semibold px-4 py-2 rounded-full" style={{ background: "rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.9)", border: "1px solid rgba(255,255,255,0.2)" }}>
-          {pill}
-        </span>
-      ))}
-    </div>
+      <p className="text-xs font-bold tracking-[0.15em] uppercase mb-3" style={{ color: "rgba(255,255,255,0.6)" }}>
+        Exhibition Stall Partner — Pan India
+      </p>
+      <p className="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-3">Ready to Win the Show Floor?</p>
+      <p className="text-base max-w-lg mx-auto mb-9" style={{ color: "rgba(255,255,255,0.75)" }}>
+        Get a free photorealistic 3D design of your stall — see it before we build it. Delivered on time, guaranteed.
+      </p>
+      <div className="flex flex-wrap gap-4 justify-center">
+        <a href="#top" className="inline-flex items-center gap-2 bg-white font-bold px-9 py-4 rounded-full text-sm shadow-lg hover:-translate-y-0.5 transition-transform text-[#1FA6A8]">
+          Get Free 3D Design →
+        </a>
+        <a href="https://wa.me/919358767062" target="_blank" rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 font-semibold px-9 py-4 rounded-full text-sm text-white transition-colors"
+          style={{ border: "2px solid rgba(255,255,255,0.5)" }}
+          onMouseOver={e => e.currentTarget.style.borderColor = "#fff"}
+          onMouseOut={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)"}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.536 5.856L.057 23.882l6.187-1.622C7.85 23.389 9.887 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.959 0-3.799-.537-5.375-1.471l-.386-.229-3.995 1.047 1.066-3.888-.252-.401A9.942 9.942 0 0 1 2 12c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10z"/>
+          </svg>
+          Chat on WhatsApp
+        </a>
+      </div>
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        {["✓ Free 3D Design Included", "✓ On-Time Delivery or We Fix It Free", "✓ Matches Approved Design — Guaranteed"].map(pill => (
+          <span key={pill} className="text-xs font-semibold px-4 py-2 rounded-full" style={{ background: "rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.9)", border: "1px solid rgba(255,255,255,0.2)" }}>
+            {pill}
+          </span>
+        ))}
+      </div>
     </FadeIn>
   </section>
 );
 
+/* ─────────────────────── Portfolio ─────────────────────── */
 const Portfolio = () => {
   const [active, setActive] = useState(null);
   const [open, setOpen] = useState(false);
@@ -848,17 +1097,16 @@ const Portfolio = () => {
             return (
               <button
                 key={img.id}
-                onClick={() => { setActive(img); setOpen(true); }}
+                onClick={() => {
+                  setActive(img);
+                  setOpen(true);
+                  window.dispatchEvent(new CustomEvent("portfolioItemViewed", { detail: { id: img.id } }));
+                }}
                 aria-label={`View portfolio image: ${img.alt}`}
-                className={`group relative overflow-hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1FA6A8] aspect-[4/3] ${
-                  isFeatured ? 'col-span-2 md:col-span-2 md:row-span-2 md:aspect-auto' : ''
-                } ${isOrphan ? 'md:col-start-2' : ''}`}
+                className={`group relative overflow-hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1FA6A8] aspect-[4/3] ${isFeatured ? "col-span-2 md:col-span-2 md:row-span-2 md:aspect-auto" : ""} ${isOrphan ? "md:col-start-2" : ""}`}
               >
-                <img
-                  src={img.url}
-                  alt={img.alt}
-                  className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                />
+                <img src={img.url} alt={img.alt}
+                  className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3 md:p-4">
                   <p className="text-white text-xs md:text-sm font-medium leading-tight line-clamp-2">{img.alt}</p>
                 </div>
@@ -867,9 +1115,7 @@ const Portfolio = () => {
           })}
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <span className="hidden" />
-          </DialogTrigger>
+          <DialogTrigger asChild><span className="hidden" /></DialogTrigger>
           <DialogContent className="max-w-4xl p-0 bg-[#162E4A] border-white/10 overflow-hidden rounded-xl">
             {active && (
               <>
@@ -890,6 +1136,7 @@ const Portfolio = () => {
   );
 };
 
+/* ─────────────────────── Testimonials ─────────────────────── */
 const Testimonials = () => (
   <section id="testimonials" className="py-20 bg-[#1F3D63] text-white">
     <div className="mx-auto max-w-7xl px-6">
@@ -902,23 +1149,23 @@ const Testimonials = () => (
           const dir = idx % 3 === 0 ? "left" : idx % 3 === 2 ? "right" : "up";
           return (
             <FadeIn key={idx} delay={idx * 80} from={dir}>
-            <TiltCard intensity={6} className="h-full">
-            <div className="flex flex-col bg-white/5 border border-white/10 rounded-2xl p-7 hover:bg-white/10 hover:border-[#1FA6A8]/40 transition-all duration-200 h-full">
-              <div className="flex items-center gap-1 text-yellow-400 text-sm tracking-wider">★★★★★</div>
-              <Quote className="h-4 w-4 text-[#1FA6A8] mt-4 flex-shrink-0" />
-              <p className="mt-3 text-white/85 leading-relaxed text-sm flex-1">"{t.quote}"</p>
-              <div className="mt-6 flex items-center gap-3 border-t border-white/10 pt-5">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#1FA6A8]/20 border border-[#1FA6A8]/40 flex items-center justify-center">
-                  <span className="text-[#1FA6A8] font-bold text-xs">{initials}</span>
+              <TiltCard intensity={6} className="h-full">
+                <div className="flex flex-col bg-white/5 border border-white/10 rounded-2xl p-7 hover:bg-white/10 hover:border-[#1FA6A8]/40 transition-all duration-200 h-full">
+                  <div className="flex items-center gap-1 text-yellow-400 text-sm tracking-wider">★★★★★</div>
+                  <Quote className="h-4 w-4 text-[#1FA6A8] mt-4 flex-shrink-0" />
+                  <p className="mt-3 text-white/85 leading-relaxed text-sm flex-1">"{t.quote}"</p>
+                  <div className="mt-6 flex items-center gap-3 border-t border-white/10 pt-5">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#1FA6A8]/20 border border-[#1FA6A8]/40 flex items-center justify-center">
+                      <span className="text-[#1FA6A8] font-bold text-xs">{initials}</span>
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold text-sm leading-tight">{t.name}</p>
+                      <p className="text-[#1FA6A8] text-xs font-medium mt-0.5">{t.role}</p>
+                      <p className="text-white/50 text-xs">{t.company}</p>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-white font-semibold text-sm leading-tight">{t.name}</p>
-                  <p className="text-[#1FA6A8] text-xs font-medium mt-0.5">{t.role}</p>
-                  <p className="text-white/50 text-xs">{t.company}</p>
-                </div>
-              </div>
-            </div>
-            </TiltCard>
+              </TiltCard>
             </FadeIn>
           );
         })}
@@ -927,19 +1174,15 @@ const Testimonials = () => (
   </section>
 );
 
+/* ─────────────────────── FAQ ─────────────────────── */
 const FaqItem = ({ q, a }) => {
   const [open, setOpen] = useState(false);
   return (
     <div>
-      <button
-        onClick={() => setOpen(o => !o)}
-        aria-expanded={open}
-        className="w-full flex items-center justify-between py-4 text-left gap-4 group"
-      >
+      <button onClick={() => setOpen(o => !o)} aria-expanded={open}
+        className="w-full flex items-center justify-between py-4 text-left gap-4 group">
         <span className="font-semibold text-[#1F3D63] text-base group-hover:text-[#1FA6A8] transition-colors">{q}</span>
-        <ChevronDown
-          className={`h-4 w-4 text-[#1FA6A8] flex-shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-        />
+        <ChevronDown className={`h-4 w-4 text-[#1FA6A8] flex-shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
       </button>
       <div className={`overflow-hidden transition-all duration-300 ${open ? "max-h-[600px] pb-4" : "max-h-0"}`}>
         <p className="text-neutral-600 text-sm leading-relaxed">{a}</p>
@@ -948,6 +1191,7 @@ const FaqItem = ({ q, a }) => {
   );
 };
 
+/* ─────────────────────── Back to top ─────────────────────── */
 const BackToTop = () => {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -968,23 +1212,7 @@ const BackToTop = () => {
   );
 };
 
-const WhatsAppFloat = () => (
-  <a
-    href="https://wa.me/919358767062?text=Hello%20EventXpertz%2C%20I%20visited%20your%20website%20and%20would%20like%20a%20quote."
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Chat on WhatsApp"
-    className="fixed bottom-24 right-5 z-50 md:bottom-8 md:right-6 flex items-center justify-center w-14 h-14 rounded-full shadow-xl transition-transform hover:scale-110 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#25D366]/50"
-    style={{ background: "#25D366" }}
-  >
-    {/* Pulse ring */}
-    <span className="absolute w-full h-full rounded-full animate-ping opacity-30" style={{ background: "#25D366" }} />
-    <svg viewBox="0 0 24 24" fill="white" className="w-7 h-7 relative z-10">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
-    </svg>
-  </a>
-);
-
+/* ─────────────────────── Sticky mobile CTA ─────────────────────── */
 const StickyMobileCTA = () => {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -998,20 +1226,12 @@ const StickyMobileCTA = () => {
       style={{ background: "#162E4A", borderTop: "1px solid rgba(255,255,255,0.1)" }}
     >
       <div className="flex gap-3 px-4 py-3">
-        <a
-          href="#top"
-          className="flex-1 text-center font-bold text-sm py-3 rounded-lg text-white"
-          style={{ background: "#1FA6A8" }}
-        >
+        <a href="#top" className="flex-1 text-center font-bold text-sm py-3 rounded-lg text-white" style={{ background: "#1FA6A8" }}>
           Get Free 3D Design
         </a>
-        <a
-          href="https://wa.me/919358767062"
-          target="_blank"
-          rel="noopener noreferrer"
+        <a href="https://wa.me/919358767062" target="_blank" rel="noopener noreferrer"
           className="flex-1 text-center font-bold text-sm py-3 rounded-lg text-white flex items-center justify-center gap-2"
-          style={{ background: "#25D366" }}
-        >
+          style={{ background: "#25D366" }}>
           <svg viewBox="0 0 24 24" fill="white" className="w-4 h-4">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
           </svg>
@@ -1022,34 +1242,16 @@ const StickyMobileCTA = () => {
   );
 };
 
+/* ─────────────────────── Social SVGs ─────────────────────── */
 const SOCIAL_SVGS = {
-  instagram: (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.975.975 1.246 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.975.975-2.242 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.975-.975-1.246-2.242-1.308-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608C4.516 2.497 5.783 2.225 7.15 2.163 8.416 2.105 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.333.014 7.053.072 5.197.157 3.355.673 2.014 2.014.673 3.355.157 5.197.072 7.053.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.085 1.856.601 3.698 1.942 5.038 1.341 1.341 3.183 1.857 5.038 1.942C8.333 23.986 8.741 24 12 24s3.668-.014 4.948-.072c1.856-.085 3.698-.601 5.038-1.942 1.341-1.34 1.857-3.182 1.942-5.038C23.986 15.668 24 15.259 24 12s-.014-3.667-.072-4.947c-.085-1.856-.601-3.698-1.942-5.038C20.646.673 18.804.157 16.948.072 15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
-    </svg>
-  ),
-  facebook: (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-      <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z" />
-    </svg>
-  ),
-  linkedin: (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-    </svg>
-  ),
-  youtube: (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-    </svg>
-  ),
-  whatsapp: (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
-    </svg>
-  ),
+  instagram: <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.975.975 1.246 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.975.975-2.242 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.975-.975-1.246-2.242-1.308-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608C4.516 2.497 5.783 2.225 7.15 2.163 8.416 2.105 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.333.014 7.053.072 5.197.157 3.355.673 2.014 2.014.673 3.355.157 5.197.072 7.053.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.085 1.856.601 3.698 1.942 5.038 1.341 1.341 3.183 1.857 5.038 1.942C8.333 23.986 8.741 24 12 24s3.668-.014 4.948-.072c1.856-.085 3.698-.601 5.038-1.942 1.341-1.34 1.857-3.182 1.942-5.038C23.986 15.668 24 15.259 24 12s-.014-3.667-.072-4.947c-.085-1.856-.601-3.698-1.942-5.038C20.646.673 18.804.157 16.948.072 15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" /></svg>,
+  facebook:  <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z" /></svg>,
+  linkedin:  <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>,
+  youtube:   <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg>,
+  whatsapp:  <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" /></svg>,
 };
 
+/* ─────────────────────── Footer ─────────────────────── */
 const Footer = () => (
   <footer id="contact" className="bg-[#162E4A] text-white">
     <div className="mx-auto max-w-7xl px-6 py-12 grid md:grid-cols-3 gap-8">
@@ -1062,14 +1264,8 @@ const Footer = () => (
         <p className="mt-3 text-white/70 text-sm">EventXpertz is an India-based exhibition and corporate event management company delivering custom stall fabrication, printing &amp; branding, LED display rental, furniture, hospitality manpower, and complete event logistics across Delhi NCR, Mumbai, Bengaluru, Hyderabad, Pune, Ahmedabad, Chennai, Kolkata, Jaipur, Noida, and Gurgaon. Contact us for a free quote.</p>
         <div className="mt-5 flex items-center gap-3">
           {CONTACT.social.map(({ label, href, icon }) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={label}
-              className="flex items-center justify-center h-9 w-9 rounded-full bg-white/10 hover:bg-[#1FA6A8] text-white/70 hover:text-white transition-colors"
-            >
+            <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
+              className="flex items-center justify-center h-9 w-9 rounded-full bg-white/10 hover:bg-[#1FA6A8] text-white/70 hover:text-white transition-colors">
               {SOCIAL_SVGS[icon]}
             </a>
           ))}
@@ -1078,26 +1274,9 @@ const Footer = () => (
       <div>
         <h3 className="font-semibold text-white">Quick Links</h3>
         <ul className="mt-3 space-y-2 text-sm text-white/70">
-          <li>
-            <a className="hover:text-white" href="#services">
-              Services
-            </a>
-          </li>
-          <li>
-            <a className="hover:text-white" href="#why">
-              Why Us
-            </a>
-          </li>
-          <li>
-            <a className="hover:text-white" href="#portfolio">
-              Portfolio
-            </a>
-          </li>
-          <li>
-            <a className="hover:text-white" href="#testimonials">
-              Testimonials
-            </a>
-          </li>
+          {[["#services","Services"],["#why","Why Us"],["#portfolio","Portfolio"],["#testimonials","Testimonials"]].map(([href, label]) => (
+            <li key={href}><a className="hover:text-white" href={href}>{label}</a></li>
+          ))}
         </ul>
       </div>
       <div>
@@ -1105,9 +1284,7 @@ const Footer = () => (
         <ul className="mt-3 space-y-2 text-sm text-white/70">
           <li>Email: <a href={`mailto:${CONTACT.email}`} className="hover:text-white transition-colors">{CONTACT.email}</a></li>
           <li>Website: <a href={CONTACT.website} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">{CONTACT.website.replace("https://", "")}</a></li>
-          <li>Phone: {CONTACT.phones.map((p, i) => (
-            <a key={i} href={`tel:${p.replace(/\s/g, "")}`} className="hover:text-white transition-colors">{p}</a>
-          ))}</li>
+          <li>Phone: {CONTACT.phones.map((p, i) => <a key={i} href={`tel:${p.replace(/\s/g, "")}`} className="hover:text-white transition-colors">{p}</a>)}</li>
           <li className="pt-1">
             <address className="not-italic text-white/60 text-xs leading-relaxed">
               New Delhi, Delhi NCR, India – 110001<br />
@@ -1125,22 +1302,33 @@ const Footer = () => (
   </footer>
 );
 
+/* ─────────────────────── Page ─────────────────────── */
 export default function LandingPage() {
+  const [formStatus, setFormStatus] = useState(null); // null | "submitted" | "dismissed"
+
   useEffect(() => {
     document.documentElement.style.setProperty("--brand", BRAND.colors.primary);
     document.documentElement.style.setProperty("--hover", BRAND.colors.hover);
   }, []);
+
   return (
     <main className="bg-white text-[#162E4A] pb-16 md:pb-0">
-      <a
-        href="#top"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-[#1F3D63] focus:px-4 focus:py-2 focus:rounded focus:font-bold"
-      >
+      <a href="#top" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-[#1F3D63] focus:px-4 focus:py-2 focus:rounded focus:font-bold">
         Skip to main content
       </a>
+
+      {/* Global overlays */}
+      <SingleTriggerModal
+        onFormSubmit={() => setFormStatus("submitted")}
+        onDismiss={() => setFormStatus("dismissed")}
+      />
+      <RecoveryBanner formDismissed={formStatus === "dismissed"} />
+      <WhatsAppWidget formStatus={formStatus} />
+
       <HeaderNav />
-      <HeroTop />
+      <HeroTop onFormSuccess={() => setFormStatus("submitted")} />
       <TrustBar />
+      <OfficialPartnersCarousel />
       <CoreServices />
       <IndustriesWeServe />
       <HowItWorks />
@@ -1150,36 +1338,34 @@ export default function LandingPage() {
       <Portfolio />
       <Testimonials />
       <BackToTop />
-      <WhatsAppFloat />
       <StickyMobileCTA />
+
       <section className="py-12 bg-white" aria-label="About EventXpertz">
         <div className="mx-auto max-w-7xl px-6 grid md:grid-cols-2 gap-10 items-start">
           <FadeIn from="left">
-          <div>
-            <h2 className="text-3xl font-bold text-[#1F3D63]">About EventXpertz</h2>
-            <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
-              EventXpertz is a Delhi-based, pan-India exhibition stall fabrication and event management company. Founded with a single focus — making exhibitors' lives easier — we design, build, brand, and deliver complete exhibition setups for trade fairs, industry expos, government pavilions, and corporate events across India.
-            </p>
-            <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
-              We offer end-to-end services under one roof: Octonorm and custom wooden stall fabrication, high-resolution flex and vinyl printing, LED TV and video wall rentals, furniture and lighting setup, trained hospitality manpower, and complete post-event dismantling and logistics. You brief us once — we handle everything else.
-            </p>
-            <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
-              Our team has executed 500+ stalls across 15+ cities — Pragati Maidan (Delhi), IEML (Greater Noida), Bombay Exhibition Centre (Mumbai), BIEC (Bengaluru), Hitex (Hyderabad), and more. We are an official approved vendor at Bharat Tex, one of India's largest trade fairs, which gives our clients faster venue approvals and zero compliance surprises.
-            </p>
-            <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
-              Our promise is simple: your stall will be ready before the show floor opens — matching the approved 3D design exactly — or we fix it on-site at no charge. In 500+ deliveries, we've never had to. That's not a boast; it's our standard.
-            </p>
-          </div>
+            <div>
+              <h2 className="text-3xl font-bold text-[#1F3D63]">About EventXpertz</h2>
+              <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
+                EventXpertz is a Delhi-based, pan-India exhibition stall fabrication and event management company. Founded with a single focus — making exhibitors' lives easier — we design, build, brand, and deliver complete exhibition setups for trade fairs, industry expos, government pavilions, and corporate events across India.
+              </p>
+              <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
+                We offer end-to-end services under one roof: Octonorm and custom wooden stall fabrication, high-resolution flex and vinyl printing, LED TV and video wall rentals, furniture and lighting setup, trained hospitality manpower, and complete post-event dismantling and logistics. You brief us once — we handle everything else.
+              </p>
+              <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
+                Our team has executed 500+ stalls across 15+ cities — Pragati Maidan (Delhi), IEML (Greater Noida), Bombay Exhibition Centre (Mumbai), BIEC (Bengaluru), Hitex (Hyderabad), and more. We are an official approved vendor at Bharat Tex, one of India's largest trade fairs, which gives our clients faster venue approvals and zero compliance surprises.
+              </p>
+              <p className="mt-3 text-neutral-600 text-justify leading-relaxed">
+                Our promise is simple: your stall will be ready before the show floor opens — matching the approved 3D design exactly — or we fix it on-site at no charge. In 500+ deliveries, we've never had to. That's not a boast; it's our standard.
+              </p>
+            </div>
           </FadeIn>
           <FadeIn from="right">
-          <div>
-            <h2 className="text-3xl font-bold text-[#1F3D63]">Frequently Asked Questions</h2>
-            <div className="mt-4 divide-y divide-neutral-200 border-t border-neutral-200">
-              {FAQS.map((faq, i) => (
-                <FaqItem key={i} q={faq.q} a={faq.a} />
-              ))}
+            <div>
+              <h2 className="text-3xl font-bold text-[#1F3D63]">Frequently Asked Questions</h2>
+              <div className="mt-4 divide-y divide-neutral-200 border-t border-neutral-200">
+                {FAQS.map((faq, i) => <FaqItem key={i} q={faq.q} a={faq.a} />)}
+              </div>
             </div>
-          </div>
           </FadeIn>
         </div>
       </section>
@@ -1187,4 +1373,3 @@ export default function LandingPage() {
     </main>
   );
 }
-
