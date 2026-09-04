@@ -6,7 +6,7 @@ import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Label } from "../components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
-import { Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, CheckCircle2, Clock, Layers, Building2, ChevronDown, FlaskConical, Cpu, ShoppingBag, Car, Sprout, Building, Landmark, Shield } from "lucide-react";
+import { Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, CheckCircle2, Clock, Layers, Building2, ChevronDown, FlaskConical, Cpu, ShoppingBag, Car, Sprout, Building, Landmark, Shield, ClipboardCheck, BadgeCheck, UserRoundCheck, ClipboardList } from "lucide-react";
 import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT, CORE_SERVICES, FAQS, FEATURE_BAR, STATS, HOW_IT_WORKS, INDUSTRIES } from "../mock/mock";
 import { toast } from "sonner";
 
@@ -571,48 +571,87 @@ const HeroTop = () => {
   );
 };
 
+const SERVICE_GROUPS = [
+  {
+    key: "build",
+    eyebrow: "Exhibition Production",
+    title: "Design, Build & Branding",
+    description: "Everything required to turn an empty exhibition space into a complete, brand-ready stall.",
+    gridClass: "xl:grid-cols-4",
+  },
+  {
+    key: "operations",
+    eyebrow: "Event Operations",
+    title: "On-Site Support & Management",
+    description: "The people, systems, and supervision that keep your event running smoothly from check-in to wrap-up.",
+    gridClass: "lg:grid-cols-3",
+  },
+];
+
 const CoreServices = () => {
-  const iconMap = { Hammer, Printer, Monitor, Lamp, Users, Truck, CheckCircle2 };
+  const iconMap = { Hammer, Printer, Monitor, Lamp, Truck, CheckCircle2, ClipboardCheck, BadgeCheck, UserRoundCheck, ClipboardList };
   return (
-    <section id="services" className="py-20 bg-white">
+    <section id="services" className="py-20 bg-[#F8FAFC]">
       <div className="mx-auto max-w-7xl px-6">
-        <FadeIn><h2 className="text-3xl md:text-4xl font-bold text-[#1F3D63]">Our Core Services</h2></FadeIn>
-        <FadeIn delay={80}><p className="text-base text-neutral-600 mt-2">Everything your exhibition presence needs — designed, built, and delivered end to end.</p></FadeIn>
-        <FadeIn delay={120}><p className="text-neutral-600 mt-4 max-w-2xl text-justify leading-relaxed">
-          From modular Octonorm stalls to fully custom wooden builds, EventXpertz handles
-          design, fabrication, branding, AV, manpower, and post-event dismantling — all
-          under one roof. We operate at every major Indian trade fair venue: Pragati Maidan,
-          IEML Greater Noida, Bombay Exhibition Centre, BIEC Bengaluru, and Hitex Hyderabad.
-        </p></FadeIn>
-        <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {CORE_SERVICES.map((svc, idx) => {
-            const Icon = iconMap[svc.icon] || CheckCircle2;
-            const isLast = idx === CORE_SERVICES.length - 1;
+        <FadeIn>
+          <p className="text-xs font-bold tracking-[0.15em] uppercase text-[#1FA6A8]">One team. Every detail.</p>
+          <h2 className="mt-2 text-3xl md:text-4xl font-extrabold text-[#1F3D63]">Our Core Services</h2>
+          <p className="mt-3 max-w-2xl text-base leading-relaxed text-neutral-600">
+            From stall fabrication to attendee check-in and on-site supervision, we manage your complete exhibition and event experience under one roof.
+          </p>
+        </FadeIn>
+
+        <div className="mt-12 space-y-14">
+          {SERVICE_GROUPS.map((group, groupIndex) => {
+            const services = CORE_SERVICES.filter((service) => service.category === group.key);
             return (
-              <FadeIn key={idx} delay={idx * 60} from="up" className={isLast ? "lg:col-start-2" : ""}>
-              <TiltCard className="h-full" intensity={7}>
-              <Card className="group hover:shadow-xl transition-shadow h-full">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="h-11 w-11 rounded-lg bg-[#1F3D63] text-white flex items-center justify-center ring-1 ring-black/10 group-hover:ring-[var(--brand)] transition-colors">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-lg text-[#1F3D63]">{svc.title}</h3>
-                      <ul className="mt-2 space-y-1 text-neutral-600 list-disc pl-5">
-                        {svc.items.map((it, i) => (
-                          <li key={i}>{it}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              </TiltCard>
-              </FadeIn>
+              <div key={group.key} aria-labelledby={`${group.key}-services-title`}>
+                <FadeIn delay={groupIndex * 80}>
+                  <p className="text-xs font-bold tracking-[0.12em] uppercase text-[#1FA6A8]">{group.eyebrow}</p>
+                  <h3 id={`${group.key}-services-title`} className="mt-1 text-2xl font-bold text-[#1F3D63]">{group.title}</h3>
+                  <p className="mt-2 max-w-3xl text-sm leading-relaxed text-neutral-600">{group.description}</p>
+                </FadeIn>
+
+                <div className={`mt-6 grid sm:grid-cols-2 gap-5 ${group.gridClass}`}>
+                  {services.map((svc, idx) => {
+                    const Icon = iconMap[svc.icon] || CheckCircle2;
+                    return (
+                      <FadeIn key={svc.title} delay={idx * 50} from="up">
+                        <TiltCard className="h-full" intensity={6}>
+                          <Card className="group h-full border-gray-200 bg-white transition-[border-color,box-shadow] hover:border-[#1FA6A8] hover:shadow-lg">
+                            <CardContent className="p-6">
+                              <div className="flex items-start gap-4">
+                                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#1F3D63] text-white ring-1 ring-black/10 transition-colors group-hover:bg-[#1FA6A8]">
+                                  <Icon className="h-5 w-5" aria-hidden="true" />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <h4 className="text-lg font-semibold leading-snug text-[#1F3D63]">{svc.title}</h4>
+                                  <ul className="mt-3 space-y-1.5 pl-5 text-sm leading-relaxed text-neutral-600 list-disc">
+                                    {svc.items.map((item) => <li key={item}>{item}</li>)}
+                                  </ul>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </TiltCard>
+                      </FadeIn>
+                    );
+                  })}
+                </div>
+              </div>
             );
           })}
         </div>
+
+        <FadeIn delay={120} className="mt-12 flex flex-col items-start gap-6 rounded-xl bg-[#162E4A] px-14 py-7 shadow-lg sm:flex-row sm:items-center sm:justify-between sm:pl-14 sm:pr-20 lg:pl-20 lg:pr-24">
+          <div className="md:ml-12">
+            <p className="text-lg font-bold text-white">Need a custom combination of services?</p>
+            <p className="mt-1 text-sm leading-relaxed text-white/70">Share your event brief and get an itemised plan within 24 hours.</p>
+          </div>
+          <a href="#top" className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-md bg-[#1FA6A8] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#178F97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#162E4A] md:mr-12">
+            Plan Your Event →
+          </a>
+        </FadeIn>
       </div>
     </section>
   );
@@ -1187,4 +1226,3 @@ export default function LandingPage() {
     </main>
   );
 }
-

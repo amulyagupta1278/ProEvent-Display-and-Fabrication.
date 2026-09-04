@@ -41,6 +41,7 @@ export const CORE_SERVICES = [
   {
     title: "Stall Fabrication & Setup",
     icon: "Hammer",
+    category: "build",
     items: [
       "Octonorm & Wooden stall fabrication",
       "Customized design and on-site installation",
@@ -50,6 +51,7 @@ export const CORE_SERVICES = [
   {
     title: "Printing & Branding",
     icon: "Printer",
+    category: "build",
     items: [
       "Flex, vinyl, sunboard, foam board printing",
       "Standees, backdrops, directional signage",
@@ -59,6 +61,7 @@ export const CORE_SERVICES = [
   {
     title: "Display & LED Screens",
     icon: "Monitor",
+    category: "build",
     items: [
       "LED TVs (32”, 43”, 55”, 65”) with stands",
       "Large LED walls (P3/P4 panels)",
@@ -68,6 +71,7 @@ export const CORE_SERVICES = [
   {
     title: "Furniture & Lighting",
     icon: "Lamp",
+    category: "build",
     items: [
       "Chair, sofa, table, counter, brochure stand",
       "External and decorative lights, par lights, focus lights",
@@ -75,16 +79,9 @@ export const CORE_SERVICES = [
     ],
   },
   {
-    title: "Manpower & Hospitality",
-    icon: "Users",
-    items: [
-      "Hostess / promoter staff",
-      "Tea, coffee, and water setup",
-      "Cleaning and daily maintenance staff",
-    ],
-  },{
     title: "Complete Event Management",
     icon: "CheckCircle2",
+    category: "operations",
     items: [
       "Single-window execution from planning to wrap-up",
       "Budgeting, vendor coordination, and on-ground control",
@@ -92,8 +89,49 @@ export const CORE_SERVICES = [
     ],
   },
   {
-    title: "Others",
+    title: "Event Registration & Check-In",
+    icon: "ClipboardCheck",
+    category: "operations",
+    items: [
+      "Registration counters and check-in desks",
+      "Attendee registration and management",
+      "On-site registration support",
+    ],
+  },
+  {
+    title: "Custom Lanyards & Event Badges",
+    icon: "BadgeCheck",
+    category: "operations",
+    items: [
+      "Professional custom-branded lanyards",
+      "Event identification badges",
+      "Designs matched to your event identity",
+    ],
+  },
+  {
+    title: "Event Manpower & Staffing",
+    icon: "UserRoundCheck",
+    category: "operations",
+    items: [
+      "Trained and professional event staff",
+      "Registration, hospitality, and guest handling",
+      "Coordination, cleaning, and on-ground support",
+    ],
+  },
+  {
+    title: "On-Site Event Supervision",
+    icon: "ClipboardList",
+    category: "operations",
+    items: [
+      "End-to-end on-ground supervision",
+      "Smooth coordination and timely execution",
+      "Hassle-free event operations",
+    ],
+  },
+  {
+    title: "Event Infrastructure & Logistics",
     icon: "Truck",
+    category: "operations",
     items: [
       "Generator & power backup",
       "Flower decoration & carpet setup",
