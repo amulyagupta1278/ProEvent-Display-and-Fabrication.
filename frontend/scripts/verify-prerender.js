@@ -31,7 +31,7 @@ if (!hasContent) {
         </ul>
         <h2 style="color:#1F3D63;margin-top:2rem">Contact EventXpertz</h2>
         <p>📞 <a href="tel:+919358767062">+91 9358767062</a></p>
-        <p>✉️ <a href="mailto:eventxpertz@gmail.com">eventxpertz@gmail.com</a></p>
+        <p>✉️ <a href="mailto:contact@eventxpertz.in">contact@eventxpertz.in</a></p>
         <p>🌐 <a href="https://eventxpertz.in">https://eventxpertz.in</a></p>
       </main>
     </div>`

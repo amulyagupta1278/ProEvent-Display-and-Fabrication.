@@ -44,7 +44,7 @@ const FALLBACK_HTML = `
   <h2 id="contact" style="color:#1F3D63;margin-top:2.5rem;font-size:1.5rem">Contact EventXpertz</h2>
   <p style="color:#444;line-height:2;margin-top:.75rem">
     &#128222; <a href="tel:+919358767062" style="color:#1F3D63;font-weight:600">+91 9358767062</a><br/>
-    &#9993;&#65039; <a href="mailto:eventxpertz@gmail.com" style="color:#1F3D63">eventxpertz@gmail.com</a><br/>
+    &#9993;&#65039; <a href="mailto:contact@eventxpertz.in" style="color:#1F3D63">contact@eventxpertz.in</a><br/>
     &#127760; <a href="https://eventxpertz.in" style="color:#1F3D63">https://eventxpertz.in</a>
   </p>
   <h2 style="color:#1F3D63;margin-top:2.5rem;font-size:1.5rem">Frequently Asked Questions</h2>
