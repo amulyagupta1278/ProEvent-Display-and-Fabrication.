@@ -209,7 +209,7 @@ export const TESTIMONIALS = [
 ];
 
 export const CONTACT = {
-  email: "eventxpertz@gmail.com",
+  email: "contact@eventxpertz.in",
   website: "https://eventxpertz.in",
   phones: ["+91 9358767062"],
   social: [

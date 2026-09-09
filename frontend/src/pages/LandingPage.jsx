@@ -648,7 +648,12 @@ const CoreServices = () => {
             <p className="text-lg font-bold text-white">Need a custom combination of services?</p>
             <p className="mt-1 text-sm leading-relaxed text-white/70">Share your event brief and get an itemised plan within 24 hours.</p>
           </div>
-          <a href="#top" className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-md bg-[#1FA6A8] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#178F97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#162E4A] md:mr-12">
+          <a
+            href="https://wa.me/919358767062?text=Hello%20EventXpertz%2C%20I%20would%20like%20an%20itemised%20plan%20for%20my%20event."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-md bg-[#1FA6A8] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#178F97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#162E4A] md:mr-12"
+          >
             Plan Your Event →
           </a>
         </FadeIn>
@@ -1159,7 +1164,7 @@ const Footer = () => (
     <div className="border-t border-white/10 py-4 text-center text-xs text-white/50">
       © {new Date().getFullYear()} {BRAND.name}. All rights reserved.
       {" · "}
-      <a href="mailto:eventxpertz@gmail.com" className="hover:text-white/80 underline">Privacy &amp; Contact</a>
+      <a href={`mailto:${CONTACT.email}`} className="hover:text-white/80 underline">Privacy &amp; Contact</a>
     </div>
   </footer>
 );
